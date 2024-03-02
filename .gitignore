@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+## 개발환경, DB 등 개인 설정 프로퍼티 파일은 무시 처리 ##
+### Personal Properties ###
+**/src/main/resources/datasource.properties
