@@ -32,6 +32,14 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+	implementation 'io.springfox:springfox-swagger2:2.9.2'
+	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+	// https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
+	implementation 'javax.persistence:javax.persistence-api:2.2'
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation 'mysql:mysql-connector-java:8.0.21'
 }
 
 tasks.named('test') {
