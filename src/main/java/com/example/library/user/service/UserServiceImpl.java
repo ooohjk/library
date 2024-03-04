@@ -1,4 +1,4 @@
-package com.example.library.service;
+package com.example.library.user.service;
 
 import com.example.library.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Value;
