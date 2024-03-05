@@ -1,9 +1,7 @@
 package com.example.library.user.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
-
-import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -11,6 +9,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Table(name = "user")
 public class UserEntity extends BaseEntity {
 
@@ -18,35 +17,24 @@ public class UserEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNo;
 
+    @Column(nullable = false)
     private String userId;
 
+    @Column(nullable = false)
     private String userPwd;
 
+    @Column(nullable = false)
     private String userName;
 
-    @Column(name = "createdAt")
-    private Date createdDate;
-
+    @Column()
     private String tel;
 
     @Column(name = "email")
     private String userEmail;
 
+    @Column(nullable = false)
     private String gender;
 
+    @Column
     private Integer useFlg;
-
-//    public UserDto toDto() {
-//        return UserDto.builder()
-//                .userNo(userNo)
-//                .userId(userId)
-//                .userPwd(userPwd)
-//                .userName(userName)
-//                .createdAt(createdDate)
-//                .tel(tel)
-//                .email(userEmail)
-//                .gender(gender)
-//                .useFlg(useFlg)
-//                .build();
-//    }
 }
