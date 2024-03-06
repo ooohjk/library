@@ -1,6 +1,8 @@
 package com.example.library.user.enumPk;
 
-import java.io.IOException;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.Arrays;
 
 public enum SocialLoginType {
