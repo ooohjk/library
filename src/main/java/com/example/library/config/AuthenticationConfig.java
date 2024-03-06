@@ -54,7 +54,10 @@ public class AuthenticationConfig {
                  */
                 .oauth2Login(oauth2->oauth2
                         .authorizationEndpoint(authorizationEndpointConfig -> authorizationEndpointConfig.baseUri("/api/user/oauth2/authorize")) //인증을 위한 url이며 default url은 /oauth2/authorization/{registration}, 옆과 같이 수정 시 /api/user/oauth2/authorize/{registration}으로 접근가능
-                        .userInfoEndpoint(userInfoEndpoint->userInfoEndpoint.userService((OAuth2UserService<OAuth2UserRequest, OAuth2User>) userService))) //인가된 정보를 활용하여 당사에서 활용할 수 있도록 커스터마이징
+                        .redirectionEndpoint(redirectionEndpointConfig -> redirectionEndpointConfig.baseUri("/api/user/login/oauth2/code/*"))
+                        .userInfoEndpoint(userInfoEndpoint->userInfoEndpoint.userService((OAuth2UserService<OAuth2UserRequest, OAuth2User>) userService)) //인가된 정보를 활용 하여 당사에서 활용할 수 있도록 커스터마이징
+                        .defaultSuccessUrl("/api/user/login/oauth") //소셜 로그인 성공 후 보여질 화묜 url 커스터마이징
+                )
                 .addFilterBefore(new JwtFilter(userService, secret), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

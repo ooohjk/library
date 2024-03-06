@@ -9,7 +9,7 @@ import com.example.library.user.repository.UserRepository;
 import com.example.library.user.service.UserService;
 import com.example.library.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -19,6 +19,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -95,9 +98,16 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
         String name = getDataFromOAuth2User(oAuth2User,"name");
         String providerId = oAuth2User.getAttribute(userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName());
 
-        //2. 당사 존재 여부 파악 (조회조건: 소셜플랫폼 종류, email, socialId )
+        //2. 당사 존재 여부 파악 (조회 조건: 소셜플랫폼 종류, email, socialId )
+        Optional<UserEntity> saved = userRepository.findByProviderAndProviderIdAndUserEmail(socialLoginType,providerId,email);
 
-        return null;
+        //3. 존재하지 않는 경우 자동 회원가입 진행
+        if(saved.isEmpty()){
+            UserEntity userEntityBySocialLogin = UserEntity.createOAuth2User().userEmail(email).userName(name).providerId(providerId).provider(socialLoginType).build();
+            userRepository.save(userEntityBySocialLogin);
+        }
+
+        return oAuth2User;
     }
 
     private String getDataFromOAuth2User(OAuth2User oAuth2User,String type){
