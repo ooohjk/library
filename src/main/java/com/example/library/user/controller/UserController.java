@@ -30,8 +30,13 @@ public class UserController {
         return ResponseEntity.ok().body(token);
     }
 
-    @GetMapping("/get")
-    public UserDto getUser(Long userNo) {
-        return userService.getUser(userNo);
+    @GetMapping("/get/userNo")
+    public UserDto getUserByUserNo(Long userNo) {
+        return userService.getUserByUserNo(userNo);
+    }
+
+    @GetMapping("/get/userId")
+    public UserDto getUserByUserId(String userId) {
+        return userService.getUserByUserId(userId);
     }
 }

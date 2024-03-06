@@ -31,7 +31,8 @@ public class AuthenticationConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     try {
-                        auth.requestMatchers("/user/login", "/user/join", "/user/get", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        auth.requestMatchers("/user/login", "/user/join", "/user/get", "/user/get/**", "/swagger-ui/**", "/v3/api-docs/**", "/book/search/**").permitAll()
+                            .requestMatchers(HttpMethod.GET).permitAll()
                             .requestMatchers(HttpMethod.POST).authenticated();
                     } catch (Exception e) {
                         e.printStackTrace();
