@@ -26,15 +26,22 @@ public class UserEntity extends BaseEntity {
     @Column(nullable = false)
     private String userName;
 
-    @Column()
     private String tel;
 
     @Column(name = "email")
     private String userEmail;
+
+    private String provider;
+
+    private String providerId;
 
     @Column(nullable = false)
     private String gender;
 
     @Column
     private Integer useFlg;
+
+    private Integer userLevel;
+
+
 }
