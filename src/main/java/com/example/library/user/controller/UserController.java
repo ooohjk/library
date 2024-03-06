@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,13 +21,26 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}")
-    public String getId(@PathVariable String id) {
-        return id;
+    @PostMapping("/join")
+    public ResponseEntity<String> join(@RequestBody UserDto userDto) {
+        userService.join(userDto.getUserId(), userDto.getUserPwd(), userDto.getUserName(), userDto.getTel(), userDto.getEmail(), userDto.getGender(), userDto.getUseFlg());
+        return ResponseEntity.ok().body("Success Join!!");
+    }
+
+//    @PostMapping("/login")
+//    public ResponseEntity<String> login(@RequestBody UserDto userDto) {
+//        String token = userService.login(userDto.getUserId(), userDto.getUserPwd());
+//        return ResponseEntity.ok().body(token);
+//    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(String userId, String userPwd) {
+        String token = userService.login(userId, userPwd);
+        return ResponseEntity.ok().body(token);
     }
 
     @GetMapping("/get")
     public UserDto getUser(Long userNo) {
-        return userService.getAllUser(userNo);
+        return userService.getUser(userNo);
     }
 }

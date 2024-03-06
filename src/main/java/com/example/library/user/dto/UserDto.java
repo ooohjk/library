@@ -9,8 +9,6 @@ import lombok.*;
 @ToString
 @Builder
 public class UserDto {
-    @NotNull
-    private Long userNo;
 
     @NotNull
     private String userId;

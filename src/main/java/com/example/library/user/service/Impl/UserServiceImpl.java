@@ -10,29 +10,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
 
     @Autowired
     public UserServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
-    @Override
-    public UserDto getAllUser(Long userNo) {
-        UserEntity userEntity =  userDAO.getAllUser(userNo);
+    public String join(String userId, String userPwd, String userName, String tel, String email, String gender, Integer userFlg) {
+        return userDAO.join(userId, userPwd, userName, tel, email, gender, userFlg);
+    }
 
-        if(userEntity == null) {
-            userEntity.setUserNo((long)1);
-            userEntity.setUserId("admin");
-            userEntity.setUserPwd("1234");
-            userEntity.setUserName("오재경");
-            userEntity.setTel("010-0000-0000");
-            userEntity.setUserEmail("xxx@naver.com");
-            userEntity.setGender("M");
-            userEntity.setUseFlg(0);
-        }
+    public String login(String userId, String userPwd) {
+        return userDAO.login(userId, userPwd);
+    }
 
-        UserDto userDto = new UserDto(userEntity.getUserNo(), userEntity.getUserId(), userEntity.getUserPwd(), userEntity.getUserName(), userEntity.getTel(), userEntity.getUserEmail(), userEntity.getGender(), userEntity.getUseFlg());
+    public UserDto getUser(Long userNo) {
+        UserEntity userEntity =  userDAO.getUser(userNo);
+
+        UserDto userDto = new UserDto(userEntity.getUserId(), userEntity.getUserPwd(), userEntity.getUserName(), userEntity.getTel(), userEntity.getUserEmail(), userEntity.getGender(), userEntity.getUseFlg());
         return userDto;
     }
 }

@@ -3,5 +3,7 @@ package com.example.library.user.service;
 import com.example.library.user.dto.UserDto;
 
 public interface UserService {
-    UserDto getAllUser(Long userNo);
+    String join(String userId, String userPwd, String userName, String tel, String email, String gender, Integer userFlg);
+    String login(String userId, String userPwd);
+    UserDto getUser(Long userNo);
 }
