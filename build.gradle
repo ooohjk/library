@@ -43,8 +43,8 @@ dependencies {
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
 	//2023.03.04 oauth로그인 위하여 추가 by son
-//	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-//	implementation 'org.springframework.security:spring-security-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.security:spring-security-oauth2-client'
 }
 
 tasks.named('test') {
