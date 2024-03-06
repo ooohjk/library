@@ -19,8 +19,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -72,7 +70,8 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
 
     @Override
     public UserDto getUserByUserId(String userId) {
-        UserEntity userEntity = userRepository.findByUserId(userId).get();
+        UserEntity userEntity = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userId + "이 없습니다."));;
 
         UserDto userDto = new UserDto(userEntity.getUserId(), userEntity.getUserPwd(), userEntity.getUserName(), userEntity.getTel(), userEntity.getUserEmail(), userEntity.getGender(), userEntity.getUseFlg());
         return userDto;
@@ -91,7 +90,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
         //1. 당사에 가입된 유저 확인을 데이터 추출
-        SocialLoginType socialLoginType= SocialLoginType.getSocialType(userRequest.getClientRegistration().getRegistrationId());
+        SocialLoginType socialLoginType = SocialLoginType.getSocialType(userRequest.getClientRegistration().getRegistrationId());
         String email = getDataFromOAuth2User(oAuth2User,"email");
         String name = getDataFromOAuth2User(oAuth2User,"name");
         String providerId = oAuth2User.getAttribute(userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName());

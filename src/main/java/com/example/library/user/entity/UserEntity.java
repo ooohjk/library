@@ -49,13 +49,13 @@ public class UserEntity extends BaseEntity {
     @Convert(converter = UserGradeConverter.class)
     private UserGrade userGrade;
 
-    @Builder(builderMethodName = "createOAuth2User",builderClassName = "createOAuth2User")
-    public UserEntity(String userEmail,String userName,String providerId,SocialLoginType provider) {
-        this.userEmail= userEmail;
-        this.userName= userName;
-        this.providerId =providerId;
+    @Builder(builderMethodName = "createOAuth2User", builderClassName = "createOAuth2User")
+    public UserEntity(String userEmail, String userName, String providerId, SocialLoginType provider) {
+        this.userEmail = userEmail;
+        this.userName = userName;
+        this.providerId = providerId;
         this.provider = provider;
-        this.userGrade=UserGrade.OFFICIALMEMBER;
-        this.useFlg=0;
+        this.userGrade = UserGrade.OFFICIALMEMBER;
+        this.useFlg = 0;
     }
 }
