@@ -44,4 +44,7 @@ public class BookEntity {
 
     @Column(nullable = false)
     private String bookLocation;
+
+    @Column()
+    private String bookImage;
 }

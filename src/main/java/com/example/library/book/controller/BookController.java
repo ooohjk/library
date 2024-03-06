@@ -1,6 +1,7 @@
 package com.example.library.book.controller;
 
 import com.example.library.book.dto.BookDto;
+import com.example.library.book.dto.BookSimple;
 import com.example.library.book.service.BookService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,23 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/search/bookCode")
-    public BookDto searchByBookCode(Long bookCode) {
-        return bookService.searchByBookCode(bookCode);
+    @GetMapping("/search/detail/bookAuthor")
+    public BookDto detailSearchByBookAuthor(String bookAuthor) {
+        return bookService.detailSearchByBookAuthor(bookAuthor);
+    }
+
+    @GetMapping("/search/detail/bookName")
+    public BookDto detailSearchByBookName(String bookName) {
+        return bookService.detailSearchByBookName(bookName);
+    }
+
+    @GetMapping("/search/simple/bookAuthor")
+    public BookSimple simpleSearchByBookAuthor(String bookAuthor) {
+        return bookService.simpleSearchByBookAuthor(bookAuthor);
+    }
+
+    @GetMapping("/search/simple/bookName")
+    public BookSimple simpleSearchByBookName(String bookName) {
+        return bookService.simpleSearchByBookName(bookName);
     }
 }
