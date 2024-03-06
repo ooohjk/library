@@ -9,7 +9,7 @@ import jakarta.persistence.Converter;
 public class SocialLoginTypeConverter implements AttributeConverter<SocialLoginType, String> {
     @Override
     public String convertToDatabaseColumn(SocialLoginType attribute) {
-        return attribute.name().toLowerCase();
+        return (attribute==null) ? null : attribute.name().toLowerCase();
     }
 
     @Override

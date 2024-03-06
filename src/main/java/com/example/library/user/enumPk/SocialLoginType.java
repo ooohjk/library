@@ -8,9 +8,14 @@ import java.util.Arrays;
 public enum SocialLoginType {
     GOOGLE,
     NAVER,
-    KAKAO;
+    KAKAO,
+    NONE;
 
     public static SocialLoginType getSocialType(String type){
+        if(type == null){
+            return SocialLoginType.NONE;
+        }
+
         return Arrays.stream(SocialLoginType.values())
                 .filter(socialLoginType->socialLoginType.name().equals(type.toUpperCase()))
                 .findFirst()
