@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
         if(saved == null){
             UserEntity userEntityBySocialLogin = UserEntity.createOAuth2User()
                     .userId(email)
-                    .userPwd("tempPwd")
+                    .userPwd(encoder.encode("tempPwd"))
                     .userEmail(email)
                     .userName(name)
                     .providerId(providerId)
