@@ -3,10 +3,8 @@ package com.example.library.user.service.Impl;
 import com.example.library.exception.AppException;
 import com.example.library.exception.ErrorCode;
 import com.example.library.send.sendMail;
-import com.example.library.user.dto.CustomOAuth2User;
-import com.example.library.user.dto.UserLoginResDto;
+import com.example.library.user.dto.*;
 import com.example.library.user.entity.UserEntity;
-import com.example.library.user.dto.UserDto;
 import com.example.library.user.enums.SocialLoginType;
 import com.example.library.user.enums.UserGrade;
 import com.example.library.user.repository.UserRepository;
@@ -31,54 +29,57 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
 
-    public String join(String userId, String userPwd, String userName, String tel, String email, String gender, Integer userFlg) {
-        userRepository.findByUserId(userId).ifPresent(user -> {
-            throw new AppException(ErrorCode.USERID_DUPLICATED, userId + " 는 이미 존재합니다.");
+    public void join(UserJoinReqDto userJoinReqDto) {
+        userRepository.findByUserId(userJoinReqDto.getUserId()).ifPresent(user -> {
+            throw new AppException(ErrorCode.USERID_DUPLICATED, userJoinReqDto.getUserId() + " 는 이미 존재합니다.");
         });
-        UserEntity userEntity =
-                UserEntity.builder()
-                        .userId(userId)
-                        .userPwd(encoder.encode(userPwd))
-                        .userName(userName)
-                        .tel(tel)
-                        .userEmail(email)
-                        .gender(gender)
-                        .useFlg(userFlg)
-                        .userGrade(UserGrade.OFFICIALMEMBER)
-                        .build();
-        sendMail mail = sendMail.send("join", email);
-        userRepository.save(userEntity);
-        return "Success!!";
+
+        UserEntity user =UserEntity.createOfficialUser()
+                .userId(userJoinReqDto.getUserId())
+                .userPwd(encoder.encode(userJoinReqDto.getUserPwd()))
+                .userName(userJoinReqDto.getUserName())
+                .tel(userJoinReqDto.getTel())
+                .userEmail(userJoinReqDto.getEmail())
+                .gender(userJoinReqDto.getGender())
+                .useFlg(userJoinReqDto.getUseFlg())
+                .userGrade(UserGrade.OFFICIALMEMBER)
+                .build()
+        ;
+
+        sendMail mail = sendMail.send("join", userJoinReqDto.getEmail());
+
+        userRepository.save(user);
     }
 
-    public UserLoginResDto login(String userId, String userPwd) {
-        UserEntity selectedUser = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userId + "이 없습니다."));
+    public UserLoginResDto login(UserLoginReqDto userLoginReqDto) {
+            UserEntity selectedUser = userRepository.findByUserId(userLoginReqDto.getUserId())
+                    .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userLoginReqDto.getUserId() + "이 없습니다."));
 
-        if(!encoder.matches(userPwd, selectedUser.getUserPwd())) {
-            throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드를 잘못 입력 하였습니다.");
-        }
+            if(!encoder.matches(userLoginReqDto.getUserPwd(), selectedUser.getUserPwd())) {
+                throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드를 잘못 입력 하였습니다.");
+            }
 
-        String token = JwtUtil.createJwt(selectedUser.getUserId());
+            String token = JwtUtil.createJwt(selectedUser.getUserId());
 
-        return UserLoginResDto.from(selectedUser,token);
-    }
-
-    @Override
-    public UserDto getUserByUserNo(Long userNo) {
-        UserEntity userEntity = userRepository.findByUserNo(userNo).get();
-
-        UserDto userDto = new UserDto(userEntity.getUserId(), userEntity.getUserPwd(), userEntity.getUserName(), userEntity.getTel(), userEntity.getUserEmail(), userEntity.getGender(), userEntity.getUseFlg());
-        return userDto;
+            return UserLoginResDto.from(selectedUser,token);
     }
 
     @Override
-    public UserDto getUserByUserId(String userId) {
+    public UserSearchResDto getUserByUserNo(Long userNo) {
+        UserEntity userEntity = userRepository.findByUserNo(userNo)
+                .orElseThrow(()->new AppException(ErrorCode.USERID_NOT_FOUND,"존재하지 않는 유저번호입니다."));
+
+        UserSearchResDto userSearchResDto = UserSearchResDto.from(userEntity);
+        return userSearchResDto;
+    }
+
+    @Override
+    public UserSearchResDto getUserByUserId(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userId + "이 없습니다."));
 
-        UserDto userDto = new UserDto(userEntity.getUserId(), userEntity.getUserPwd(), userEntity.getUserName(), userEntity.getTel(), userEntity.getUserEmail(), userEntity.getGender(), userEntity.getUseFlg());
-        return userDto;
+        UserSearchResDto userSearchResDto = UserSearchResDto.from(userEntity);
+        return userSearchResDto;
     }
 
     @Override

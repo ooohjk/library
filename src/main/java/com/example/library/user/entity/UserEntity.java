@@ -15,7 +15,7 @@ import org.hibernate.annotations.DynamicInsert;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(builderMethodName ="createOfficialUser",builderClassName = "createOfficialUser")
 @Table(name = "user")
 @DynamicInsert
 public class UserEntity extends BaseEntity {
