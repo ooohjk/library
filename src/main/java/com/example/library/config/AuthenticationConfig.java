@@ -1,9 +1,7 @@
 package com.example.library.config;
 
-import com.example.library.user.enumPk.UserGrade;
 import com.example.library.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
