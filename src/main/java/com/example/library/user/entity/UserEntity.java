@@ -47,7 +47,7 @@ public class UserEntity extends BaseEntity {
     @Column(name = "provider_id")
     private String providerId;
 
-    @ColumnDefault("\"M\"")
+    @ColumnDefault("'M'")
     private String gender;
 
     @ColumnDefault("0")
