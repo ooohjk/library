@@ -5,6 +5,7 @@ import com.example.library.exception.ErrorCode;
 import com.example.library.user.entity.UserEntity;
 import com.example.library.user.dto.UserDto;
 import com.example.library.user.enumPk.SocialLoginType;
+import com.example.library.user.enumPk.UserGrade;
 import com.example.library.user.repository.UserRepository;
 import com.example.library.user.service.UserService;
 import com.example.library.utils.JwtUtil;
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
                         .userEmail(email)
                         .gender(gender)
                         .useFlg(userFlg)
+                        .userGrade(UserGrade.OFFICIALMEMBER)
                         .build();
         userRepository.save(userEntity);
         return "Success!!";
