@@ -1,7 +1,4 @@
-package com.example.library.user.enumPk;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+package com.example.library.user.enums;
 
 import java.util.Arrays;
 

@@ -2,6 +2,7 @@ package com.example.library.user.controller;
 
 import com.example.library.user.dto.UserDto;
 import com.example.library.user.dto.UserLoginDto;
+import com.example.library.user.dto.UserLoginResDto;
 import com.example.library.user.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.json.simple.JSONObject;
@@ -33,26 +34,9 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/login")
-    public Object login(@RequestBody UserLoginDto userLoginDto) {
-        String token = userService.login(userLoginDto.getUserId(), userLoginDto.getUserPwd());
-        UserDto userDto = getUserByUserId(userLoginDto.getUserId());
-        String result = "{\"userId\": \"" + userDto.getUserId() + "\", " +
-                "\"userPwd\": \"" + userDto.getUserPwd() + "\"," +
-                "\"userName\": \"" + userDto.getUserName() + "\"," +
-                "\"tel\": \"" + userDto.getTel() + "\"," +
-                "\"email\": \"" + userDto.getEmail() + "\"," +
-                "\"gender\": \"" + userDto.getGender() + "\"," +
-                "\"useFlg\": " + userDto.getUseFlg() + "," +
-                "\"token\": \"" + token + "\"" +
-                "}";
-        JSONParser parser = new JSONParser();
-        JSONObject obj;
-        try {
-            obj = (JSONObject)parser.parse(result);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        return obj;
+    public UserLoginResDto login(@RequestBody UserLoginDto userLoginDto) {
+        UserLoginResDto userLoginResDto = userService.login(userLoginDto.getUserId(), userLoginDto.getUserPwd());
+        return userLoginResDto;
     }
 
     @GetMapping("/get/userNo")

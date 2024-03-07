@@ -2,8 +2,8 @@ package com.example.library.user.entity;
 
 import com.example.library.user.entity.converter.SocialLoginTypeConverter;
 import com.example.library.user.entity.converter.UserGradeConverter;
-import com.example.library.user.enumPk.SocialLoginType;
-import com.example.library.user.enumPk.UserGrade;
+import com.example.library.user.enums.SocialLoginType;
+import com.example.library.user.enums.UserGrade;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;

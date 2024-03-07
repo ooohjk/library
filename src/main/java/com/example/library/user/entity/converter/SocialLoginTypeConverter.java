@@ -1,6 +1,6 @@
 package com.example.library.user.entity.converter;
 
-import com.example.library.user.enumPk.SocialLoginType;
+import com.example.library.user.enums.SocialLoginType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

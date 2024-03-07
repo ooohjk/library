@@ -1,4 +1,4 @@
-package com.example.library.user.enumPk;
+package com.example.library.user.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
