@@ -26,10 +26,6 @@ public class AuthenticationConfig {
     private final UserService userService;
     private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
-
-    @Value("${jwt.secret}")
-    private String secret;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -66,7 +62,7 @@ public class AuthenticationConfig {
                         .successHandler(customAuthenticationSuccessHandler) //소셜 로그인 성공 후처리 핸들러 커스터마이징
 //                        .defaultSuccessUrl("/api/user/login/oauth") //소셜 로그인 성공 후 보여질 화묜 url 커스터마이징
                 )
-                .addFilterBefore(new JwtFilter(userService, secret), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(userService), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }
