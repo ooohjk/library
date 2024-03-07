@@ -23,7 +23,7 @@ public class UserEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNo;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false,unique = true)
     @Min(value = 4)
     @Max(value = 10)
     private String userId;
@@ -40,7 +40,7 @@ public class UserEntity extends BaseEntity {
 
     private String tel;
 
-    @Column(name = "email")
+    @Column(name = "email",nullable = false)
     private String userEmail;
 
     @Convert(converter = SocialLoginTypeConverter.class)
@@ -49,7 +49,6 @@ public class UserEntity extends BaseEntity {
     @Column(name = "provider_id")
     private String providerId;
 
-    @ColumnDefault("M")
     private String gender;
 
     private Integer useFlg;
