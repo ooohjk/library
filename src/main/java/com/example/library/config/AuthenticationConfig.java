@@ -1,5 +1,6 @@
 package com.example.library.config;
 
+import com.example.library.user.enumPk.UserGrade;
 import com.example.library.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -22,6 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class AuthenticationConfig {
 
     private final UserService userService;
+    private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
 
     @Value("${jwt.secret}")
     private String secret;
@@ -35,7 +39,7 @@ public class AuthenticationConfig {
                 .authorizeHttpRequests(auth -> {
                     try {
                         auth.requestMatchers("/user/login", "/user/join", "/user/get", "/user/get/**", "/swagger-ui/**", "/v3/api-docs/**", "/book/search/**").permitAll()
-                            .requestMatchers(HttpMethod.GET).permitAll()
+                                .requestMatchers(HttpMethod.GET).permitAll()
                             .requestMatchers(HttpMethod.POST).authenticated();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -56,7 +60,8 @@ public class AuthenticationConfig {
                         .authorizationEndpoint(authorizationEndpointConfig -> authorizationEndpointConfig.baseUri("/api/user/oauth2/authorize")) //인증을 위한 url이며 default url은 /oauth2/authorization/{registration}, 옆과 같이 수정 시 /api/user/oauth2/authorize/{registration}으로 접근가능
                         .redirectionEndpoint(redirectionEndpointConfig -> redirectionEndpointConfig.baseUri("/api/user/login/oauth2/code/*"))
                         .userInfoEndpoint(userInfoEndpoint->userInfoEndpoint.userService((OAuth2UserService<OAuth2UserRequest, OAuth2User>) userService)) //인가된 정보를 활용 하여 당사에서 활용할 수 있도록 커스터마이징
-                        .defaultSuccessUrl("/api/user/login/oauth") //소셜 로그인 성공 후 보여질 화묜 url 커스터마이징
+                        .successHandler(customAuthenticationSuccessHandler) //소셜 로그인 성공 후처리 핸들러 커스터마이징
+//                        .defaultSuccessUrl("/api/user/login/oauth") //소셜 로그인 성공 후 보여질 화묜 url 커스터마이징
                 )
                 .addFilterBefore(new JwtFilter(userService, secret), UsernamePasswordAuthenticationFilter.class)
                 .build();
