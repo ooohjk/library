@@ -27,9 +27,6 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
 
     private final UserRepository userRepository;
 
-    @Value("${jwt.secret}")
-    private String secret;
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("OAuth2 로그인 성공");
@@ -39,7 +36,7 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
         String email = (String)oAuth2User.getAttributes().get("email");
 
         //2. "유저이메일"을 통한 accessToken생성
-        String accessToken = JwtUtil.createJwt(email, secret,1000 * 60 * 60L );
+        String accessToken = JwtUtil.createJwt(email);
 
         ObjectMapper om = new ObjectMapper();
 
