@@ -1,8 +1,7 @@
-package com.example.library.config;
+package com.example.library.global.security.login.filter;
 
 import com.example.library.user.service.UserService;
 import com.example.library.utils.JwtUtil;
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

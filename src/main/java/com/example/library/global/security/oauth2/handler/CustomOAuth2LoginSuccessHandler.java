@@ -1,9 +1,8 @@
-package com.example.library.user.handler;
+package com.example.library.global.security.oauth2.handler;
 
-import com.example.library.user.dto.CustomOAuth2User;
+import com.example.library.global.security.oauth2.principal.CustomOAuth2User;
 import com.example.library.user.dto.UserLoginResDto;
 import com.example.library.user.entity.UserEntity;
-import com.example.library.user.repository.UserRepository;
 import com.example.library.utils.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -21,8 +20,6 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
-
-    private final UserRepository userRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

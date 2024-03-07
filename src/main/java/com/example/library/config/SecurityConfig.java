@@ -1,5 +1,6 @@
 package com.example.library.config;
 
+import com.example.library.global.security.login.filter.JwtFilter;
 import com.example.library.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class AuthenticationConfig {
+public class SecurityConfig {
 
     private final UserService userService;
     private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;

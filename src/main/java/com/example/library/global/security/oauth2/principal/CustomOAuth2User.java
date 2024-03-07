@@ -1,4 +1,4 @@
-package com.example.library.user.dto;
+package com.example.library.global.security.oauth2.principal;
 
 import com.example.library.user.entity.UserEntity;
 import lombok.Getter;

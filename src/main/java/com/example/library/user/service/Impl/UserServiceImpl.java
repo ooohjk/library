@@ -2,6 +2,7 @@ package com.example.library.user.service.Impl;
 
 import com.example.library.exception.AppException;
 import com.example.library.exception.ErrorCode;
+import com.example.library.global.security.oauth2.principal.CustomOAuth2User;
 import com.example.library.send.sendMail;
 import com.example.library.user.dto.*;
 import com.example.library.user.entity.UserEntity;
