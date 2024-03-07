@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
     @Override
     public UserDto getUserByUserId(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userId + "이 없습니다."));;
+                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userId + "이 없습니다."));
 
         UserDto userDto = new UserDto(userEntity.getUserId(), userEntity.getUserPwd(), userEntity.getUserName(), userEntity.getTel(), userEntity.getUserEmail(), userEntity.getGender(), userEntity.getUseFlg());
         return userDto;
@@ -105,7 +105,14 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
 
         //3. 존재하지 않는 경우 자동 회원가입 진행
         if(saved.isEmpty()){
-            UserEntity userEntityBySocialLogin = UserEntity.createOAuth2User().userEmail(email).userName(name).providerId(providerId).provider(socialLoginType).build();
+            UserEntity userEntityBySocialLogin = UserEntity.createOAuth2User()
+                    .userId(email)
+                    .userPwd("tempPwd")
+                    .userEmail(email)
+                    .userName(name)
+                    .providerId(providerId)
+                    .provider(socialLoginType)
+                    .build();
             userRepository.save(userEntityBySocialLogin);
         }
 
