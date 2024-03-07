@@ -5,10 +5,10 @@ import com.example.library.user.entity.converter.UserGradeConverter;
 import com.example.library.user.enumPk.SocialLoginType;
 import com.example.library.user.enumPk.UserGrade;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
@@ -17,6 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor
 @Builder
 @Table(name = "user")
+@DynamicInsert
 public class UserEntity extends BaseEntity {
 
     @Id
@@ -24,23 +25,20 @@ public class UserEntity extends BaseEntity {
     private Long userNo;
 
     @Column(nullable = false, unique = true)
-    @Min(value = 4)
-    @Max(value = 10)
+    @Size(min = 4, max = 10)
     private String userId;
 
     @Column(nullable = false)
-    @Min(value = 6)
-    @Max(value = 15)
+    @Size(min = 6, max = 15)
     private String userPwd;
 
     @Column(nullable = false)
-    @Min(value = 2)
-    @Max(value = 5)
+    @Size(min = 2, max = 5)
     private String userName;
 
     private String tel;
 
-    @Column(name = "email")
+    @Column(nullable = false, name = "email")
     private String userEmail;
 
     @Convert(converter = SocialLoginTypeConverter.class)
@@ -49,9 +47,11 @@ public class UserEntity extends BaseEntity {
     @Column(name = "provider_id")
     private String providerId;
 
-    @ColumnDefault("M")
+    @ColumnDefault("\"M\"")
     private String gender;
 
+    @ColumnDefault("0")
+    @Column(nullable = false)
     private Integer useFlg;
 
     @Column(name = "user_grade")

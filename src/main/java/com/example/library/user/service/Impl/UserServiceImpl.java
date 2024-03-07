@@ -9,8 +9,9 @@ import com.example.library.user.enumPk.UserGrade;
 import com.example.library.user.repository.UserRepository;
 import com.example.library.user.service.UserService;
 import com.example.library.utils.JwtUtil;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Slf4j
+//@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2UserRequest, OAuth2User> {
