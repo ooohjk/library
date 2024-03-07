@@ -10,21 +10,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserServiceImplTest {
 
     @Autowired
-    UserRepository  userRepository;
+    UserRepository userRepository;
 
     @DisplayName("UserEntity 내 provider필드, usergrade필드 attributeConverter 적용 테스트")
     @Test
     public void AttributeConverter_디비TO엔티티_AND_엔티티TO디비_테스트(){
         //given
-        UserEntity user =UserEntity.createOAuth2User()
+        UserEntity user = UserEntity.createOAuth2User()
+                .userId("tempId")
+                .userPwd("tempPwd")
                 .userName("손성현")
                 .provider(SocialLoginType.GOOGLE)
                 .userEmail("thstjd11@gmail.com")
@@ -37,8 +37,8 @@ class UserServiceImplTest {
 
         //then
         assertAll(
-                ()->Assertions.assertThat(saved.getProvider()).isEqualTo(SocialLoginType.GOOGLE),
-                ()->Assertions.assertThat(saved.getUserGrade()).isEqualTo(UserGrade.OFFICIALMEMBER)
+                () -> Assertions.assertThat(saved.getProvider()).isEqualTo(SocialLoginType.GOOGLE),
+                () -> Assertions.assertThat(saved.getUserGrade()).isEqualTo(UserGrade.OFFICIALMEMBER)
         );
     }
 }

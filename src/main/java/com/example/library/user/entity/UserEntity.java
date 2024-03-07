@@ -5,7 +5,10 @@ import com.example.library.user.entity.converter.UserGradeConverter;
 import com.example.library.user.enumPk.SocialLoginType;
 import com.example.library.user.enumPk.UserGrade;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -20,13 +23,19 @@ public class UserEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNo;
 
-//    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
+    @Min(value = 4)
+    @Max(value = 10)
     private String userId;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
+    @Min(value = 6)
+    @Max(value = 15)
     private String userPwd;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
+    @Min(value = 2)
+    @Max(value = 5)
     private String userName;
 
     private String tel;
@@ -40,7 +49,7 @@ public class UserEntity extends BaseEntity {
     @Column(name = "provider_id")
     private String providerId;
 
-//    @Column(nullable = false)
+    @ColumnDefault("M")
     private String gender;
 
     private Integer useFlg;
@@ -50,7 +59,9 @@ public class UserEntity extends BaseEntity {
     private UserGrade userGrade;
 
     @Builder(builderMethodName = "createOAuth2User", builderClassName = "createOAuth2User")
-    public UserEntity(String userEmail, String userName, String providerId, SocialLoginType provider) {
+    public UserEntity(String userId, String userPwd, String userEmail, String userName, String providerId, SocialLoginType provider) {
+        this.userId = userId;
+        this.userPwd = userPwd;
         this.userEmail = userEmail;
         this.userName = userName;
         this.providerId = providerId;
