@@ -2,6 +2,7 @@ package com.example.library.user.service.Impl;
 
 import com.example.library.exception.AppException;
 import com.example.library.exception.ErrorCode;
+import com.example.library.send.sendMail;
 import com.example.library.user.entity.UserEntity;
 import com.example.library.user.dto.UserDto;
 import com.example.library.user.enumPk.SocialLoginType;
@@ -10,7 +11,6 @@ import com.example.library.user.repository.UserRepository;
 import com.example.library.user.service.UserService;
 import com.example.library.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
                         .useFlg(userFlg)
                         .userGrade(UserGrade.OFFICIALMEMBER)
                         .build();
+        sendMail mail = sendMail.send("join", email);
         userRepository.save(userEntity);
         return "Success!!";
     }

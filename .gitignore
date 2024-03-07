@@ -40,3 +40,4 @@ out/
 ### Personal Properties ###
 **/src/main/resources/properties/datasource.properties
 **/src/main/resources/properties/oauth2.properties
+**/src/main/resources/properties/mail.properties
