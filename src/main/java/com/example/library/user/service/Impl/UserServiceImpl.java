@@ -9,9 +9,7 @@ import com.example.library.user.enumPk.UserGrade;
 import com.example.library.user.repository.UserRepository;
 import com.example.library.user.service.UserService;
 import com.example.library.utils.JwtUtil;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -23,16 +21,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-//@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
-    @Value("${jwt.secret}")
-    private String secret;
-    private final Long expiredMs = 1000 * 60 * 60L;
 
     public String join(String userId, String userPwd, String userName, String tel, String email, String gender, Integer userFlg) {
         userRepository.findByUserId(userId).ifPresent(user -> {
@@ -61,7 +55,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
             throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드를 잘못 입력 하였습니다.");
         }
 
-        String token = JwtUtil.createJwt(selectedUser.getUserId(), secret, expiredMs);
+        String token = JwtUtil.createJwt(selectedUser.getUserId());
 
         return token;
     }
@@ -77,7 +71,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
     @Override
     public UserDto getUserByUserId(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userId + "이 없습니다."));;
+                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userId + "이 없습니다."));
 
         UserDto userDto = new UserDto(userEntity.getUserId(), userEntity.getUserPwd(), userEntity.getUserName(), userEntity.getTel(), userEntity.getUserEmail(), userEntity.getGender(), userEntity.getUseFlg());
         return userDto;
@@ -106,7 +100,14 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
 
         //3. 존재하지 않는 경우 자동 회원가입 진행
         if(saved.isEmpty()){
-            UserEntity userEntityBySocialLogin = UserEntity.createOAuth2User().userEmail(email).userName(name).providerId(providerId).provider(socialLoginType).build();
+            UserEntity userEntityBySocialLogin = UserEntity.createOAuth2User()
+                    .userId(email)
+                    .userPwd("tempPwd")
+                    .userEmail(email)
+                    .userName(name)
+                    .providerId(providerId)
+                    .provider(socialLoginType)
+                    .build();
             userRepository.save(userEntityBySocialLogin);
         }
 

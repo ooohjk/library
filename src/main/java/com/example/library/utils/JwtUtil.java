@@ -3,11 +3,17 @@ package com.example.library.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
 public class JwtUtil {
-    public static String getUserId(String token, String secret) {
+    @Value("${jwt.secret}")
+    private static String secret;
+    @Value("${jwt.expiredMs}")
+    private static Long expiredMs;
+
+    public static String getUserId(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
@@ -15,7 +21,7 @@ public class JwtUtil {
                 .get("userId", String.class);
     }
 
-    public static boolean isExpired(String token, String secret) {
+    public static boolean isExpired(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
@@ -24,7 +30,7 @@ public class JwtUtil {
                 .before(new Date());
     }
 
-    public static String createJwt(String userId, String secret, Long expiredMs) {
+    public static String createJwt(String userId) {
         Claims claims = Jwts.claims();
         claims.put("userId", userId);
 

@@ -24,7 +24,6 @@ import java.util.List;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final UserService userService;
-    private final String secret;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -43,14 +42,14 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = authorization.split(" ")[1];
 
         //token expired ?
-        if(JwtUtil.isExpired(token, secret)) {
+        if(JwtUtil.isExpired(token)) {
             log.error("Token is expired..");
             filterChain.doFilter(request, response);
             return;
         }
 
         //UserId Token 에서 꺼내기
-        String userId = JwtUtil.getUserId(token, secret);
+        String userId = JwtUtil.getUserId(token);
         log.info("userId : {}", userId);
 
         //권한 부여
