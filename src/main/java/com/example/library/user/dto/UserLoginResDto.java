@@ -47,7 +47,7 @@ public class UserLoginResDto {
         this.accessToken = accessToken;
     }
 
-    public static UserLoginResDto from(UserEntity user, String accessToken){
+    public static UserLoginResDto from(UserEntity user, String accessToken) {
         return new UserLoginResDto(user,accessToken);
     }
 }

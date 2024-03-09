@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
             throw new AppException(ErrorCode.USERID_DUPLICATED, userJoinReqDto.getUserId() + " 는 이미 존재합니다.");
         });
 
-        UserEntity user =UserEntity.createOfficialUser()
+        UserEntity user = UserEntity.createOfficialUser()
                 .userId(userJoinReqDto.getUserId())
                 .userPwd(encoder.encode(userJoinReqDto.getUserPwd()))
                 .userName(userJoinReqDto.getUserName())
@@ -47,22 +47,23 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
                 .build()
         ;
 
-        sendMail mail = sendMail.send("join", userJoinReqDto.getEmail());
+        sendMail mail = sendMail.send(this.getClass().getName(), userJoinReqDto.getEmail());
 
         userRepository.save(user);
     }
 
     public UserLoginResDto login(UserLoginReqDto userLoginReqDto) {
-            UserEntity selectedUser = userRepository.findByUserId(userLoginReqDto.getUserId())
-                    .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userLoginReqDto.getUserId() + "이 없습니다."));
+        UserEntity selectedUser = userRepository.findByUserId(userLoginReqDto.getUserId())
+                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userLoginReqDto.getUserId() + "이 없습니다."));
 
-            if(!encoder.matches(userLoginReqDto.getUserPwd(), selectedUser.getUserPwd())) {
-                throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드를 잘못 입력 하였습니다.");
-            }
+        if(!encoder.matches(userLoginReqDto.getUserPwd(), selectedUser.getUserPwd())) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드를 잘못 입력 하였습니다.");
+        }
 
-            String token = JwtUtil.createJwt(selectedUser.getUserId());
+        String token = JwtUtil.createJwt(selectedUser.getUserId());
+        sendMail mail = sendMail.send(this.getClass().getName(), selectedUser.getUserEmail());
 
-            return UserLoginResDto.from(selectedUser,token);
+        return UserLoginResDto.from(selectedUser,token);
     }
 
     @Override
