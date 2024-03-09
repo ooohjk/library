@@ -59,7 +59,7 @@ public class UserEntity extends BaseEntity {
     private UserGrade userGrade;
 
     @Builder(builderMethodName = "createOAuth2User", builderClassName = "createOAuth2User")
-    public UserEntity(String userId, String userPwd, String userEmail, String userName, String providerId, SocialLoginType provider) {
+    public UserEntity (String userId, String userPwd, String userEmail, String userName, String providerId, SocialLoginType provider, Integer useFlg) {
         this.userId = userId;
         this.userPwd = userPwd;
         this.userEmail = userEmail;

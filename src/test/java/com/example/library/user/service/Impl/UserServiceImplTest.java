@@ -26,6 +26,7 @@ class UserServiceImplTest {
                 .userId("tempId")
                 .userPwd("tempPwd")
                 .userName("손성현")
+                .useFlg(0)
                 .provider(SocialLoginType.GOOGLE)
                 .userEmail("thstjd11@gmail.com")
                 .providerId("111111111111100001")
