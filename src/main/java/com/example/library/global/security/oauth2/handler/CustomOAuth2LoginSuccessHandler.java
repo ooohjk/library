@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets;
 public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess (HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("OAuth2 로그인 성공");
 
         //1. 유저 이메일 추출
