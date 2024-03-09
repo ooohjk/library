@@ -29,7 +29,7 @@ public class UserJoinReqDto {
 
     private Integer useFlg;
 
-    public UserEntity toUserEntity(){
+    public UserEntity toUserEntity() {
         return UserEntity.createOfficialUser()
                 .userId(userId)
                 .userPwd(userPwd)

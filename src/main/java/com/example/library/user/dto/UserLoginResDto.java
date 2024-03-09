@@ -33,7 +33,7 @@ public class UserLoginResDto {
 
     private String accessToken;
 
-    public UserLoginResDto(UserEntity user, String accessToken){
+    public UserLoginResDto(UserEntity user, String accessToken) {
         this.userNo = user.getUserNo();
         this.userId = user.getUserId();
         this.userName = user.getUserName();

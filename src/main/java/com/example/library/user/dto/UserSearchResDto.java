@@ -27,7 +27,7 @@ public class UserSearchResDto {
 
     private UserGrade userGrade;
 
-    private UserSearchResDto(UserEntity user){
+    private UserSearchResDto(UserEntity user) {
         this.userNo = user.getUserNo();
         this.userId = user.getUserId();
         this.userName = user.getUserName();

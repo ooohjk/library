@@ -70,8 +70,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
         UserEntity userEntity = userRepository.findByUserNo(userNo)
                 .orElseThrow(()->new AppException(ErrorCode.USERID_NOT_FOUND,"존재하지 않는 유저번호입니다."));
 
-        UserSearchResDto userSearchResDto = UserSearchResDto.from(userEntity);
-        return userSearchResDto;
+        return UserSearchResDto.from(userEntity);
     }
 
     @Override
@@ -79,8 +78,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
         UserEntity userEntity = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userId + "이 없습니다."));
 
-        UserSearchResDto userSearchResDto = UserSearchResDto.from(userEntity);
-        return userSearchResDto;
+        return UserSearchResDto.from(userEntity);
     }
 
     @Override
