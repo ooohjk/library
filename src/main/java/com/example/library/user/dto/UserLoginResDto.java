@@ -13,8 +13,6 @@ public class UserLoginResDto {
 
     private String userId;
 
-    private String userPwd;
-
     private String userName;
 
     private String tel;
