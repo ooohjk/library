@@ -5,6 +5,7 @@ import com.example.library.exception.ErrorCode;
 import com.example.library.global.security.oauth2.principal.CustomOAuth2User;
 import com.example.library.send.sendMail;
 import com.example.library.user.dto.*;
+import com.example.library.global.security.oauth2.userInfo.CustomOAuthAttributes;
 import com.example.library.user.entity.UserEntity;
 import com.example.library.user.enums.SocialLoginType;
 import com.example.library.user.enums.UserGrade;
@@ -12,6 +13,7 @@ import com.example.library.user.repository.UserRepository;
 import com.example.library.user.service.UserService;
 import com.example.library.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -22,7 +24,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -94,33 +98,33 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
         OAuth2UserService<OAuth2UserRequest,OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-        //1. 당사에 가입된 유저 확인을 데이터 추출
-        SocialLoginType socialLoginType = SocialLoginType.getSocialType(userRequest.getClientRegistration().getRegistrationId());
-        String email = getDataFromOAuth2User(oAuth2User,"email");
-        String name = getDataFromOAuth2User(oAuth2User,"name");
-
+        //1. 당사에 가입된 유저 확인을 위한 데이터 추출
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-        String providerId = oAuth2User.getAttribute(userNameAttributeName);
+        SocialLoginType socialLoginType = SocialLoginType.getSocialType(userRequest.getClientRegistration().getRegistrationId());
+        Map<String,Object> attributes = oAuth2User.getAttributes();
+
+        /* 플랫폼 종류에 따라 응답받은 유저 정보를 통해 CustomOAuthAttributes 객체 생성 */
+        CustomOAuthAttributes customOAuthAttributes = CustomOAuthAttributes.of(socialLoginType,userNameAttributeName,attributes);
+
 
         //2. 당사 존재 여부 파악 (조회 조건: 소셜플랫폼 종류, email, socialId )
-        UserEntity saved = userRepository.findByProviderAndProviderIdAndUserEmail(socialLoginType,providerId,email);
+        UserEntity saved = userRepository.findByProviderAndProviderIdAndUserEmail
+                (
+                    socialLoginType,
+                    customOAuthAttributes.getOAuthUserInfo().getProviderId(),
+                    customOAuthAttributes.getOAuthUserInfo().getEmail()
+                );
 
-        //3. 존재하지 않는 경우 자동 회원가입 진행
+        //3. 존재하지 않는 경우 자동 회원가입/ 존재하는 경우 패스
         if(saved == null){
-            UserEntity userEntityBySocialLogin = UserEntity.createOAuth2User()
-                    .userId(email)
-                    .userPwd(encoder.encode("tempPwd"))
-                    .userEmail(email)
-                    .userName(name)
-                    .providerId(providerId)
-                    .provider(socialLoginType)
-                    .build();
-            UserEntity savedEntityBySocialLogin = userRepository.save(userEntityBySocialLogin);
+            UserEntity userEntityBySocialLogin = CustomOAuthAttributes.toEntity(socialLoginType, customOAuthAttributes.getOAuthUserInfo());
+            UserEntity savedUserEntityBySocialLogin = userRepository.save(userEntityBySocialLogin);
+
             return new CustomOAuth2User(
-                        Collections.singleton(new SimpleGrantedAuthority(null)),
+                        Collections.singleton(new SimpleGrantedAuthority("ROLE")),
                         oAuth2User.getAttributes(),
                         userNameAttributeName,
-                        savedEntityBySocialLogin
+                    savedUserEntityBySocialLogin
                     );
         }
         else{
@@ -131,10 +135,5 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
                         saved
                     );
         }
-
-    }
-
-    private String getDataFromOAuth2User(OAuth2User oAuth2User,String type){
-        return (String)oAuth2User.getAttributes().get(type);
     }
 }
