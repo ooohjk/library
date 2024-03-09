@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Component
@@ -33,6 +35,7 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
         String accessToken = JwtUtil.createJwt(user.getUserEmail());
 
         ObjectMapper om = new ObjectMapper();
+        response.addHeader("Content-Type", "application/json; charset=UTF-8");
 
         om.writeValue(response.getOutputStream(), UserLoginResDto.from(user,accessToken));
     }
