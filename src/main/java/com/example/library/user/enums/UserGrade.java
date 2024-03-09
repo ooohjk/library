@@ -21,4 +21,8 @@ public enum UserGrade {
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원등급 코드입니다."));
     }
+
+    public String getUserGradeInString(){
+        return this.getGrade().toString();
+    }
 }
