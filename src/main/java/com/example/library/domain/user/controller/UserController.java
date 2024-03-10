@@ -32,14 +32,14 @@ public class UserController {
         return ApiResponseDto.createRes(ErrorCode.SUC,userLoginResDto);
     }
 
-    @GetMapping("/get/userNo")
-    public ApiResponseDto getUserByUserNo(Long userNo) {
+    @GetMapping("/get/userNo/{userNo}")
+    public ApiResponseDto getUserByUserNo(@PathVariable("userNo") Long userNo) {
         UserSearchResDto userSearchResDto = userService.getUserByUserNo(userNo);
         return ApiResponseDto.createRes(ErrorCode.SUC,userSearchResDto);
     }
 
-    @GetMapping("/get/userId")
-    public UserSearchResDto getUserByUserId(String userId) {
+    @GetMapping("/get/userId/{userId}")
+    public UserSearchResDto getUserByUserId(@PathVariable("userId") String userId) {
         return userService.getUserByUserId(userId);
     }
 }
