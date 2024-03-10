@@ -69,11 +69,11 @@ class ErrorCodeControllerTest {
                 .andDo(restDocs.document(
                         responseFields(
                                 fieldWithPath(ErrorCode.SUC.getCode()).description(ErrorCode.SUC.getMsg()),
-                                fieldWithPath(ErrorCode.USERID_NOT_FOUND.getCode()).description(ErrorCode.USERID_NOT_FOUND.getMsg()),
                                 fieldWithPath(ErrorCode.USERID_DUPLICATED.getCode()).description(ErrorCode.USERID_DUPLICATED.getMsg()),
-                                fieldWithPath(ErrorCode.PASSWORD_DIFFERNET.getCode()).description(ErrorCode.PASSWORD_DIFFERNET.getMsg())
+                                fieldWithPath(ErrorCode.USERID_NOT_FOUND.getCode()).description(ErrorCode.USERID_NOT_FOUND.getMsg()),
+                                fieldWithPath(ErrorCode.PASSWORD_DIFFERNET.getCode()).description(ErrorCode.PASSWORD_DIFFERNET.getMsg()),
                                 fieldWithPath(ErrorCode.BOOKNAME_NOT_FOUND.getCode()).description(ErrorCode.BOOKNAME_NOT_FOUND.getMsg()),
-                                fieldWithPath(ErrorCode.BOOKAUTHOR_NOT_FOUND.getCode()).description(ErrorCode.BOOKAUTHOR_NOT_FOUND.getMsg()),
+                                fieldWithPath(ErrorCode.BOOKAUTHOR_NOT_FOUND.getCode()).description(ErrorCode.BOOKAUTHOR_NOT_FOUND.getMsg())
                         )
                         )
 
