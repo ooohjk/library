@@ -1,7 +1,9 @@
 package com.example.library.user.service.Impl;
 
-import com.example.library.exception.AppException;
 import com.example.library.exception.ErrorCode;
+import com.example.library.exception.exceptions.PasswordDifferentException;
+import com.example.library.exception.exceptions.UserIdDuplicateException;
+import com.example.library.exception.exceptions.UserNotFoundException;
 import com.example.library.global.security.oauth2.principal.CustomOAuth2User;
 import com.example.library.send.sendMail;
 import com.example.library.user.dto.*;
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
 
     public void join(UserJoinReqDto userJoinReqDto) {
         userRepository.findByUserId(userJoinReqDto.getUserId()).ifPresent(user -> {
-            throw new AppException(ErrorCode.USERID_DUPLICATED, userJoinReqDto.getUserId() + " 는 이미 존재합니다.");
+            throw new UserIdDuplicateException(ErrorCode.USERID_DUPLICATED);
         });
 
         UserEntity user = UserEntity.createOfficialUser()
@@ -51,21 +53,21 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
                 .build()
         ;
 
-        sendMail mail = sendMail.send(this.getClass().getName(), userJoinReqDto.getEmail());
+//        sendMail mail = sendMail.send(this.getClass().getName(), userJoinReqDto.getEmail());
 
         userRepository.save(user);
     }
 
     public UserLoginResDto login(UserLoginReqDto userLoginReqDto) {
         UserEntity selectedUser = userRepository.findByUserId(userLoginReqDto.getUserId())
-                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userLoginReqDto.getUserId() + "이 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
 
         if(!encoder.matches(userLoginReqDto.getUserPwd(), selectedUser.getUserPwd())) {
-            throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드를 잘못 입력 하였습니다.");
+            throw new PasswordDifferentException(ErrorCode.PASSWORD_DIFFERNET);
         }
 
         String token = JwtUtil.createJwt(selectedUser.getUserId());
-        sendMail mail = sendMail.send(this.getClass().getName(), selectedUser.getUserEmail());
+//        sendMail mail = sendMail.send(this.getClass().getName(), selectedUser.getUserEmail());
 
         return UserLoginResDto.from(selectedUser,token);
     }
@@ -73,7 +75,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
     @Override
     public UserSearchResDto getUserByUserNo(Long userNo) {
         UserEntity userEntity = userRepository.findByUserNo(userNo)
-                .orElseThrow(()->new AppException(ErrorCode.USERID_NOT_FOUND,"존재하지 않는 유저번호입니다."));
+                .orElseThrow(()->new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
 
         return UserSearchResDto.from(userEntity);
     }
@@ -81,7 +83,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
     @Override
     public UserSearchResDto getUserByUserId(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userId + "이 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
 
         return UserSearchResDto.from(userEntity);
     }

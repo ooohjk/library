@@ -6,7 +6,6 @@ import com.example.library.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -37,7 +36,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     try {
                         auth
-                            .requestMatchers( "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                            .requestMatchers( "/swagger-ui/**", "/v3/api-docs/**","/user/**").permitAll()
                             .requestMatchers("/user/test").hasAuthority(UserGrade.ADMIN.getUserGradeInString())
                             ;
                     } catch (Exception e) {
