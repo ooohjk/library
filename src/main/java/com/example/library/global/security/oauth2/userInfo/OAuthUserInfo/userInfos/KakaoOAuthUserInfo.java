@@ -1,6 +1,6 @@
-package com.example.library.global.security.oauth2.userInfo.OAuthUserInfo;
+package com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.userInfos;
 
-import com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.interfaces.OAuthUserInfo;
+import com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.OAuthUserInfo;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.interfaces;
+package com.example.library.global.security.oauth2.userInfo.OAuthUserInfo;
 
 import lombok.AllArgsConstructor;
 

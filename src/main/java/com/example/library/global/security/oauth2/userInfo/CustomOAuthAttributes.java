@@ -1,9 +1,9 @@
 package com.example.library.global.security.oauth2.userInfo;
 
-import com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.GoogleOAuthUserInfo;
-import com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.KakaoOAuthUserInfo;
-import com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.NaverOAuthUserInfo;
-import com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.interfaces.OAuthUserInfo;
+import com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.userInfos.GoogleOAuthUserInfo;
+import com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.userInfos.KakaoOAuthUserInfo;
+import com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.userInfos.NaverOAuthUserInfo;
+import com.example.library.global.security.oauth2.userInfo.OAuthUserInfo.OAuthUserInfo;
 import com.example.library.domain.user.entity.UserEntity;
 import com.example.library.domain.user.enums.SocialLoginType;
 import lombok.AllArgsConstructor;
