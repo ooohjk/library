@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.3'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"  // (1)
 }
 
 group = 'com.example'
@@ -12,6 +13,8 @@ java {
 }
 
 configurations {
+	asciidoctorExt // (2)
+
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
@@ -45,9 +48,42 @@ dependencies {
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-	//2023.03.04 oauth로그인 위하여 추가 by son
+	//2023.03.04 for OAuth2 추가 by son
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.security:spring-security-oauth2-client'
+
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor' // (3) asciidoctor: adoc파일을 html등과 같은 파일로 파싱해주는 역할을 해주는 coverter
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // (4)
+}
+
+ext {
+	snippetsDir = file('build/generated-snippets') // (5) snippetsDir 설정하기
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+	outputs.dir snippetsDir // (6)
+}
+
+asciidoctor {
+	configurations 'asciidoctorExt' // (7)
+	baseDirFollowsSourceFile() // (8)
+	inputs.dir snippetsDir // (9)
+	dependsOn test // (10)
+}
+
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')  // (11)
+}
+
+task copyDocument(type: Copy) { // (12)
+	dependsOn asciidoctor
+	from file("build/docs/asciidoc")
+	into file("src/main/resources/static/docs")
+}
+
+build {
+	dependsOn copyDocument
 }
 
 tasks.named('test') {
