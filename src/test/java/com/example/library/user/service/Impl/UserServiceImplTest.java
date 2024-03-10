@@ -1,9 +1,9 @@
 package com.example.library.user.service.Impl;
 
-import com.example.library.user.entity.UserEntity;
-import com.example.library.user.enums.SocialLoginType;
-import com.example.library.user.enums.UserGrade;
-import com.example.library.user.repository.UserRepository;
+import com.example.library.domain.user.entity.UserEntity;
+import com.example.library.domain.user.enums.SocialLoginType;
+import com.example.library.domain.user.enums.UserGrade;
+import com.example.library.domain.user.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

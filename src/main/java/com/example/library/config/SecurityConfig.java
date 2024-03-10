@@ -1,8 +1,8 @@
 package com.example.library.config;
 
 import com.example.library.global.security.login.filter.JwtFilter;
-import com.example.library.user.enums.UserGrade;
-import com.example.library.user.service.UserService;
+import com.example.library.domain.user.enums.UserGrade;
+import com.example.library.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

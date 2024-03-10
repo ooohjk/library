@@ -1,8 +1,8 @@
 package com.example.library.global.security.login.filter;
 
-import com.example.library.user.dto.UserSearchResDto;
-import com.example.library.user.service.UserService;
-import com.example.library.utils.JwtUtil;
+import com.example.library.domain.user.dto.UserSearchResDto;
+import com.example.library.domain.user.service.UserService;
+import com.example.library.global.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
