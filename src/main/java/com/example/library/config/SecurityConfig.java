@@ -36,8 +36,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     try {
                         auth
-                            .requestMatchers( "/swagger-ui/**", "/v3/api-docs/**","/user/**").permitAll()
-                            .requestMatchers("/user/test").hasAuthority(UserGrade.ADMIN.getUserGradeInString())
+                            .requestMatchers( "/swagger-ui/**", "/v3/api-docs/**","/docs/**","/user/**","/error-code/**").permitAll()
+//                            .requestMatchers("/user/test").hasAuthority(UserGrade.ADMIN.getUserGradeInString())
                             ;
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -10,7 +10,9 @@ import com.example.library.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @Slf4j
 @RestController
@@ -41,5 +43,12 @@ public class UserController {
     @GetMapping("/get/userId/{userId}")
     public UserSearchResDto getUserByUserId(@PathVariable("userId") String userId) {
         return userService.getUserByUserId(userId);
+    }
+
+    @GetMapping("/test/{name}")
+    public ResponseEntity<TestResDto> hi(@PathVariable("name") String name){
+        return ResponseEntity.ok()
+                .body(new TestResDto(name))
+                ;
     }
 }
