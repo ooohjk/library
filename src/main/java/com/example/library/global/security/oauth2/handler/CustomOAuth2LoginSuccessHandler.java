@@ -1,9 +1,9 @@
 package com.example.library.global.security.oauth2.handler;
 
 import com.example.library.global.security.oauth2.principal.CustomOAuth2User;
-import com.example.library.user.dto.UserLoginResDto;
-import com.example.library.user.entity.UserEntity;
-import com.example.library.utils.JwtUtil;
+import com.example.library.domain.user.dto.UserLoginResDto;
+import com.example.library.domain.user.entity.UserEntity;
+import com.example.library.global.utils.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +15,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Component

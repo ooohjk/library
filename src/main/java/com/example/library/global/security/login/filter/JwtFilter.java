@@ -1,7 +1,8 @@
 package com.example.library.global.security.login.filter;
 
-import com.example.library.user.service.UserService;
-import com.example.library.utils.JwtUtil;
+import com.example.library.domain.user.dto.UserSearchResDto;
+import com.example.library.domain.user.service.UserService;
+import com.example.library.global.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -27,6 +29,8 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        UsernamePasswordAuthenticationToken authenticationToken= null;
+
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         log.info("authorization : {}", authorization);
 
@@ -34,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if(authorization == null || !authorization.startsWith("Bearer ")) {
             log.error("authorization is null || authorization is not Bearer");
             filterChain.doFilter(request, response);
-            return;
+            return; //이 뒤에 필터를 안타면 내가 원하는 url에 갈 수 잇나?
         }
 
         //token 꺼내기
@@ -51,8 +55,12 @@ public class JwtFilter extends OncePerRequestFilter {
         String userId = JwtUtil.getUserId(token);
         log.info("userId : {}", userId);
 
-        //권한 부여
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userId, null, List.of(new SimpleGrantedAuthority("USER")));
+        //서명 정상적으로 됨
+        if(StringUtils.hasText(userId)){
+             UserSearchResDto userSearchResDto = userService.getUserByUserId(userId);
+            //Authentication객체 생성
+             authenticationToken = new UsernamePasswordAuthenticationToken(userId, null, List.of(new SimpleGrantedAuthority(String.valueOf(userSearchResDto.getUserGrade().getGrade()))));
+        }
 
         // Detail 넣어주기
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

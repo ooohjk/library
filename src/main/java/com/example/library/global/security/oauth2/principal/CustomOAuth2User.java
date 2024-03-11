@@ -1,6 +1,6 @@
 package com.example.library.global.security.oauth2.principal;
 
-import com.example.library.user.entity.UserEntity;
+import com.example.library.domain.user.entity.UserEntity;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;

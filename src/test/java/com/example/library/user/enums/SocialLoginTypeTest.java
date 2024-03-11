@@ -1,5 +1,6 @@
 package com.example.library.user.enums;
 
+import com.example.library.domain.user.enums.SocialLoginType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

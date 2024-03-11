@@ -1,14 +1,16 @@
 package com.example.library.user.service.Impl;
 
-import com.example.library.user.entity.UserEntity;
-import com.example.library.user.enums.SocialLoginType;
-import com.example.library.user.enums.UserGrade;
-import com.example.library.user.repository.UserRepository;
+import com.example.library.domain.user.entity.UserEntity;
+import com.example.library.domain.user.enums.SocialLoginType;
+import com.example.library.domain.user.enums.UserGrade;
+import com.example.library.domain.user.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,12 +20,14 @@ class UserServiceImplTest {
     @Autowired
     UserRepository userRepository;
 
-    @DisplayName("UserEntity 내 provider필드, usergrade필드 attributeConverter 적용 테스트")
     @Test
+    @DisplayName("UserEntity 내 provider필드, usergrade필드 attributeConverter 적용 테스트")
     public void AttributeConverter_디비TO엔티티_AND_엔티티TO디비_테스트(){
+        Date date = new Date();
+        String g = String.valueOf(date.getTime());
         //given
         UserEntity user = UserEntity.createOAuth2User()
-                .userId("tempId")
+                .userId(g)
                 .userPwd("tempPwd")
                 .userName("손성현")
                 .useFlg(0)

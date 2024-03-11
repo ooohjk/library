@@ -1,6 +1,6 @@
 package com.example.library.utils;
 
-import org.junit.jupiter.api.Assertions;
+import com.example.library.global.utils.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.StringUtils;
 

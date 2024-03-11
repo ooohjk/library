@@ -1,11 +1,11 @@
 package com.example.library.config;
 
 import com.example.library.global.security.login.filter.JwtFilter;
-import com.example.library.user.service.UserService;
+import com.example.library.domain.user.enums.UserGrade;
+import com.example.library.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -24,6 +25,7 @@ public class SecurityConfig {
 
     private final UserService userService;
     private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final AccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -34,11 +36,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     try {
                         auth
-                            .requestMatchers("/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/user/get/**", "/book/search/**").hasRole("hasRole('OFFICIALMEMBER') or hasRole('ADMIN')")
-                            .requestMatchers(HttpMethod.POST, "/user/**", "/book/**").hasRole("ADMIN");
-//                            .requestMatchers(HttpMethod.GET).permitAll()
-//                            .requestMatchers(HttpMethod.POST).authenticated();
+                            .requestMatchers( "/swagger-ui/**", "/v3/api-docs/**","/docs/**","/user/**","/error-code/**").permitAll()
+//                            .requestMatchers("/user/test").hasAuthority(UserGrade.ADMIN.getUserGradeInString())
+                            ;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -60,6 +60,9 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfoEndpoint->userInfoEndpoint.userService((OAuth2UserService<OAuth2UserRequest, OAuth2User>) userService)) //인가된 정보를 활용 하여 당사에서 활용할 수 있도록 커스터마이징
                         .successHandler(customAuthenticationSuccessHandler) //소셜 로그인 성공 후처리 핸들러 커스터마이징
 //                        .defaultSuccessUrl("/api/user/login/oauth") //소셜 로그인 성공 후 보여질 화묜 url 커스터마이징
+                )
+                .exceptionHandling(httpSecurityExceptionHandlingConfigurer
+                        -> httpSecurityExceptionHandlingConfigurer.accessDeniedHandler(customAccessDeniedHandler) //인가 거절 관련 후처리 핸들러 커스터마이징
                 )
                 .addFilterBefore(new JwtFilter(userService), UsernamePasswordAuthenticationFilter.class)
                 .build();
