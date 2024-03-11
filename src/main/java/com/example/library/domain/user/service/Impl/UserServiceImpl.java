@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
 
     public String getUserNameByEmail(String userEmail) {
         UserEntity userEntity = userRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new AppException(ErrorCode.MAIL_NOT_FOUND, userEmail + "을 찾을 수 없습니다."));
+                .orElseThrow(() -> new AppException(ErrorCode.MAIL_NOT_FOUND));
 
         return UserSearchResDto.from(userEntity).getUserName();
     }

@@ -73,7 +73,8 @@ class ErrorCodeControllerTest {
                                 fieldWithPath(ErrorCode.USERID_NOT_FOUND.getCode()).description(ErrorCode.USERID_NOT_FOUND.getMsg()),
                                 fieldWithPath(ErrorCode.PASSWORD_DIFFERNET.getCode()).description(ErrorCode.PASSWORD_DIFFERNET.getMsg()),
                                 fieldWithPath(ErrorCode.BOOKNAME_NOT_FOUND.getCode()).description(ErrorCode.BOOKNAME_NOT_FOUND.getMsg()),
-                                fieldWithPath(ErrorCode.BOOKAUTHOR_NOT_FOUND.getCode()).description(ErrorCode.BOOKAUTHOR_NOT_FOUND.getMsg())
+                                fieldWithPath(ErrorCode.BOOKAUTHOR_NOT_FOUND.getCode()).description(ErrorCode.BOOKAUTHOR_NOT_FOUND.getMsg()),
+                                fieldWithPath(ErrorCode.MAIL_NOT_FOUND.getCode()).description(ErrorCode.MAIL_NOT_FOUND.getMsg())
                         )
                         )
 

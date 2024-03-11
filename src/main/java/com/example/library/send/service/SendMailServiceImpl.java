@@ -15,7 +15,7 @@ public class SendMailServiceImpl {
 
     public String content(String type) {
         SendMailEntity sendMailEntity = sendMailRepository.findByMailType(type)
-                .orElseThrow(() -> new AppException(ErrorCode.MAIL_NOT_FOUND, type + "의 도메인이 없습니다."));
+                .orElseThrow(() -> new AppException(ErrorCode.MAIL_NOT_FOUND));
 
         SendMailResDto sendMailResDto = new SendMailResDto(sendMailEntity.getMailContent());
         return sendMailResDto.getMailContent();

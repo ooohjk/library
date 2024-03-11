@@ -19,7 +19,7 @@ public enum ErrorCode {
     BOOKAUTHOR_NOT_FOUND("5",""),
 
     //Mail
-    MAIL_NOT_FOUND("", "")
+    MAIL_NOT_FOUND("6", "존재하지 않는 메일주소입니다. 메일주소를 확인해주세요.")
 
     ;
 
