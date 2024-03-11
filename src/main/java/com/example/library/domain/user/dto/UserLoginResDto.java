@@ -3,11 +3,15 @@ package com.example.library.domain.user.dto;
 import com.example.library.domain.user.enums.SocialLoginType;
 import com.example.library.domain.user.enums.UserGrade;
 import com.example.library.domain.user.entity.UserEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 @ToString
 @Getter
+@AllArgsConstructor
+@Builder
 public class UserLoginResDto {
     private Long userNo;
 

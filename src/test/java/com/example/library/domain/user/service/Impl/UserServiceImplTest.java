@@ -1,4 +1,4 @@
-package com.example.library.user.service.Impl;
+package com.example.library.domain.user.service.Impl;
 
 import com.example.library.domain.user.entity.UserEntity;
 import com.example.library.domain.user.enums.SocialLoginType;

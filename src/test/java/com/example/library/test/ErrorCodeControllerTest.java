@@ -4,47 +4,28 @@ import com.example.library.RestDocsSupport;
 import com.example.library.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.PayloadSubsectionExtractor;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Arrays;
 import java.util.Map;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.snippet.Attributes.attributes;
 import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@SpringBootTest
+@WebMvcTest(ErrorCodeController.class)
 class ErrorCodeControllerTest extends RestDocsSupport {
 
-//    @Test
-//    @DisplayName("에러코드 문서화")
-//    void errorCodes() throws Exception {
-//        mockMvc.perform(get("/error-code"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.errorCodes.0").value("OK"))
-//                .andDo(restDocs.document(
-//                        responseFields(
-//                                fieldWithPath("errorCodes."+ErrorCode.SUC.getCode()).description(ErrorCode.SUC.getMsg()),
-//                                fieldWithPath("errorCodes."+ErrorCode.USERID_DUPLICATED.getCode()).description(ErrorCode.USERID_DUPLICATED.getMsg()),
-//                                fieldWithPath("errorCodes."+ErrorCode.USERID_NOT_FOUND.getCode()).description(ErrorCode.USERID_NOT_FOUND.getMsg()),
-//                                fieldWithPath("errorCodes."+ErrorCode.PASSWORD_DIFFERNET.getCode()).description(ErrorCode.PASSWORD_DIFFERNET.getMsg()),
-//                                fieldWithPath("errorCodes."+ErrorCode.BOOKNAME_NOT_FOUND.getCode()).description(ErrorCode.BOOKNAME_NOT_FOUND.getMsg()),
-//                                fieldWithPath("errorCodes."+ErrorCode.BOOKAUTHOR_NOT_FOUND.getCode()).description(ErrorCode.BOOKAUTHOR_NOT_FOUND.getMsg()),
-//                                fieldWithPath("errorCodes."+ErrorCode.MAIL_NOT_FOUND.getCode()).description(ErrorCode.MAIL_NOT_FOUND.getMsg())
-//                        )
-//                        )
-//
-//                )
-//                ;
-//    }
-
     @Test
+    @WithMockUser(username = "테스트_최고관리자", authorities = {"0"}) //권한 부여
     @DisplayName("Dto 응답에 대한 에러코드 문서화v2")
     void errorCodesV2() throws Exception {
         mockMvc.perform(get("/error-code/dto"))
@@ -62,6 +43,7 @@ class ErrorCodeControllerTest extends RestDocsSupport {
     }
 
     @Test
+    @WithMockUser(username = "테스트_최고관리자", authorities = {"0"}) //권한 부여
     @DisplayName("MAP 응답에 대한 에러코드 문서화")
     void errorCodesV3() throws Exception {
         mockMvc.perform(get("/error-code/map"))
