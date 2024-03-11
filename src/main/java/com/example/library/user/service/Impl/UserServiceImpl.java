@@ -50,10 +50,9 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
                 .userGrade(UserGrade.OFFICIALMEMBER)
                 .build()
         ;
-
-        sendMail mail = sendMail.send(this.getClass().getName(), userJoinReqDto.getEmail());
-
         userRepository.save(user);
+
+        sendMail mail = sendMail.send("join", userJoinReqDto.getEmail());
     }
 
     public UserLoginResDto login(UserLoginReqDto userLoginReqDto) {
@@ -65,7 +64,7 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
         }
 
         String token = JwtUtil.createJwt(selectedUser.getUserId());
-        sendMail mail = sendMail.send(this.getClass().getName(), selectedUser.getUserEmail());
+        sendMail mail = sendMail.send("login", selectedUser.getUserEmail());
 
         return UserLoginResDto.from(selectedUser,token);
     }
@@ -84,6 +83,13 @@ public class UserServiceImpl implements UserService , OAuth2UserService<OAuth2Us
                 .orElseThrow(() -> new AppException(ErrorCode.USERID_NOT_FOUND, userId + "이 없습니다."));
 
         return UserSearchResDto.from(userEntity);
+    }
+
+    public String getUserNameByEmail(String userEmail) {
+        UserEntity userEntity = userRepository.findByUserEmail(userEmail)
+                .orElseThrow(() -> new AppException(ErrorCode.MAIL_NOT_FOUND, userEmail + "을 찾을 수 없습니다."));
+
+        return UserSearchResDto.from(userEntity).getUserName();
     }
 
     @Override

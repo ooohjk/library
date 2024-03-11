@@ -1,5 +1,7 @@
 package com.example.library.send;
 
+import com.example.library.send.service.SendMailServiceImpl;
+import com.example.library.user.service.Impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -10,10 +12,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class sendMail {
     private static JavaMailSender emailSender;
+    private static SendMailServiceImpl sendMailService;
+    private static UserServiceImpl userService;
 
     @Autowired
-    public sendMail(JavaMailSender emailSender) {
-        this.emailSender = emailSender;
+    public sendMail(JavaMailSender emailSender, SendMailServiceImpl sendMailService, UserServiceImpl userService) {
+        sendMail.emailSender = emailSender;
+        sendMail.sendMailService = sendMailService;
+        sendMail.userService = userService;
     }
 
     public static sendMail send(String event, String email) {
@@ -21,7 +27,7 @@ public class sendMail {
         message.setFrom(email);
         message.setTo(email);
         message.setSubject(event.toUpperCase());
-        message.setText(event.toUpperCase() + " " + email);
+        message.setText(userService.getUserNameByEmail(email) + sendMailService.content(event));
         emailSender.send(message);
         return null;
     }
