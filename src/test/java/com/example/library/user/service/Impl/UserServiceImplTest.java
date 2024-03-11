@@ -45,5 +45,8 @@ class UserServiceImplTest {
                 () -> Assertions.assertThat(saved.getProvider()).isEqualTo(SocialLoginType.GOOGLE),
                 () -> Assertions.assertThat(saved.getUserGrade()).isEqualTo(UserGrade.OFFICIALMEMBER)
         );
+
+        userRepository.delete(saved);
+
     }
 }

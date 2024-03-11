@@ -8,13 +8,10 @@ Spring-React 공부
 :toclevels: 2 // toc 생성 헤더레벨
 :sectlinks:
 
-== Member API
-=== Member 로그인
-operation::user-controller-test/login[snippets="http-request,request-fields,http-response,response-fields"]
-
-=== Member 회원가입
+== User API
+=== Login API
 operation::user-controller-test/login[snippets="http-request,request-fields,http-response,response-fields"]
 
 == ErrCode
 === ErrCode
-operation::error-code-controller-test/error-codes[snippets="response-fields"]
+operation::error-code-controller-test/error-codes-v2[snippets="code-response-fields-beneath-errorCodes"]
