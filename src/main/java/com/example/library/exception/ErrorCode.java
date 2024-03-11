@@ -19,7 +19,7 @@ public enum ErrorCode {
     BOOKAUTHOR_NOT_FOUND("5",""),
 
     //Mail
-    MAIL_NOT_FOUND("", "")
+    MAIL_NOT_FOUND("6", "")
 
     ;
 

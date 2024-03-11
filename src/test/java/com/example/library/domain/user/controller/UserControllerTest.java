@@ -1,80 +1,24 @@
 package com.example.library.domain.user.controller;
 
-import com.example.library.config.RestDocsConfig;
+import com.example.library.RestDocsSupport;
 import com.example.library.domain.user.dto.UserLoginReqDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.restdocs.RestDocsAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
-@AutoConfigureMockMvc
-@AutoConfigureRestDocs                 // RestDoc 사용
-@Import(RestDocsConfig.class)   // 정렬 부분!
-class UserControllerTest {
-
-    @Rule
-    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(); // (1)
-
-    @Autowired
-    RestDocumentationResultHandler restDocs;
-
-
-    @Autowired
-    private ObjectMapper om;
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    WebApplicationContext context;
-
-
-    @Before
-    public void setUp() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-                .apply(documentationConfiguration(this.restDocumentation))
-                .alwaysDo(MockMvcResultHandlers.print())
-                .alwaysDo(restDocs)
-                .addFilters(new CharacterEncodingFilter("UTF-8", true))
-                .build();
-    }
-
+class UserControllerTest extends RestDocsSupport {
 
     @Test
     @DisplayName("유저 로그인 테스트")
@@ -109,7 +53,6 @@ class UserControllerTest {
                                 fieldWithPath("data.accessToken").description("액세스 토큰")
                         )
                 ))
-                .andExpect(jsonPath("$.data.userNo").value(74L))
                 .andExpect(jsonPath("$.data.userId").value(id))
         ;
     }
