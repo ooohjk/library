@@ -45,17 +45,34 @@ class ErrorCodeControllerTest extends RestDocsSupport {
 //    }
 
     @Test
-    @DisplayName("에러코드 문서화v2")
+    @DisplayName("Dto 응답에 대한 에러코드 문서화v2")
     void errorCodesV2() throws Exception {
         mockMvc.perform(get("/error-code/dto"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errorCodes.0").value("OK"))
                 .andDo(restDocs.document(
-                        codeResponseFields("code-response", beneathPath("errorCodes"),
-                                attributes(key("title").value("에러 코드 모음")),
-                                enumConvertFieldDescriptor(ErrorCode.values())
+                                codeResponseFieldsDto("code-response",
+                                    beneathPath("errorCodes"),
+                                    attributes(key("title").value("에러 코드 모음")),
+                                    enumConvertFieldDescriptor(ErrorCode.values())
                         )
                 )
+                )
+        ;
+    }
+
+    @Test
+    @DisplayName("MAP 응답에 대한 에러코드 문서화")
+    void errorCodesV3() throws Exception {
+        mockMvc.perform(get("/error-code/map"))
+                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.0").value("OK"))
+                .andDo(restDocs.document(
+                                codeResponseFieldsMap("code-response",
+                                    attributes(key("title").value("에러 코드 모음")),
+                                    enumConvertFieldDescriptor(ErrorCode.values())
+                                )
+                        )
                 )
         ;
     }
@@ -66,10 +83,21 @@ class ErrorCodeControllerTest extends RestDocsSupport {
                 .toArray(FieldDescriptor[]::new);
     }
 
-    public static CodeResponseFieldsSnippet codeResponseFields(String type,
-                                                               PayloadSubsectionExtractor<?> subsectionExtractor,
-                                                               Map<String, Object> attributes, FieldDescriptor... descriptors) {
-        return new CodeResponseFieldsSnippet(type, subsectionExtractor, Arrays.asList(descriptors), attributes
-                , true);
+    public static CodeResponseFieldsSnippet codeResponseFieldsDto(String type,PayloadSubsectionExtractor<?> subsectionExtractor,Map<String, Object> attributes, FieldDescriptor... descriptors) {
+        return new CodeResponseFieldsSnippet(
+                type,
+                subsectionExtractor,
+                Arrays.asList(descriptors),
+                attributes,
+                true);
+    }
+
+    public static CodeResponseFieldsSnippet codeResponseFieldsMap(String type,Map<String, Object> attributes, FieldDescriptor... descriptors) {
+        return new CodeResponseFieldsSnippet(
+                type,
+                Arrays.asList(descriptors),
+                attributes,
+                true
+        );
     }
 }

@@ -15,10 +15,18 @@ import java.util.Map;
 //그래서 Custom한 Snippet을 정의해야 한다.
 public class CodeResponseFieldsSnippet extends AbstractFieldsSnippet {
 
-    public CodeResponseFieldsSnippet(String type, PayloadSubsectionExtractor<?> subsectionExtractor,
+    public CodeResponseFieldsSnippet(String type,
+                                     PayloadSubsectionExtractor<?> subsectionExtractor,
                                      List<FieldDescriptor> descriptors, Map<String, Object> attributes,
                                      boolean ignoreUndocumentedFields) {
         super(type, descriptors, attributes, ignoreUndocumentedFields, subsectionExtractor);
+    }
+
+    public CodeResponseFieldsSnippet(String type,
+//                                     PayloadSubsectionExtractor<?> subsectionExtractor,
+                                     List<FieldDescriptor> descriptors, Map<String, Object> attributes,
+                                     boolean ignoreUndocumentedFields) {
+        super(type, descriptors, attributes, ignoreUndocumentedFields);
     }
 
     @Override
