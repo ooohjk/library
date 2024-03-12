@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql:8.0.21
+    user: root
+    restart: always
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: qwer1234
+      TZ: Asia/Seoul
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mysql_net
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+  library:
+    image: library:latest
+    container_name: library
+    stdin_open: true
+    tty: true
+    ports:
+      - "8000:8000"
+    networks:
+      - library_net
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  mysql_net:
+    driver: bridge
+    external: true
+  library_net:
+    driver: bridge
+    external: true
