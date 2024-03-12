@@ -12,6 +12,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
+@Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor

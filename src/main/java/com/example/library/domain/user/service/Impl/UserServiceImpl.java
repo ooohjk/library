@@ -1,9 +1,6 @@
 package com.example.library.domain.user.service.Impl;
 
-import com.example.library.domain.user.dto.UserJoinReqDto;
-import com.example.library.domain.user.dto.UserLoginReqDto;
-import com.example.library.domain.user.dto.UserLoginResDto;
-import com.example.library.domain.user.dto.UserSearchResDto;
+import com.example.library.domain.user.dto.*;
 import com.example.library.domain.user.entity.UserEntity;
 import com.example.library.domain.user.enums.SocialLoginType;
 import com.example.library.domain.user.enums.UserGrade;
@@ -28,6 +25,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Map;
@@ -96,6 +94,29 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
                 .orElseThrow(() -> new AppException(ErrorCode.MAIL_NOT_FOUND));
 
         return UserSearchResDto.from(userEntity).getUserName();
+    }
+
+    @Override
+    public UserSearchResDto update(String userId, UserUpdateDto userUpdateDto) {
+        UserEntity user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
+
+        user.setUserPwd(encoder.encode(userUpdateDto.getUserPwd()));
+        user.setUserName(userUpdateDto.getUserName());
+        user.setTel(userUpdateDto.getTel());
+        user.setUserEmail(userUpdateDto.getEmail());
+        user.setGender(userUpdateDto.getGender());
+        user.setUseFlg(userUpdateDto.getUseFlg());
+
+        userRepository.save(user);
+
+        return UserSearchResDto.from(user);
+    }
+
+    @Override
+    @Transactional
+    public void delete(String userId) {
+        userRepository.deleteByUserId(userId);
     }
 
     @Override

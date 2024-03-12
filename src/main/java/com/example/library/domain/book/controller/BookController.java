@@ -2,12 +2,11 @@ package com.example.library.domain.book.controller;
 
 import com.example.library.domain.book.dto.BookDto;
 import com.example.library.domain.book.dto.BookSimple;
+import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.service.BookService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/book")
@@ -20,23 +19,38 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/search/detail/bookAuthor")
-    public BookDto detailSearchByBookAuthor(String bookAuthor) {
+    @GetMapping("/search/detail/bookAuthor/{bookAuthor}")
+    public BookDto detailSearchByBookAuthor(@PathVariable("bookAuthor") String bookAuthor) {
         return bookService.detailSearchByBookAuthor(bookAuthor);
     }
 
-    @GetMapping("/search/detail/bookName")
-    public BookDto detailSearchByBookName(String bookName) {
+    @GetMapping("/search/detail/bookName/{bookName}")
+    public BookDto detailSearchByBookName(@PathVariable("bookName") String bookName) {
         return bookService.detailSearchByBookName(bookName);
     }
 
-    @GetMapping("/search/simple/bookAuthor")
-    public BookSimple simpleSearchByBookAuthor(String bookAuthor) {
+    @GetMapping("/search/simple/bookAuthor/{bookAuthor}")
+    public BookSimple simpleSearchByBookAuthor(@PathVariable("bookAuthor") String bookAuthor) {
         return bookService.simpleSearchByBookAuthor(bookAuthor);
     }
 
-    @GetMapping("/search/simple/bookName")
-    public BookSimple simpleSearchByBookName(String bookName) {
+    @GetMapping("/search/simple/bookName/{bookName}")
+    public BookSimple simpleSearchByBookName(@PathVariable("bookName") String bookName) {
         return bookService.simpleSearchByBookName(bookName);
+    }
+
+    @PostMapping("/add")
+    public BookDto add(@RequestBody BookDto bookDto) {
+        return bookService.add(bookDto);
+    }
+
+    @PutMapping("/update/book/{bookCode}")
+    public BookDto update(@RequestBody BookDto bookDto, @PathVariable("bookCode") Long bookCode) {
+        return bookService.update(bookDto, bookCode);
+    }
+
+    @DeleteMapping("/delete/book/{bookCode}")
+    public void delete(@PathVariable("bookCode") Long bookCode) {
+        bookService.delete(bookCode);
     }
 }

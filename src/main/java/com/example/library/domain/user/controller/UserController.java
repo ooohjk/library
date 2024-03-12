@@ -1,11 +1,8 @@
 package com.example.library.domain.user.controller;
 
-import com.example.library.domain.user.dto.UserJoinReqDto;
+import com.example.library.domain.user.dto.*;
 import com.example.library.exception.ErrorCode;
 import com.example.library.global.response.ApiResponseDto;
-import com.example.library.domain.user.dto.UserLoginReqDto;
-import com.example.library.domain.user.dto.UserLoginResDto;
-import com.example.library.domain.user.dto.UserSearchResDto;
 import com.example.library.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -51,4 +48,15 @@ public class UserController {
                 .body(new TestResDto(name))
                 ;
     }
+
+    @PutMapping("/update/{userId}")
+    public UserSearchResDto update(@PathVariable("userId") String userId, @RequestBody UserUpdateDto userUpdateDto) {
+        return userService.update(userId, userUpdateDto);
+    }
+
+    @DeleteMapping("/delete/{userId}")
+    public void delete(@PathVariable("userId") String userId) {
+        userService.delete(userId);
+    }
+
 }

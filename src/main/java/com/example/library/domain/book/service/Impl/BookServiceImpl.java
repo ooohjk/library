@@ -5,10 +5,12 @@ import com.example.library.domain.book.dto.BookSimple;
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.repository.BookRepository;
 import com.example.library.domain.book.service.BookService;
-import com.example.library.exception.AppException;
 import com.example.library.exception.ErrorCode;
+import com.example.library.exception.exceptions.BookNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -21,71 +23,80 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto detailSearchByBookAuthor(String bookAuthor) {
-        BookEntity bookEntity = bookRepository.searchByBookAuthor(bookAuthor)
-                .orElseThrow(() -> new AppException(ErrorCode.BOOKAUTHOR_NOT_FOUND, bookAuthor + " 저자의 책이 없습니다."));
+        BookEntity bookEntity = bookRepository.findByBookAuthor(bookAuthor)
+                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKAUTHOR_NOT_FOUND));
 
-        BookDto bookDto = new BookDto(
-                bookEntity.getBookName(),
-                bookEntity.getBookAuthor(),
-                bookEntity.getBookContent(),
-                bookEntity.getBookState(),
-                bookEntity.getBookPublisher(),
-                bookEntity.getIsbn(),
-                bookEntity.getPubDate(),
-                bookEntity.getRegDate(),
-                bookEntity.getBookLocation(),
-                bookEntity.getBookImage()
-        );
-        return bookDto;
+        return BookDto.detail(bookEntity);
     }
 
     @Override
     public BookDto detailSearchByBookName(String bookName) {
-        BookEntity bookEntity = bookRepository.searchByBookName(bookName)
-                .orElseThrow(() -> new AppException(ErrorCode.BOOKNAME_NOT_FOUND, bookName + " 이라는 책은 없습니다."));
+        BookEntity bookEntity = bookRepository.findByBookName(bookName)
+                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKNAME_NOT_FOUND));
 
-        BookDto bookDto = new BookDto(
-                bookEntity.getBookName(),
-                bookEntity.getBookAuthor(),
-                bookEntity.getBookContent(),
-                bookEntity.getBookState(),
-                bookEntity.getBookPublisher(),
-                bookEntity.getIsbn(),
-                bookEntity.getPubDate(),
-                bookEntity.getRegDate(),
-                bookEntity.getBookLocation(),
-                bookEntity.getBookImage()
-        );
-        return bookDto;
+        return BookDto.detail(bookEntity);
     }
 
     @Override
     public BookSimple simpleSearchByBookAuthor(String bookAuthor) {
-        BookEntity bookEntity = bookRepository.searchByBookAuthor(bookAuthor)
-                .orElseThrow(() -> new AppException(ErrorCode.BOOKAUTHOR_NOT_FOUND, bookAuthor + " 저자의 책이 없습니다."));
+        BookEntity bookEntity = bookRepository.findByBookAuthor(bookAuthor)
+                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKAUTHOR_NOT_FOUND));
 
-        BookSimple bookSimple = new BookSimple(
-                bookEntity.getBookName(),
-                bookEntity.getBookAuthor(),
-                bookEntity.getBookState(),
-                bookEntity.getPubDate(),
-                bookEntity.getBookImage()
-        );
-        return bookSimple;
+        return BookSimple.simple(bookEntity);
     }
 
     @Override
     public BookSimple simpleSearchByBookName(String bookName) {
-        BookEntity bookEntity = bookRepository.searchByBookName(bookName)
-                .orElseThrow(() -> new AppException(ErrorCode.BOOKNAME_NOT_FOUND, bookName + " 이라는 책은 없습니다."));
+        BookEntity bookEntity = bookRepository.findByBookName(bookName)
+                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKNAME_NOT_FOUND));
 
-        BookSimple bookSimple = new BookSimple(
-                bookEntity.getBookName(),
-                bookEntity.getBookAuthor(),
-                bookEntity.getBookState(),
-                bookEntity.getPubDate(),
-                bookEntity.getBookImage()
-        );
-        return bookSimple;
+        return BookSimple.simple(bookEntity);
+    }
+
+    @Override
+    public BookDto add(BookDto bookDto) {
+        BookEntity book = BookEntity.builder()
+                .bookName(bookDto.getBookName())
+                .bookAuthor(bookDto.getBookAuthor())
+                .bookContent(bookDto.getBookContent())
+                .bookState(bookDto.getBookState())
+                .bookPublisher(bookDto.getBookPublisher())
+                .isbn(bookDto.getIsbn())
+                .pubDate(bookDto.getPubDate())
+                .regDate(bookDto.getRegDate())
+                .bookLocation(bookDto.getBookLocation())
+                .bookImage(bookDto.getBookImage())
+                .build();
+
+        bookRepository.save(book);
+
+        return BookDto.detail(book);
+    }
+
+    @Override
+    public BookDto update(BookDto bookDto, Long bookCode) {
+        BookEntity bookEntity = bookRepository.findByBookCode(bookCode)
+                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKCODE_NOT_FOUND));
+
+        bookEntity.setBookName(bookDto.getBookName());
+        bookEntity.setBookAuthor(bookDto.getBookAuthor());
+        bookEntity.setBookContent(bookDto.getBookContent());
+        bookEntity.setBookState(bookDto.getBookState());
+        bookEntity.setBookPublisher(bookDto.getBookPublisher());
+        bookEntity.setIsbn(bookDto.getIsbn());
+        bookEntity.setPubDate(bookDto.getPubDate());
+        bookEntity.setRegDate(bookDto.getRegDate());
+        bookEntity.setBookLocation(bookDto.getBookLocation());
+        bookEntity.setBookImage(bookDto.getBookImage());
+
+        bookRepository.save(bookEntity);
+
+        return BookDto.detail(bookEntity);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long bookCode) {
+        bookRepository.deleteByBookCode(bookCode);
     }
 }

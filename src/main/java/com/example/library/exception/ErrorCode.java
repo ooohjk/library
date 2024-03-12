@@ -15,11 +15,12 @@ public enum ErrorCode {
     PASSWORD_DIFFERNET("3", "올바르지 않은 패스워드입니다. 패스워드를 확인해주세요."),
 
     //Book
-    BOOKNAME_NOT_FOUND("4",""),
-    BOOKAUTHOR_NOT_FOUND("5",""),
+    BOOKNAME_NOT_FOUND("4","존재하지 않는 책이름입니다. 다시 확인해주세요."),
+    BOOKAUTHOR_NOT_FOUND("5","존재하지 않는 저자입니다. 다시 확인해주세요."),
+    BOOKCODE_NOT_FOUND("6","존재하지 않는 책번호입니다. 다시 확인해주세요."),
 
     //Mail
-    MAIL_NOT_FOUND("6", "존재하지 않는 메일주소입니다. 메일주소를 확인해주세요.")
+    MAIL_NOT_FOUND("7", "존재하지 않는 메일주소입니다. 메일주소를 확인해주세요.")
 
     ;
 

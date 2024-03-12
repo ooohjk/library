@@ -1,5 +1,6 @@
 package com.example.library.domain.book.dto;
 
+import com.example.library.domain.book.entity.BookEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -40,4 +41,21 @@ public class BookDto {
     private String bookLocation;
 
     private String bookImage;
+
+    private BookDto(BookEntity book) {
+        this.bookName = book.getBookName();
+        this.bookAuthor = book.getBookAuthor();
+        this.bookContent = book.getBookContent();
+        this.bookState = book.getBookState();
+        this.bookPublisher = book.getBookPublisher();
+        this.isbn = book.getIsbn();
+        this.pubDate = book.getPubDate();
+        this.regDate = book.getRegDate();
+        this.bookLocation = book.getBookLocation();
+        this.bookImage = book.getBookImage();
+    }
+
+    public static BookDto detail(BookEntity book) {
+        return new BookDto(book);
+    }
 }
