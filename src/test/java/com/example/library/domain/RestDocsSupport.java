@@ -1,4 +1,4 @@
-package com.example.library;
+package com.example.library.domain;
 
 import com.example.library.config.RestDocsConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,6 +1,6 @@
 package com.example.library.domain.user.controller;
 
-import com.example.library.RestDocsSupport;
+import com.example.library.domain.RestDocsSupport;
 import com.example.library.domain.user.dto.UserJoinReqDto;
 import com.example.library.domain.user.dto.UserLoginReqDto;
 import com.example.library.domain.user.dto.UserLoginResDto;

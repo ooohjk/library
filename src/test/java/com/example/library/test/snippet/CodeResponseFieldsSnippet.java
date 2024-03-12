@@ -1,4 +1,4 @@
-package com.example.library.test;
+package com.example.library.test.snippet;
 
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.operation.Operation;
@@ -11,20 +11,21 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-//ErrorCode를 문서화할 format은 일반적인 RestDocs에서 지원하는 format이 다르다.
-//그래서 Custom한 Snippet을 정의해야 한다.
+//사용 X
 public class CodeResponseFieldsSnippet extends AbstractFieldsSnippet {
 
     public CodeResponseFieldsSnippet(String type,
                                      PayloadSubsectionExtractor<?> subsectionExtractor,
-                                     List<FieldDescriptor> descriptors, Map<String, Object> attributes,
+                                     List<FieldDescriptor> descriptors,
+                                     Map<String, Object> attributes,
                                      boolean ignoreUndocumentedFields) {
         super(type, descriptors, attributes, ignoreUndocumentedFields, subsectionExtractor);
     }
 
     public CodeResponseFieldsSnippet(String type,
 //                                     PayloadSubsectionExtractor<?> subsectionExtractor,
-                                     List<FieldDescriptor> descriptors, Map<String, Object> attributes,
+                                     List<FieldDescriptor> descriptors,
+                                     Map<String, Object> attributes,
                                      boolean ignoreUndocumentedFields) {
         super(type, descriptors, attributes, ignoreUndocumentedFields);
     }
