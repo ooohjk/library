@@ -1,4 +1,4 @@
-package com.example.library.user.enums;
+package com.example.library.domain.user.enums;
 
 import com.example.library.domain.user.enums.SocialLoginType;
 import org.assertj.core.api.Assertions;

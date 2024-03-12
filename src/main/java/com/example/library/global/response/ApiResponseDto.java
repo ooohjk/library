@@ -1,7 +1,9 @@
 package com.example.library.global.response;
 
 import com.example.library.exception.ErrorCode;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponseDto<T> {
     public String code;
     public String msg;

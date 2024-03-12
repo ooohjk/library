@@ -1,4 +1,4 @@
-package com.example.library.user.dto;
+package com.example.library.domain.user.dto;
 
 import com.example.library.domain.user.dto.UserLoginResDto;
 import com.example.library.domain.user.entity.UserEntity;

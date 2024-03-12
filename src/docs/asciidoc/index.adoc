@@ -1,20 +1,27 @@
 = API Docs
-Spring-React 공부
+Spring Boot Study
 :doctype: book
 :icons: font
-:source-highlighter: highlightjs // 문서에 표기되는 코드들의 하이라이팅을 highlightjs를 사용
-:toc: left // toc (Table Of Contents)를 문서의 좌측에 두기
-:toc-title: User API
-:toclevels: 2 // toc 생성 헤더레벨
+// 문서에 표기되는 코드들의 하이라이팅을 highlightjs를 사용
+:source-highlighter: highlightjs
+// toc (Table Of Contents)를 문서의 좌측에 두기
+:toc: left
+:toc-title: Library API
+// toc 생성 헤더레벨
+:toclevels: 2
 :sectlinks:
 
-== Member API
-=== Member 로그인
-operation::user-controller-test/login[snippets="http-request,request-fields,http-response,response-fields"]
 
-=== Member 회원가입
-operation::user-controller-test/login[snippets="http-request,request-fields,http-response,response-fields"]
 
-== ErrCode
-=== ErrCode
-operation::error-code-controller-test/error-codes[snippets="response-fields"]
+
+== 회원가입
+operation::usercontroller-test/회원가입_성공[snippets="http-request,request-fields,http-response,response-fields"]
+
+== 로그인
+operation::usercontroller-test/로그인_성공[snippets="http-request,request-fields,http-response,response-fields"]
+
+== 응답 공통 포맷
+operation::common-doc-controller-test/공통필드문서화[snippets="custom-response-fields"]
+
+== 응답 코드
+operation::common-doc-controller-test/error-codes-v2[snippets="code-response-fields-beneath-errorCodes"]

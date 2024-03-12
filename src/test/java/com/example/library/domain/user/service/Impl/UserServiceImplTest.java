@@ -1,4 +1,4 @@
-package com.example.library.user.service.Impl;
+package com.example.library.domain.user.service.Impl;
 
 import com.example.library.domain.user.entity.UserEntity;
 import com.example.library.domain.user.enums.SocialLoginType;
@@ -45,5 +45,8 @@ class UserServiceImplTest {
                 () -> Assertions.assertThat(saved.getProvider()).isEqualTo(SocialLoginType.GOOGLE),
                 () -> Assertions.assertThat(saved.getUserGrade()).isEqualTo(UserGrade.OFFICIALMEMBER)
         );
+
+        userRepository.delete(saved);
+
     }
 }
