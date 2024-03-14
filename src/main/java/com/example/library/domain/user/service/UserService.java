@@ -12,4 +12,9 @@ public interface UserService {
     UserSearchResDto update(String userId, UserUpdateDto userUpdateDto);
     void delete(String userId);
     List<UserSearchResDto> getAllUsers();
+
+    //찜 관련
+    UserSelectHeartResDto getMyHeartList(Long userNo);
+    void registerHeartBook(UserHeartBookReqDto userHeartBookReqDto);
+    void removeHeartBook(UserRemoveHeartBookReqDto userRemoveHeartBookReqDto);
 }

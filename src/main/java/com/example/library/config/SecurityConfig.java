@@ -38,6 +38,8 @@ public class SecurityConfig {
                     try {
                         auth
                             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/docs/**","/user/**","/error-code/**", "/book/**", "/review/**").permitAll()
+                            .requestMatchers("/user/login","/user/join").permitAll()
+                            .requestMatchers("/user/**").hasAuthority(UserGrade.OFFICIALMEMBER.getUserGradeInString())
                             .requestMatchers(HttpMethod.GET).permitAll()
                             .requestMatchers(HttpMethod.POST).permitAll()
                             .requestMatchers(HttpMethod.PUT).permitAll()
