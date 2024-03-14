@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     try {
                         auth
-                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/docs/**","/user/**","/error-code/**", "/book/**").permitAll()
+                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/docs/**","/user/**","/error-code/**", "/book/**", "/review/**").permitAll()
                             .requestMatchers(HttpMethod.GET).permitAll()
                             .requestMatchers(HttpMethod.POST).permitAll()
                             .requestMatchers(HttpMethod.PUT).permitAll()

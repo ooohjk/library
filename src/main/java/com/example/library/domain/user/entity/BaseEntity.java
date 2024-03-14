@@ -1,5 +1,6 @@
 package com.example.library.domain.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -17,5 +18,6 @@ import java.time.LocalDateTime;
 public class BaseEntity {
     @CreatedDate
     @Column(updatable = false)
+    @JsonFormat(timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 }

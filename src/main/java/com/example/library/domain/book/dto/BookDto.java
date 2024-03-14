@@ -1,10 +1,13 @@
 package com.example.library.domain.book.dto;
 
 import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.domain.review.dto.ReviewDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -42,6 +45,8 @@ public class BookDto {
 
     private String bookImage;
 
+    private List<ReviewDto> review;
+
     private BookDto(BookEntity book) {
         this.bookName = book.getBookName();
         this.bookAuthor = book.getBookAuthor();
@@ -53,6 +58,9 @@ public class BookDto {
         this.regDate = book.getRegDate();
         this.bookLocation = book.getBookLocation();
         this.bookImage = book.getBookImage();
+        this.review = book.getReview().stream()
+                .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getRegDate(), m.getReviewContent()))
+                .collect(Collectors.toList());
     }
 
     public static BookDto detail(BookEntity book) {

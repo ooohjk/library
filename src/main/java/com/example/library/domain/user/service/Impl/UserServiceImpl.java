@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     @Override
     public UserSearchResDto getUserByUserNo(Long userNo) {
         UserEntity userEntity = userRepository.findByUserNo(userNo)
-                .orElseThrow(()->new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
+                .orElseThrow(()->new UserNotFoundException(ErrorCode.USERNO_NOT_FOUND));
 
         return UserSearchResDto.from(userEntity);
     }

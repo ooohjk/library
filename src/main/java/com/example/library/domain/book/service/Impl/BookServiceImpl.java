@@ -8,7 +8,6 @@ import com.example.library.domain.book.service.BookService;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.BookNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

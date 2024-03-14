@@ -1,9 +1,12 @@
 package com.example.library.domain.book.entity;
 
+import com.example.library.domain.review.entity.ReviewEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -47,4 +50,7 @@ public class BookEntity {
 
     @Column()
     private String bookImage;
+
+    @OneToMany(mappedBy = "book")
+    private List<ReviewEntity> review = new ArrayList<>();
 }

@@ -2,7 +2,6 @@ package com.example.library.domain.book.controller;
 
 import com.example.library.domain.book.dto.BookDto;
 import com.example.library.domain.book.dto.BookSimple;
-import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.service.BookService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

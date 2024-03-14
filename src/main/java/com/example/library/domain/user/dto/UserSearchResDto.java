@@ -1,9 +1,13 @@
 package com.example.library.domain.user.dto;
 
+import com.example.library.domain.review.dto.ReviewDto;
 import com.example.library.domain.user.enums.SocialLoginType;
 import com.example.library.domain.user.enums.UserGrade;
 import com.example.library.domain.user.entity.UserEntity;
 import lombok.Getter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class UserSearchResDto {
@@ -27,6 +31,8 @@ public class UserSearchResDto {
 
     private UserGrade userGrade;
 
+    private List<ReviewDto> review;
+
     private UserSearchResDto(UserEntity user) {
         this.userNo = user.getUserNo();
         this.userId = user.getUserId();
@@ -38,6 +44,9 @@ public class UserSearchResDto {
         this.useFlg = user.getUseFlg();
         this.userGrade = user.getUserGrade();
         this.providerId = user.getProviderId();
+        this.review = user.getReview().stream()
+                .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getRegDate(), m.getReviewContent()))
+                .collect(Collectors.toList());
     }
 
     public static UserSearchResDto from(UserEntity user){
