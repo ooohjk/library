@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -57,6 +59,11 @@ public class UserController {
     @DeleteMapping("/delete/{userId}")
     public void delete(@PathVariable("userId") String userId) {
         userService.delete(userId);
+    }
+
+    @GetMapping("/getAll")
+    public List<UserSearchResDto> getAllUsers() {
+        return userService.getAllUsers();
     }
 
 }

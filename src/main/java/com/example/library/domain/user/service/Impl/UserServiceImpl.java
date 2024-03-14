@@ -1,5 +1,6 @@
 package com.example.library.domain.user.service.Impl;
 
+import com.example.library.domain.review.dto.ReviewDto;
 import com.example.library.domain.user.dto.*;
 import com.example.library.domain.user.entity.UserEntity;
 import com.example.library.domain.user.enums.SocialLoginType;
@@ -28,7 +29,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -117,6 +120,19 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     @Transactional
     public void delete(String userId) {
         userRepository.deleteByUserId(userId);
+    }
+
+    @Override
+    public List<UserSearchResDto> getAllUsers() {
+        List<UserEntity> user = userRepository.findAll();
+
+        return user.stream()
+                .map(m -> new UserSearchResDto(
+                        m.getUserNo(), m.getUserId(), m.getUserName(), m.getTel(), m.getUserEmail(), m.getProvider(),
+                        m.getProviderId(), m.getGender(), m.getUseFlg(), m.getUserGrade(), m.getReview()
+                    )
+                )
+                .collect(Collectors.toList());
     }
 
     @Override
