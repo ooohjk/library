@@ -1,14 +1,15 @@
 package com.example.library.domain.user.controller;
 
 import com.example.library.domain.user.dto.*;
+import com.example.library.domain.user.service.UserService;
 import com.example.library.exception.ErrorCode;
 import com.example.library.global.response.ApiResponseDto;
-import com.example.library.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 @Slf4j
@@ -42,13 +43,6 @@ public class UserController {
         return userService.getUserByUserId(userId);
     }
 
-    @GetMapping("/test/{name}")
-    public ResponseEntity<TestResDto> hi(@PathVariable("name") String name){
-        return ResponseEntity.ok()
-                .body(new TestResDto(name))
-                ;
-    }
-
     @PutMapping("/update/{userId}")
     public UserSearchResDto update(@PathVariable("userId") String userId, @RequestBody UserUpdateDto userUpdateDto) {
         return userService.update(userId, userUpdateDto);
@@ -59,4 +53,21 @@ public class UserController {
         userService.delete(userId);
     }
 
+    @GetMapping("/hearts")
+    public ApiResponseDto getMyHeartList(@RequestBody Map<String,Long> userNoMap){
+        UserSelectHeartResDto userSelectHeartResDto =userService.getMyHeartList(userNoMap.get("userNo"));
+        return ApiResponseDto.createRes(ErrorCode.SUC, userSelectHeartResDto);
+    }
+
+    @PostMapping ("/heart/reg")
+    public ApiResponseDto heartBook(@RequestBody UserHeartBookReqDto userHeartBookReqDto){
+        userService.registerHeartBook(userHeartBookReqDto);
+        return ApiResponseDto.createRes(ErrorCode.SUC);
+    }
+
+    @DeleteMapping("/heart/remove")
+    public ApiResponseDto removeHeartBook(@RequestBody UserRemoveHeartBookReqDto userRemoveHeartBookReqDto) {
+        userService.removeHeartBook(userRemoveHeartBookReqDto);
+        return ApiResponseDto.createRes(ErrorCode.SUC);
+    }
 }

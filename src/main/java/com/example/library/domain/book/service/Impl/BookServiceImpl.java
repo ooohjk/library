@@ -74,8 +74,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto update(BookDto bookDto, Long bookCode) {
-        BookEntity bookEntity = bookRepository.findByBookCode(bookCode)
-                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKCODE_NOT_FOUND));
+        BookEntity bookEntity = getBookDetail(bookCode);
 
         bookEntity.setBookName(bookDto.getBookName());
         bookEntity.setBookAuthor(bookDto.getBookAuthor());
@@ -96,5 +95,10 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void delete(Long bookCode) {
         bookRepository.deleteByBookCode(bookCode);
+    }
+
+    public BookEntity getBookDetail(Long bookCode){
+        return bookRepository.findByBookCode(bookCode)
+                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKCODE_NOT_FOUND));
     }
 }

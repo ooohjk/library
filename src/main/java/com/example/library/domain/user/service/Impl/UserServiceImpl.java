@@ -1,16 +1,19 @@
 package com.example.library.domain.user.service.Impl;
 
+import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.domain.book.service.BookService;
 import com.example.library.domain.user.dto.*;
+import com.example.library.domain.user.entity.Heart;
 import com.example.library.domain.user.entity.UserEntity;
 import com.example.library.domain.user.enums.SocialLoginType;
 import com.example.library.domain.user.enums.UserGrade;
+import com.example.library.domain.user.repository.HeartRepository;
 import com.example.library.domain.user.repository.UserRepository;
 import com.example.library.domain.user.service.UserService;
+import com.example.library.domain.user.service.dto.HeartResponseDto;
 import com.example.library.exception.AppException;
 import com.example.library.exception.ErrorCode;
-import com.example.library.exception.exceptions.PasswordDifferentException;
-import com.example.library.exception.exceptions.UserIdDuplicateException;
-import com.example.library.exception.exceptions.UserNotFoundException;
+import com.example.library.exception.exceptions.*;
 import com.example.library.global.mail.sendMail;
 import com.example.library.global.security.oauth2.principal.CustomOAuth2User;
 import com.example.library.global.security.oauth2.userInfo.CustomOAuthAttributes;
@@ -28,14 +31,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
+    private final BookService bookService;
     private final UserRepository userRepository;
+    private final HeartRepository heartRepository;
     private final BCryptPasswordEncoder encoder;
 
     public void join(UserJoinReqDto userJoinReqDto) {
@@ -81,6 +88,8 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         return UserSearchResDto.from(userEntity);
     }
 
+
+
     @Override
     public UserSearchResDto getUserByUserId(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId)
@@ -88,6 +97,8 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
 
         return UserSearchResDto.from(userEntity);
     }
+
+
 
     public String getUserNameByEmail(String userEmail) {
         UserEntity userEntity = userRepository.findByUserEmail(userEmail)
@@ -98,19 +109,19 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
 
     @Override
     public UserSearchResDto update(String userId, UserUpdateDto userUpdateDto) {
-        UserEntity user = userRepository.findByUserId(userId)
+        UserEntity selectedUser = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
 
-        user.setUserPwd(encoder.encode(userUpdateDto.getUserPwd()));
-        user.setUserName(userUpdateDto.getUserName());
-        user.setTel(userUpdateDto.getTel());
-        user.setUserEmail(userUpdateDto.getEmail());
-        user.setGender(userUpdateDto.getGender());
-        user.setUseFlg(userUpdateDto.getUseFlg());
+        selectedUser.setUserPwd(encoder.encode(userUpdateDto.getUserPwd()));
+        selectedUser.setUserName(userUpdateDto.getUserName());
+        selectedUser.setTel(userUpdateDto.getTel());
+        selectedUser.setUserEmail(userUpdateDto.getEmail());
+        selectedUser.setGender(userUpdateDto.getGender());
+        selectedUser.setUseFlg(userUpdateDto.getUseFlg());
 
-        userRepository.save(user);
+        userRepository.save(selectedUser);
 
-        return UserSearchResDto.from(user);
+        return UserSearchResDto.from(selectedUser);
     }
 
     @Override
@@ -169,4 +180,89 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
                     );
         }
     }
+
+    @Override
+    public UserSelectHeartResDto getMyHeartList(Long userNo) {
+        //1. 유저번호로 유저 조회
+        UserEntity selectedUser = getUserByUserNoMethod(userNo);
+        List<Heart> heartList = selectedUser.getHeartList();
+
+        //2. 조회된 유저엔티티 내 연관매핑된 Heart엔티티들 dto로 변환 작업
+        List<HeartResponseDto> heartResponseDtoList = heartList.stream()
+                .map(heart->HeartResponseDto.from(heart))
+                .collect(Collectors.toList())
+            ;
+
+        log.info("유저번호["+userNo +"] / 찜도서 갯수["+heartResponseDtoList.size()+"권] 조회 성공");
+        return UserSelectHeartResDto.builder()
+                .userNo(userNo)
+                .heartList(heartResponseDtoList)
+                .build()
+                ;
+    }
+
+    @Override
+    public void registerHeartBook(UserHeartBookReqDto userHeartBookReqDto) {
+        Long userNo = userHeartBookReqDto.getUserNo();
+        Long bookCode = userHeartBookReqDto.getBookCode();
+        //1. 유저번호로 유저 조회
+        UserEntity selectedUser = getUserByUserNoMethod(userNo);
+        //2. 도서 존재 여부 조회
+        BookEntity selectedBook = bookService.getBookDetail(bookCode);
+        //3. 유저의 특정 도서 중복 찜 여부 파악
+        checkAlreadyHeartBook(selectedUser,selectedBook);
+        //4. 하트 엔티티 생성
+        Heart heart = Heart.builder()
+                    .book(selectedBook)
+                    .user(selectedUser)
+                    .build()
+                ;
+//        아래 두 라인 없어도 heartRepository에 저장은 되나 아래와 같은 문제가 있다.
+//        selectedUser.heartBook(heart);   // 해당 객체의 heartList에 새로운 heart엔티티가 추가되지 않는 문제.. 즉, 정합성 문제 발생
+//        userRepository.save(selectedUser); // 이건 모르겠다.
+
+        heartRepository.save(heart);
+        log.info("유저번호["+userNo +"] / 도서번호["+bookCode+"] 찜 성공");
+    }
+
+    @Override
+    public void removeHeartBook(UserRemoveHeartBookReqDto userHeartBookReqDto) {
+        Long userNo = userHeartBookReqDto.getUserNo();
+        Long heartNo = userHeartBookReqDto.getHeartNo();
+        //1. 유저번호로 유저 조회
+        UserEntity selectedUser = getUserByUserNoMethod(userNo);
+
+        //2. 찜번호로 찜 엔티티 조회
+        Heart heart = heartRepository.findByHeartNo(heartNo)
+                .orElseThrow(()->new HeartBookNotFoundException(ErrorCode.HEARTNO_NOT_FOUND));
+
+        heartRepository.delete(heart);
+        log.info("유저번호["+userNo +"] / 찜번호["+heart+"] 찜 해제 성공");
+    }
+
+    /**
+     * 유저의 특정 책 중복찜 여부 파악
+     * @param user
+     * @param book
+     * @return throw HeartBookAlreadyException
+     */
+    private void checkAlreadyHeartBook(UserEntity user, BookEntity book){
+        heartRepository.findByUserAndAndBook(user, book)
+                .ifPresent(heart -> {
+                    throw new HeartBookAlreadyException(ErrorCode.HEARTBOOK_ALREADY);
+                })
+        ;
+    }
+
+    /**
+     * 유저번호로 유저엔티티 조회
+     * @param userNo
+     * @return throw UserNotFoundException
+     */
+    private UserEntity getUserByUserNoMethod(Long userNo) {
+        return userRepository.findByUserNo(userNo)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERNO_NOT_FOUND));
+    }
+
+
 }
