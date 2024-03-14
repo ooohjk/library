@@ -90,14 +90,21 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
 
 
 
+//    @Transactional
     @Override
     public UserSearchResDto getUserByUserId(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
-
         return UserSearchResDto.from(userEntity);
     }
 
+    @Override
+    public UserGrade getUserGrade(String userId) {
+        UserEntity userEntity = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
+        ;
+        return  userEntity.getUserGrade();
+    }
 
 
     public String getUserNameByEmail(String userEmail) {
