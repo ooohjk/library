@@ -22,8 +22,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UserController.class)
-//@SpringBootTest(classes = {UserServiceImpl.class, UserRepository.class})
+//@SpringBootTest(classes = {UserServiceImpl.class, UserRepository.class}) @SpringBootTest는 모든 빈을 등록한다고 하는데 classes 속성을 정의한다면 해당 클래스의 빈만 정의한다.
+
+//웹 상의 요청과 응답에 대한 테스트 진행, 컴포넌트 스캔 범위는 Presentation 레이어에 속하는 빈들만 등록(@Controller, @ControllerAdvice, @JsonComponent, @Filter, WebMvcConfigurer, HandlerMethodArgumentResolver, MockMvc()
+//주의할점: 보통 컨트롤러에선 서비스레이어의 메소드를 호출하는데 이들은 Presentation 레이어에 속하는 빈들이 아니기에 @Autowired와 같은 어노테이션은 사용불가하다. 따라서 @MockBean, mock(),spy() 등을 이용하여 해당 메소드를 mocking해줘야 한다.
+@WebMvcTest(UserController.class) //UserController빈만 정의
 public class UsercontrollerTest extends RestDocsSupport {
 
 //    @Autowired
