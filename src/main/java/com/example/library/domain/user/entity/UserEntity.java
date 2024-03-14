@@ -17,7 +17,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(builderMethodName ="createOfficialUser",builderClassName = "createOfficialUser")
@@ -66,6 +65,9 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<ReviewEntity> review = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Heart> heartList = new ArrayList<>();
+
     @Builder(builderMethodName = "createOAuth2User", builderClassName = "createOAuth2User")
     public UserEntity (String userId, String userPwd, String userEmail, String userName, String providerId, SocialLoginType provider, Integer useFlg) {
         this.userId = userId;
@@ -76,5 +78,10 @@ public class UserEntity extends BaseEntity {
         this.provider = provider;
         this.userGrade = UserGrade.OFFICIALMEMBER;
         this.useFlg = 0;
+    }
+
+    public void heartBook(Heart heart){
+        this.heartList.add(heart);
+//        heart.setUser(this); //Heart엔티티에서 선언(빌더 부분)하므로 주석처리
     }
 }
