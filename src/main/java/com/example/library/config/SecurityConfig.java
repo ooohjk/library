@@ -37,9 +37,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     try {
                         auth
-                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/docs/**","/user/**","/error-code/**", "/book/**", "/review/**").permitAll()
+                            .requestMatchers("/user/**","/review/write/**").hasAuthority(UserGrade.OFFICIALMEMBER.getUserGradeInString())
+                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/docs/**","/error-code/**", "/book/**", "/review/**").permitAll()
                             .requestMatchers("/user/login","/user/join").permitAll()
-                            .requestMatchers("/user/**").hasAuthority(UserGrade.OFFICIALMEMBER.getUserGradeInString())
                             .requestMatchers(HttpMethod.GET).permitAll()
                             .requestMatchers(HttpMethod.POST).permitAll()
                             .requestMatchers(HttpMethod.PUT).permitAll()
