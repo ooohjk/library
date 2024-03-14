@@ -52,7 +52,7 @@ public class UserSearchResDto {
                     .collect(Collectors.toList());
         } else {
             this.review = user.getReview().stream()
-                    .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getReviewContent()))
+                    .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getRegDate(), m.getReviewContent()))
                     .collect(Collectors.toList());
         }
     }

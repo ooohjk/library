@@ -4,6 +4,8 @@ import com.example.library.domain.review.entity.ReviewEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 
 @Data
 @NoArgsConstructor
@@ -19,11 +21,15 @@ public class ReviewDto {
     private Long userNo;
 
     @NotNull
+    private LocalDateTime regDate;
+
+    @NotNull
     private String reviewContent;
 
     public ReviewDto(ReviewEntity review) {
         this.bookCode = review.getBook().getBookCode();
         this.userNo = review.getUser().getUserNo();
+        this.regDate = review.getRegDate();
         this.reviewContent = review.getReviewContent();
     }
 
