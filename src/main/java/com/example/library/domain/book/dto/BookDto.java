@@ -5,6 +5,8 @@ import com.example.library.domain.review.dto.ReviewDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,9 +40,6 @@ public class BookDto {
     private Date pubDate;
 
     @NotNull
-    private Date regDate;
-
-    @NotNull
     private String bookLocation;
 
     private String bookImage;
@@ -55,12 +54,18 @@ public class BookDto {
         this.bookPublisher = book.getBookPublisher();
         this.isbn = book.getIsbn();
         this.pubDate = book.getPubDate();
-        this.regDate = book.getRegDate();
         this.bookLocation = book.getBookLocation();
         this.bookImage = book.getBookImage();
-        this.review = book.getReview().stream()
-                .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getRegDate(), m.getReviewContent()))
-                .collect(Collectors.toList());
+        if (book.getReview() == null) {
+            book.setReview(new ArrayList<>());
+            this.review = book.getReview().stream()
+                    .map(m -> new ReviewDto())
+                    .collect(Collectors.toList());
+        } else {
+            this.review = book.getReview().stream()
+                    .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getReviewContent()))
+                    .collect(Collectors.toList());
+        }
     }
 
     public static BookDto detail(BookEntity book) {

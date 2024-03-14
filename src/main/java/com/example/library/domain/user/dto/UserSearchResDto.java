@@ -6,6 +6,7 @@ import com.example.library.domain.user.enums.UserGrade;
 import com.example.library.domain.user.entity.UserEntity;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,9 +45,16 @@ public class UserSearchResDto {
         this.useFlg = user.getUseFlg();
         this.userGrade = user.getUserGrade();
         this.providerId = user.getProviderId();
-        this.review = user.getReview().stream()
-                .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getRegDate(), m.getReviewContent()))
-                .collect(Collectors.toList());
+        if (user.getReview() == null) {
+            user.setReview(new ArrayList<>());
+            this.review = user.getReview().stream()
+                    .map(m -> new ReviewDto())
+                    .collect(Collectors.toList());
+        } else {
+            this.review = user.getReview().stream()
+                    .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getReviewContent()))
+                    .collect(Collectors.toList());
+        }
     }
 
     public static UserSearchResDto from(UserEntity user){

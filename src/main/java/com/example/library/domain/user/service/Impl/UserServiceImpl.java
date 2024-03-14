@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         ;
         userRepository.save(user);
 
-        sendMail mail = sendMail.send("join", userJoinReqDto.getEmail());
+        sendMail.send("join", userJoinReqDto.getEmail());
     }
 
     public UserLoginResDto login(UserLoginReqDto userLoginReqDto) {
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         }
 
         String token = JwtUtil.createJwt(selectedUser.getUserId());
-        sendMail mail = sendMail.send("login", selectedUser.getUserEmail());
+        sendMail.send("login", selectedUser.getUserEmail());
 
         return UserLoginResDto.from(selectedUser,token);
     }

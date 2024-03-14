@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @ToString
 @Table(name = "book")
-public class BookEntity {
+public class BookEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookCode;
@@ -41,9 +41,6 @@ public class BookEntity {
 
     @Column(nullable = false)
     private Date pubDate;
-
-    @Column(nullable = false)
-    private Date regDate;
 
     @Column(nullable = false)
     private String bookLocation;

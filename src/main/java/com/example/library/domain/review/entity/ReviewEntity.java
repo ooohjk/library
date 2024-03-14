@@ -5,8 +5,6 @@ import com.example.library.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
-
 @Entity
 @Getter
 @Setter
@@ -15,13 +13,10 @@ import java.util.Date;
 @Builder
 @ToString
 @Table(name = "review")
-public class ReviewEntity {
+public class ReviewEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewNo;
-
-    @Column(nullable = false)
-    private Date regDate;
 
     @Column(nullable = false)
     private String reviewContent;

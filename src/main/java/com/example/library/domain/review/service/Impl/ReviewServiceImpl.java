@@ -34,7 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
         List<ReviewEntity> review = reviewRepository.findAll();
 
         return review.stream()
-                .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getRegDate(), m.getReviewContent()))
+                .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getReviewContent()))
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +46,6 @@ public class ReviewServiceImpl implements ReviewService {
                 .user(userRepository.findByUserNo(userNo)
                         .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERNO_NOT_FOUND)))
                 .reviewContent(reviewWriteDto.getReviewContent())
-                .regDate(reviewWriteDto.getRegDate())
                 .build();
         reviewRepository.save(review);
 

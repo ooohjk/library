@@ -1,5 +1,6 @@
 package com.example.library.domain.book.service.Impl;
 
+import com.example.library.domain.book.dto.BookAddDto;
 import com.example.library.domain.book.dto.BookDto;
 import com.example.library.domain.book.dto.BookSimple;
 import com.example.library.domain.book.entity.BookEntity;
@@ -53,18 +54,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto add(BookDto bookDto) {
+    public BookDto add(BookAddDto bookAddDto) {
         BookEntity book = BookEntity.builder()
-                .bookName(bookDto.getBookName())
-                .bookAuthor(bookDto.getBookAuthor())
-                .bookContent(bookDto.getBookContent())
-                .bookState(bookDto.getBookState())
-                .bookPublisher(bookDto.getBookPublisher())
-                .isbn(bookDto.getIsbn())
-                .pubDate(bookDto.getPubDate())
-                .regDate(bookDto.getRegDate())
-                .bookLocation(bookDto.getBookLocation())
-                .bookImage(bookDto.getBookImage())
+                .bookName(bookAddDto.getBookName())
+                .bookAuthor(bookAddDto.getBookAuthor())
+                .bookContent(bookAddDto.getBookContent())
+                .bookState(bookAddDto.getBookState())
+                .bookPublisher(bookAddDto.getBookPublisher())
+                .isbn(bookAddDto.getIsbn())
+                .pubDate(bookAddDto.getPubDate())
+                .bookLocation(bookAddDto.getBookLocation())
+                .bookImage(bookAddDto.getBookImage())
                 .build();
 
         bookRepository.save(book);
@@ -84,7 +84,6 @@ public class BookServiceImpl implements BookService {
         bookEntity.setBookPublisher(bookDto.getBookPublisher());
         bookEntity.setIsbn(bookDto.getIsbn());
         bookEntity.setPubDate(bookDto.getPubDate());
-        bookEntity.setRegDate(bookDto.getRegDate());
         bookEntity.setBookLocation(bookDto.getBookLocation());
         bookEntity.setBookImage(bookDto.getBookImage());
 

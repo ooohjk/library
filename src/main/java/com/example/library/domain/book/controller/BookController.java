@@ -1,5 +1,6 @@
 package com.example.library.domain.book.controller;
 
+import com.example.library.domain.book.dto.BookAddDto;
 import com.example.library.domain.book.dto.BookDto;
 import com.example.library.domain.book.dto.BookSimple;
 import com.example.library.domain.book.service.BookService;
@@ -39,8 +40,8 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public BookDto add(@RequestBody BookDto bookDto) {
-        return bookService.add(bookDto);
+    public BookDto add(@RequestBody BookAddDto bookAddDto) {
+        return bookService.add(bookAddDto);
     }
 
     @PutMapping("/update/book/{bookCode}")
