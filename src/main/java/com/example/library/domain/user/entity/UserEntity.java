@@ -22,6 +22,7 @@ import java.util.List;
 @Builder(builderMethodName ="createOfficialUser",builderClassName = "createOfficialUser")
 @Table(name = "user")
 @DynamicInsert
+@ToString
 public class UserEntity extends BaseEntity {
 
     @Id
@@ -62,10 +63,10 @@ public class UserEntity extends BaseEntity {
     @Convert(converter = UserGradeConverter.class)
     private UserGrade userGrade;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<ReviewEntity> review = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<Heart> heartList = new ArrayList<>();
 
     @Builder(builderMethodName = "createOAuth2User", builderClassName = "createOAuth2User")

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Getter
 public class UserSearchResDto {
+
     private Long userNo;
 
     private String userId;
@@ -47,16 +48,9 @@ public class UserSearchResDto {
         this.useFlg = user.getUseFlg();
         this.userGrade = user.getUserGrade();
         this.providerId = user.getProviderId();
-        if (user.getReview() == null) {
-            user.setReview(new ArrayList<>());
-            this.review = user.getReview().stream()
-                    .map(m -> new ReviewDto())
-                    .collect(Collectors.toList());
-        } else {
-            this.review = user.getReview().stream()
-                    .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getRegDate(), m.getReviewContent()))
-                    .collect(Collectors.toList());
-        }
+        this.review = user.getReview().stream()
+                .map(ReviewDto::info)
+                .collect(Collectors.toList());
     }
 
     public UserSearchResDto
@@ -74,16 +68,9 @@ public class UserSearchResDto {
         this.useFlg = useFlg;
         this.userGrade = userGrade;
         this.providerId = providerId;
-        if (review == null) {
-            review = new ArrayList<>();
-            this.review = review.stream()
-                    .map(m -> new ReviewDto())
-                    .collect(Collectors.toList());
-        } else {
-            this.review = review.stream()
-                    .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getRegDate(), m.getReviewContent()))
-                    .collect(Collectors.toList());
-        }
+        this.review = review.stream()
+                .map(ReviewDto::info)
+                .collect(Collectors.toList());
     }
 
     public static UserSearchResDto from(UserEntity user){
