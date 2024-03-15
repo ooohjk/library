@@ -30,15 +30,17 @@ public class UserEntity extends BaseEntity {
     private Long userNo;
 
     @Column(nullable = false, unique = true)
-    @Size(min = 4, max = 10)
+    @Size(min = 4, message = "최소 4자 이상으로 입력해주세요.")
+    @Size(max = 10, message = "최대 10자 이하로 입력해주세요.")
     private String userId;
 
     @Column(nullable = false)
-    @Size(min = 6, max = 15)
+    @Size(min = 6, message = "최소 6자리 이상으로 입력해주세요.")
+    @Size(max = 15, message = "최대 15자리 이하로 입력해주세요.")
     private String userPwd;
 
     @Column(nullable = false)
-    @Size(min = 2, max = 5)
+    @Size(min = 2, max = 5, message = "이름은 2글자 이상, 5글자 이하로 입력해주세요.")
     private String userName;
 
     private String tel;

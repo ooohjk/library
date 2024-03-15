@@ -30,33 +30,37 @@ public class UserController {
     @PostMapping("/login")
     public ApiResponseDto login(@RequestBody UserLoginReqDto userLoginReqDto) {
         UserLoginResDto userLoginResDto = userService.login(userLoginReqDto);
-        return ApiResponseDto.createRes(ErrorCode.SUC,userLoginResDto);
+        return ApiResponseDto.createRes(ErrorCode.SUC, userLoginResDto);
     }
 
     @GetMapping("/get/userNo/{userNo}")
     public ApiResponseDto getUserByUserNo(@PathVariable("userNo") Long userNo) {
         UserSearchResDto userSearchResDto = userService.getUserByUserNo(userNo);
-        return ApiResponseDto.createRes(ErrorCode.SUC,userSearchResDto);
+        return ApiResponseDto.createRes(ErrorCode.SUC, userSearchResDto);
     }
 
     @GetMapping("/get/userId/{userId}")
-    public UserSearchResDto getUserByUserId(@PathVariable("userId") String userId) {
-        return userService.getUserByUserId(userId);
+    public ApiResponseDto getUserByUserId(@PathVariable("userId") String userId) {
+        UserSearchResDto userSearchResDto = userService.getUserByUserId(userId);
+        return ApiResponseDto.createRes(ErrorCode.SUC, userSearchResDto);
     }
 
     @PutMapping("/update/{userId}")
-    public UserSearchResDto update(@PathVariable("userId") String userId, @RequestBody UserUpdateDto userUpdateDto) {
-        return userService.update(userId, userUpdateDto);
+    public ApiResponseDto update(@PathVariable("userId") String userId, @RequestBody UserUpdateDto userUpdateDto) {
+        UserSearchResDto userSearchResDto = userService.update(userId, userUpdateDto);
+        return ApiResponseDto.createRes(ErrorCode.SUC, userSearchResDto);
     }
 
     @DeleteMapping("/delete/{userId}")
-    public void delete(@PathVariable("userId") String userId) {
+    public ApiResponseDto delete(@PathVariable("userId") String userId) {
         userService.delete(userId);
+        return ApiResponseDto.createRes(ErrorCode.SUC);
     }
 
     @GetMapping("/getAll")
-    public List<UserSearchResDto> getAllUsers() {
-        return userService.getAllUsers();
+    public ApiResponseDto getAllUsers() {
+        List<UserSearchResDto> userSearchResDtos = userService.getAllUsers();
+        return ApiResponseDto.createRes(ErrorCode.SUC, userSearchResDtos);
     }
 
     @GetMapping("/hearts")

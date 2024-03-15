@@ -18,6 +18,8 @@ import com.example.library.global.mail.sendMail;
 import com.example.library.global.security.oauth2.principal.CustomOAuth2User;
 import com.example.library.global.security.oauth2.userInfo.CustomOAuthAttributes;
 import com.example.library.global.utils.JwtUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -45,6 +47,8 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     private final UserRepository userRepository;
     private final HeartRepository heartRepository;
     private final BCryptPasswordEncoder encoder;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public void join(UserJoinReqDto userJoinReqDto) {
         userRepository.findByUserId(userJoinReqDto.getUserId()).ifPresent(user -> {
@@ -102,8 +106,8 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     public UserGrade getUserGrade(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
-        ;
-        return  userEntity.getUserGrade();
+
+        return userEntity.getUserGrade();
     }
 
     public String getUserNameByEmail(String userEmail) {
@@ -133,7 +137,9 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     @Override
     @Transactional
     public void delete(String userId) {
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
         userRepository.deleteByUserId(userId);
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
     }
 
     @Override

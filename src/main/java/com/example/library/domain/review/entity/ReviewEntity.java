@@ -21,11 +21,11 @@ public class ReviewEntity extends BaseEntity {
     @Column(nullable = false)
     private String reviewContent;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "bookCode", nullable = false)
     private BookEntity book;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userNo", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "userId", nullable = false, referencedColumnName = "userId")
     private UserEntity user;
 }

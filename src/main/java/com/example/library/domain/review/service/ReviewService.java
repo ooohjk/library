@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ReviewService {
     List<ReviewDto> getAllReview();
-    ReviewDto write(ReviewWriteDto reviewWriteDto, Long bookCode, Long userNo);
+    ReviewDto write(ReviewWriteDto reviewWriteDto, Long bookCode, String userId);
 }

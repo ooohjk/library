@@ -10,7 +10,8 @@ import java.util.Arrays;
 public enum UserGrade {
     ADMIN(0,"관리자"),
     REGULARMEMBER(1,"일반회원"),
-    OFFICIALMEMBER(2,"정회원");
+    OFFICIALMEMBER(2,"정회원"),
+    NONE(-1, "탈퇴회원");
 
     private final Integer grade;
     private final String gradeEx;

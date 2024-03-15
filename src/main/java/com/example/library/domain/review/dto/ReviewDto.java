@@ -18,7 +18,7 @@ public class ReviewDto {
     private Long bookCode;
 
     @NotNull
-    private Long userNo;
+    private String userId;
 
     @NotNull
     private LocalDateTime regDate;
@@ -28,7 +28,7 @@ public class ReviewDto {
 
     public ReviewDto(ReviewEntity review) {
         this.bookCode = review.getBook().getBookCode();
-        this.userNo = review.getUser().getUserNo();
+        this.userId = review.getUser() == null ? "unknown" : review.getUser().getUserId();
         this.regDate = review.getRegDate();
         this.reviewContent = review.getReviewContent();
     }

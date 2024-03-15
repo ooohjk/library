@@ -49,9 +49,6 @@ public class BookEntity extends BaseEntity {
     @Column()
     private String bookImage;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<ReviewEntity> review = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
-//    private List<Heart> heartList = new ArrayList<>();
 }

@@ -34,16 +34,16 @@ public class ReviewServiceImpl implements ReviewService {
         List<ReviewEntity> review = reviewRepository.findAll();
 
         return review.stream()
-                .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser().getUserNo(), m.getRegDate(), m.getReviewContent()))
+                .map(m -> new ReviewDto(m.getBook().getBookCode(), m.getUser() == null ? "unknown" : m.getUser().getUserId(), m.getRegDate(), m.getReviewContent()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ReviewDto write(ReviewWriteDto reviewWriteDto, Long bookCode, Long userNo) {
+    public ReviewDto write(ReviewWriteDto reviewWriteDto, Long bookCode, String userId) {
         ReviewEntity review = ReviewEntity.builder()
                 .book(bookRepository.findByBookCode(bookCode)
                         .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKCODE_NOT_FOUND)))
-                .user(userRepository.findByUserNo(userNo)
+                .user(userRepository.findByUserId(userId)
                         .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERNO_NOT_FOUND)))
                 .reviewContent(reviewWriteDto.getReviewContent())
                 .build();

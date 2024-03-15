@@ -8,7 +8,6 @@ import com.example.library.domain.user.entity.UserEntity;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
