@@ -88,8 +88,6 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         return UserSearchResDto.from(userEntity);
     }
 
-
-
 //    @Transactional
     @Override
     public UserSearchResDto getUserByUserId(String userId) {
@@ -105,7 +103,6 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         ;
         return  userEntity.getUserGrade();
     }
-
 
     public String getUserNameByEmail(String userEmail) {
         UserEntity userEntity = userRepository.findByUserEmail(userEmail)
@@ -283,6 +280,4 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         return userRepository.findByUserNo(userNo)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERNO_NOT_FOUND));
     }
-
-
 }
