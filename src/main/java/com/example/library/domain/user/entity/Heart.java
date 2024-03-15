@@ -13,33 +13,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
+@Table(name = "heart")
 public class Heart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long heartNo;
 
-//    @Column(nullable = false)
-//    private Long userNo;
-
-//    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "user_no")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userNo")
     private UserEntity user;
 
-//    @Column(nullable = false)
-//    private Long bookCode;
-
-    @ManyToOne
-    @JoinColumn(name = "book_code")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "bookCode")
     private BookEntity book;
-
 
     private String regDt;
 
     private String regTm;
 
     public void setUser(UserEntity user){
-        this.user=user;
+        this.user=  user;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.library.domain.book.entity;
 
 import com.example.library.domain.review.entity.ReviewEntity;
+import com.example.library.domain.user.entity.Heart;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -48,6 +49,9 @@ public class BookEntity extends BaseEntity {
     @Column()
     private String bookImage;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
     private List<ReviewEntity> review = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+//    private List<Heart> heartList = new ArrayList<>();
 }

@@ -61,7 +61,7 @@ public class UserController {
 
     @GetMapping("/hearts")
     public ApiResponseDto getMyHeartList(@RequestBody Map<String,Long> userNoMap){
-        UserSelectHeartResDto userSelectHeartResDto =userService.getMyHeartList(userNoMap.get("userNo"));
+        UserSelectHeartResDto userSelectHeartResDto = userService.getMyHeartList(userNoMap.get("userNo"));
         return ApiResponseDto.createRes(ErrorCode.SUC, userSelectHeartResDto);
     }
 

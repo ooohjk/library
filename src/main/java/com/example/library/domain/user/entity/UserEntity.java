@@ -62,10 +62,10 @@ public class UserEntity extends BaseEntity {
     @Convert(converter = UserGradeConverter.class)
     private UserGrade userGrade;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<ReviewEntity> review = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Heart> heartList = new ArrayList<>();
 
     @Builder(builderMethodName = "createOAuth2User", builderClassName = "createOAuth2User")
@@ -80,7 +80,7 @@ public class UserEntity extends BaseEntity {
         this.useFlg = 0;
     }
 
-    public void heartBook(Heart heart){
+    public void heartBook(Heart heart) {
         this.heartList.add(heart);
 //        heart.setUser(this); //Heart엔티티에서 선언(빌더 부분)하므로 주석처리
     }
