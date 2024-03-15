@@ -11,7 +11,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Table(name = "review")
 public class ReviewEntity extends BaseEntity {
     @Id
@@ -21,11 +20,11 @@ public class ReviewEntity extends BaseEntity {
     @Column(nullable = false)
     private String reviewContent;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "bookCode", nullable = false)
     private BookEntity book;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "userId", nullable = false, referencedColumnName = "userId")
     private UserEntity user;
 }

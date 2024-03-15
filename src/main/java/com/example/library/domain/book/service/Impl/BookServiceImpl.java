@@ -7,19 +7,30 @@ import com.example.library.domain.book.dto.BookUpdateDto;
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.repository.BookRepository;
 import com.example.library.domain.book.service.BookService;
+import com.example.library.domain.review.entity.ReviewEntity;
+import com.example.library.domain.review.repository.ReviewRepository;
+import com.example.library.domain.user.repository.HeartRepository;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.BookNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
+@Slf4j
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+    private final ReviewRepository reviewRepository;
+    private final HeartRepository heartRepository;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, ReviewRepository reviewRepository, HeartRepository heartRepository) {
         this.bookRepository = bookRepository;
+        this.reviewRepository = reviewRepository;
+        this.heartRepository = heartRepository;
     }
 
     @Override
@@ -95,6 +106,8 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void delete(Long bookCode) {
+        reviewRepository.deleteByBookBookCode(bookCode);
+        heartRepository.deleteByBookBookCode(bookCode);
         bookRepository.deleteByBookCode(bookCode);
     }
 

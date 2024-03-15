@@ -1,9 +1,10 @@
 package com.example.library.domain.book.entity;
 
 import com.example.library.domain.review.entity.ReviewEntity;
-import com.example.library.domain.user.entity.Heart;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,11 +16,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Table(name = "book")
 public class BookEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Long bookCode;
 
     @Column(nullable = false)

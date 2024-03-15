@@ -52,13 +52,13 @@ public class BookController {
         return ApiResponseDto.createRes(ErrorCode.SUC, bookDto);
     }
 
-    @PutMapping("/update/book/{bookCode}")
+    @PutMapping("/update/{bookCode}")
     public ApiResponseDto update(@RequestBody BookUpdateDto bookUpdateDto, @PathVariable("bookCode") Long bookCode) {
         BookDto bookDto = bookService.update(bookUpdateDto, bookCode);
         return ApiResponseDto.createRes(ErrorCode.SUC, bookDto);
     }
 
-    @DeleteMapping("/delete/book/{bookCode}")
+    @DeleteMapping("/delete/{bookCode}")
     public ApiResponseDto delete(@PathVariable("bookCode") Long bookCode) {
         bookService.delete(bookCode);
         return ApiResponseDto.createRes(ErrorCode.SUC);

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 
 @Getter
@@ -20,11 +22,11 @@ public class Heart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long heartNo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "userNo")
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "bookCode")
     private BookEntity book;
 
@@ -33,6 +35,6 @@ public class Heart {
     private String regTm;
 
     public void setUser(UserEntity user){
-        this.user=  user;
+        this.user = user;
     }
 }

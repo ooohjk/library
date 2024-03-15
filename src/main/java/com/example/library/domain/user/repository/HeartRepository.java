@@ -4,10 +4,15 @@ import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.user.entity.Heart;
 import com.example.library.domain.user.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
 public interface HeartRepository extends JpaRepository<Heart, Long> {
     Optional<Heart> findByHeartNo(Long heartNo);
     Optional<Heart> findByUserAndAndBook(UserEntity user, BookEntity book);
+    @Modifying
+    @Query(value = "delete from Heart h where h.book.bookCode = :bookCode")
+    void deleteByBookBookCode(Long bookCode);
 }

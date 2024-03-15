@@ -12,7 +12,7 @@ public class JwtUtil {
 
     private static final String secretKey = "test";
 
-    private static final Long expiredMs = 1000 * 60 * 60L;
+    private static final Long expiredMs = 1000 * 60 * 60 * 24L;
 
     public static String getUserId(String token) {
         return Jwts.parser()

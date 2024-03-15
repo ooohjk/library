@@ -2,6 +2,8 @@ package com.example.library.domain.user.service.Impl;
 
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.service.BookService;
+import com.example.library.domain.review.entity.ReviewEntity;
+import com.example.library.domain.review.repository.ReviewRepository;
 import com.example.library.domain.user.dto.*;
 import com.example.library.domain.user.entity.Heart;
 import com.example.library.domain.user.entity.UserEntity;
@@ -32,10 +34,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -46,6 +45,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     private final BookService bookService;
     private final UserRepository userRepository;
     private final HeartRepository heartRepository;
+    private final ReviewRepository reviewRepository;
     private final BCryptPasswordEncoder encoder;
     @PersistenceContext
     private EntityManager entityManager;
@@ -137,7 +137,13 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     @Override
     @Transactional
     public void delete(String userId) {
+        List<ReviewEntity> review = reviewRepository.findAllByUserUserId(userId);
         entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
+        review.forEach((r) -> {
+            if (r.getUser().getUserId().equals(userId)) {
+                reviewRepository.update(userId, "unknown");
+            }
+        });
         userRepository.deleteByUserId(userId);
         entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
     }

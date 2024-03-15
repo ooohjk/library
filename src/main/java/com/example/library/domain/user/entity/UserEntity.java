@@ -31,7 +31,7 @@ public class UserEntity extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     @Size(min = 4, message = "최소 4자 이상으로 입력해주세요.")
-    @Size(max = 10, message = "최대 10자 이하로 입력해주세요.")
+    @Size(max = 15, message = "최대 15자 이하로 입력해주세요.")
     private String userId;
 
     @Column(nullable = false)
@@ -70,6 +70,19 @@ public class UserEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Heart> heartList = new ArrayList<>();
+
+    public UserEntity(String userId, String userPwd, String userEmail, String userName, String providerId, SocialLoginType provider, UserGrade userGrade, Integer useFlg, String tel, String gender) {
+        this.userId = userId;
+        this.userPwd = userPwd;
+        this.userEmail = userEmail;
+        this.userName = userName;
+        this.providerId = providerId;
+        this.provider = provider;
+        this.userGrade = userGrade;
+        this.useFlg = useFlg;
+        this.tel = tel;
+        this.gender = gender;
+    }
 
     @Builder(builderMethodName = "createOAuth2User", builderClassName = "createOAuth2User")
     public UserEntity (String userId, String userPwd, String userEmail, String userName, String providerId, SocialLoginType provider, Integer useFlg) {
