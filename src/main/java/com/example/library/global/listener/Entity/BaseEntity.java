@@ -1,4 +1,4 @@
-package com.example.library.domain.user.entity;
+package com.example.library.global.listener.Entity;
 
 import com.example.library.global.listener.DateFormatListener;
 import jakarta.persistence.Column;

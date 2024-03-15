@@ -1,7 +1,7 @@
 package com.example.library.global.listener;
 
-import com.example.library.domain.user.entity.BaseEntity;
-import com.example.library.domain.user.entity.ModifiedEntity;
+import com.example.library.global.listener.Entity.BaseEntity;
+import com.example.library.global.listener.Entity.ModifiedEntity;
 import com.example.library.global.utils.DateUtil;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;

@@ -5,6 +5,7 @@ import com.example.library.domain.user.entity.converter.SocialLoginTypeConverter
 import com.example.library.domain.user.entity.converter.UserGradeConverter;
 import com.example.library.domain.user.enums.SocialLoginType;
 import com.example.library.domain.user.enums.UserGrade;
+import com.example.library.global.listener.Entity.ModifiedEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
