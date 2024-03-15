@@ -1,6 +1,6 @@
 package com.example.library.global.security.login.filter;
 
-import com.example.library.domain.user.dto.UserSearchResDto;
+import com.example.library.domain.user.enums.UserGrade;
 import com.example.library.domain.user.service.UserService;
 import com.example.library.global.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -57,9 +57,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //서명 정상적으로 됨
         if(StringUtils.hasText(userId)){
-             UserSearchResDto userSearchResDto = userService.getUserByUserId(userId);
-            //Authentication객체 생성
-             authenticationToken = new UsernamePasswordAuthenticationToken(userId, null, List.of(new SimpleGrantedAuthority(String.valueOf(userSearchResDto.getUserGrade().getGrade()))));
+            UserGrade userGrade = userService.getUserGrade(userId);
+            authenticationToken = new UsernamePasswordAuthenticationToken(userId, null, List.of(new SimpleGrantedAuthority(String.valueOf(userGrade.getGrade()))));
         }
 
         // Detail 넣어주기
