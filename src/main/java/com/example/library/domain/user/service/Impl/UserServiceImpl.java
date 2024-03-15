@@ -209,6 +209,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserSelectHeartResDto getMyHeartList(Long userNo) {
         //1. 유저번호로 유저 조회
         UserEntity selectedUser = getUserByUserNoMethod(userNo);
