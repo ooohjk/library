@@ -118,8 +118,9 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     }
 
     @Override
-    public UserSearchResDto update(String userId, UserUpdateDto userUpdateDto) {
-        UserEntity selectedUser = userRepository.findByUserId(userId)
+    @Transactional
+    public UserSearchResDto update(Long userNo, UserUpdateDto userUpdateDto) {
+        UserEntity selectedUser = userRepository.findByUserNo(userNo)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
 
         selectedUser.setUserPwd(encoder.encode(userUpdateDto.getUserPwd()));
@@ -128,8 +129,6 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         selectedUser.setUserEmail(userUpdateDto.getEmail());
         selectedUser.setGender(userUpdateDto.getGender());
         selectedUser.setUseFlg(userUpdateDto.getUseFlg());
-
-        userRepository.save(selectedUser);
 
         return UserSearchResDto.from(selectedUser);
     }

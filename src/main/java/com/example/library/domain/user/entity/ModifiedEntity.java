@@ -11,10 +11,11 @@ import lombok.Setter;
 @Setter
 @MappedSuperclass
 @EntityListeners(DateFormatListener.class)
-public class BaseEntity{
-    @Column(updatable = false)
-    private String createdDt;
+public class ModifiedEntity extends BaseEntity{
 
-    @Column(updatable = false)
-    private String createdTm;
+    @Column
+    private String modifiedDt;
+
+    @Column
+    private String modifiedTm;
 }

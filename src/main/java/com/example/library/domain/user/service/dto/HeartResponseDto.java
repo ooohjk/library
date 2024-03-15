@@ -25,8 +25,8 @@ public class HeartResponseDto {
         this.bookPublisher = heart.getBook().getBookPublisher();
         this.bookImage = heart.getBook().getBookImage();
 
-        this.regDt = heart.getRegDt();
-        this.regTm = heart.getRegTm();
+        this.regDt = heart.getCreatedDt();
+        this.regTm = heart.getCreatedTm();
     }
 
     public static HeartResponseDto from(Heart heart){

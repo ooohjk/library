@@ -11,7 +11,7 @@ public interface UserService {
     UserSearchResDto getUserByUserNo(Long userNo);
     UserSearchResDto getUserByUserId(String userId);
     UserGrade getUserGrade(String userId);
-    UserSearchResDto update(String userId, UserUpdateDto userUpdateDto);
+    UserSearchResDto update(Long userNo, UserUpdateDto userUpdateDto);
     void delete(String userId);
     List<UserSearchResDto> getAllUsers();
 
