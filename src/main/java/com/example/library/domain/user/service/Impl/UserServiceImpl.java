@@ -32,7 +32,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +63,6 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
                 .gender(userJoinReqDto.getGender())
                 .useFlg(userJoinReqDto.getUseFlg())
                 .userGrade(UserGrade.OFFICIALMEMBER)
-                .review(new ArrayList<>())
                 .build()
         ;
         userRepository.save(user);
