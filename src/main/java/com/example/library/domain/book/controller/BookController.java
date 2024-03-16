@@ -2,25 +2,20 @@ package com.example.library.domain.book.controller;
 
 import com.example.library.domain.book.dto.BookAddDto;
 import com.example.library.domain.book.dto.BookDto;
-import com.example.library.domain.book.dto.BookSimple;
-import com.example.library.domain.book.dto.BookUpdateDto;
+import com.example.library.domain.book.dto.BookSimpleDto;
 import com.example.library.domain.book.service.BookService;
 import com.example.library.exception.ErrorCode;
 import com.example.library.global.response.ApiResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/book")
 @Tag(name = "book")
+@RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
-
-    @Autowired
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
 
     @GetMapping("/search/detail/bookAuthor/{bookAuthor}")
     public ApiResponseDto detailSearchByBookAuthor(@PathVariable("bookAuthor") String bookAuthor) {
@@ -36,14 +31,14 @@ public class BookController {
 
     @GetMapping("/search/simple/bookAuthor/{bookAuthor}")
     public ApiResponseDto simpleSearchByBookAuthor(@PathVariable("bookAuthor") String bookAuthor) {
-        BookSimple bookSimple = bookService.simpleSearchByBookAuthor(bookAuthor);
-        return ApiResponseDto.createRes(ErrorCode.SUC, bookSimple);
+        BookSimpleDto bookSimpleDto = bookService.simpleSearchByBookAuthor(bookAuthor);
+        return ApiResponseDto.createRes(ErrorCode.SUC, bookSimpleDto);
     }
 
     @GetMapping("/search/simple/bookName/{bookName}")
     public ApiResponseDto simpleSearchByBookName(@PathVariable("bookName") String bookName) {
-        BookSimple bookSimple = bookService.simpleSearchByBookName(bookName);
-        return ApiResponseDto.createRes(ErrorCode.SUC, bookSimple);
+        BookSimpleDto bookSimpleDto = bookService.simpleSearchByBookName(bookName);
+        return ApiResponseDto.createRes(ErrorCode.SUC, bookSimpleDto);
     }
 
     @PostMapping("/add")
@@ -53,8 +48,8 @@ public class BookController {
     }
 
     @PutMapping("/update/{bookCode}")
-    public ApiResponseDto update(@RequestBody BookUpdateDto bookUpdateDto, @PathVariable("bookCode") Long bookCode) {
-        BookDto bookDto = bookService.update(bookUpdateDto, bookCode);
+    public ApiResponseDto update(@RequestBody BookDto bookDto, @PathVariable("bookCode") Long bookCode) {
+        BookDto book = bookService.update(bookDto, bookCode);
         return ApiResponseDto.createRes(ErrorCode.SUC, bookDto);
     }
 

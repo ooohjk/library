@@ -11,8 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 @Builder
-public class BookUpdateDto {
-
+public class BookSimpleDto {
     @NotNull
     private String bookName;
 
@@ -20,38 +19,22 @@ public class BookUpdateDto {
     private String bookAuthor;
 
     @NotNull
-    private String bookContent;
-
-    @NotNull
     private Integer bookState;
-
-    @NotNull
-    private String bookPublisher;
-
-    @NotNull
-    private String isbn;
 
     @NotNull
     private Date pubDate;
 
-    @NotNull
-    private String bookLocation;
-
     private String bookImage;
 
-    private BookUpdateDto(BookEntity book) {
+    private BookSimpleDto(BookEntity book) {
         this.bookName = book.getBookName();
         this.bookAuthor = book.getBookAuthor();
-        this.bookContent = book.getBookContent();
         this.bookState = book.getBookState();
-        this.bookPublisher = book.getBookPublisher();
-        this.isbn = book.getIsbn();
         this.pubDate = book.getPubDate();
-        this.bookLocation = book.getBookLocation();
         this.bookImage = book.getBookImage();
     }
 
-    public static BookUpdateDto update(BookEntity book) {
-        return new BookUpdateDto(book);
+    public static BookSimpleDto simple(BookEntity book) {
+        return new BookSimpleDto(book);
     }
 }

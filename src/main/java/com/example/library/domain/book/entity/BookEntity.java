@@ -1,7 +1,7 @@
 package com.example.library.domain.book.entity;
 
 import com.example.library.domain.review.entity.ReviewEntity;
-import com.example.library.global.listener.Entity.BaseEntity;
+import com.example.library.global.listener.Entity.ModifiedEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -20,7 +20,7 @@ import java.util.List;
 @Builder
 @DynamicInsert
 @Table(name = "book")
-public class BookEntity extends BaseEntity {
+public class BookEntity extends ModifiedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)

@@ -6,7 +6,7 @@ import com.example.library.domain.review.service.ReviewService;
 import com.example.library.exception.ErrorCode;
 import com.example.library.global.response.ApiResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,13 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/review")
 @Tag(name = "review")
+@RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
-
-    @Autowired
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
-    }
 
     @GetMapping("/getAll")
     public ApiResponseDto getAllReview() {

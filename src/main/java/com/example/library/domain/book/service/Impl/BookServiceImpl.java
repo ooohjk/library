@@ -2,8 +2,7 @@ package com.example.library.domain.book.service.Impl;
 
 import com.example.library.domain.book.dto.BookAddDto;
 import com.example.library.domain.book.dto.BookDto;
-import com.example.library.domain.book.dto.BookSimple;
-import com.example.library.domain.book.dto.BookUpdateDto;
+import com.example.library.domain.book.dto.BookSimpleDto;
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.repository.BookRepository;
 import com.example.library.domain.book.service.BookService;
@@ -11,24 +10,18 @@ import com.example.library.domain.review.repository.ReviewRepository;
 import com.example.library.domain.user.repository.HeartRepository;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.BookNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
     private final HeartRepository heartRepository;
-
-    @Autowired
-    public BookServiceImpl(BookRepository bookRepository, ReviewRepository reviewRepository, HeartRepository heartRepository) {
-        this.bookRepository = bookRepository;
-        this.reviewRepository = reviewRepository;
-        this.heartRepository = heartRepository;
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -49,19 +42,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookSimple simpleSearchByBookAuthor(String bookAuthor) {
+    public BookSimpleDto simpleSearchByBookAuthor(String bookAuthor) {
         BookEntity bookEntity = bookRepository.findByBookAuthor(bookAuthor)
                 .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKAUTHOR_NOT_FOUND));
 
-        return BookSimple.simple(bookEntity);
+        return BookSimpleDto.simple(bookEntity);
     }
 
     @Override
-    public BookSimple simpleSearchByBookName(String bookName) {
+    public BookSimpleDto simpleSearchByBookName(String bookName) {
         BookEntity bookEntity = bookRepository.findByBookName(bookName)
                 .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKNAME_NOT_FOUND));
 
-        return BookSimple.simple(bookEntity);
+        return BookSimpleDto.simple(bookEntity);
     }
 
     @Override
@@ -85,18 +78,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto update(BookUpdateDto bookUpdateDto, Long bookCode) {
+    public BookDto update(BookDto bookDto, Long bookCode) {
         BookEntity bookEntity = getBookDetail(bookCode);
 
-        bookEntity.setBookName(bookUpdateDto.getBookName());
-        bookEntity.setBookAuthor(bookUpdateDto.getBookAuthor());
-        bookEntity.setBookContent(bookUpdateDto.getBookContent());
-        bookEntity.setBookState(bookUpdateDto.getBookState());
-        bookEntity.setBookPublisher(bookUpdateDto.getBookPublisher());
-        bookEntity.setIsbn(bookUpdateDto.getIsbn());
-        bookEntity.setPubDate(bookUpdateDto.getPubDate());
-        bookEntity.setBookLocation(bookUpdateDto.getBookLocation());
-        bookEntity.setBookImage(bookUpdateDto.getBookImage());
+        bookEntity.setBookName(bookDto.getBookName());
+        bookEntity.setBookAuthor(bookDto.getBookAuthor());
+        bookEntity.setBookContent(bookDto.getBookContent());
+        bookEntity.setBookState(bookDto.getBookState());
+        bookEntity.setBookPublisher(bookDto.getBookPublisher());
+        bookEntity.setIsbn(bookDto.getIsbn());
+        bookEntity.setPubDate(bookDto.getPubDate());
+        bookEntity.setBookLocation(bookDto.getBookLocation());
+        bookEntity.setBookImage(bookDto.getBookImage());
 
         bookRepository.save(bookEntity);
 

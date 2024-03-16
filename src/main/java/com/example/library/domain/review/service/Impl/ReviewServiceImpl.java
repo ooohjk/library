@@ -10,24 +10,18 @@ import com.example.library.domain.user.repository.UserRepository;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.BookNotFoundException;
 import com.example.library.exception.exceptions.UserNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
-
-    @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository, UserRepository userRepository, BookRepository bookRepository) {
-        this.reviewRepository = reviewRepository;
-        this.userRepository = userRepository;
-        this.bookRepository = bookRepository;
-    }
 
     @Override
     public List<ReviewDto> getAllReview() {

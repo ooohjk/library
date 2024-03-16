@@ -9,7 +9,7 @@ public class AppException extends RuntimeException {
     private ErrorCode errorCode;
     private String msg;
 
-    public AppException(ErrorCode errorCode,String msg) {
+    public AppException(ErrorCode errorCode, String msg) {
         this.errorCode = errorCode;
         this.msg = msg;
         log.error(msg);
