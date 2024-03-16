@@ -13,7 +13,6 @@ public interface BookService {
     BookSimple simpleSearchByBookName(String bookName);
     BookDto update(BookUpdateDto bookUpdateDto, Long bookCode);
     void delete(Long bookCode);
-    BookDto add(BookAddDto bookAddDto);
-
+    BookAddDto add(BookAddDto bookAddDto);
     BookEntity getBookDetail(Long bookCode);
 }

@@ -7,7 +7,6 @@ import com.example.library.domain.book.dto.BookUpdateDto;
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.repository.BookRepository;
 import com.example.library.domain.book.service.BookService;
-import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.domain.review.repository.ReviewRepository;
 import com.example.library.domain.user.repository.HeartRepository;
 import com.example.library.exception.ErrorCode;
@@ -67,7 +66,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookDto add(BookAddDto bookAddDto) {
+    public BookAddDto add(BookAddDto bookAddDto) {
         BookEntity book = BookEntity.builder()
                 .bookName(bookAddDto.getBookName())
                 .bookAuthor(bookAddDto.getBookAuthor())
@@ -82,7 +81,7 @@ public class BookServiceImpl implements BookService {
 
         bookRepository.save(book);
 
-        return BookDto.detail(book);
+        return BookAddDto.add(book);
     }
 
     @Override

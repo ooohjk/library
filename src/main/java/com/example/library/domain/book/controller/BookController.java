@@ -48,8 +48,8 @@ public class BookController {
 
     @PostMapping("/add")
     public ApiResponseDto add(@RequestBody BookAddDto bookAddDto) {
-        BookDto bookDto = bookService.add(bookAddDto);
-        return ApiResponseDto.createRes(ErrorCode.SUC, bookDto);
+        BookAddDto bookAdd = bookService.add(bookAddDto);
+        return ApiResponseDto.createRes(ErrorCode.SUC, bookAdd);
     }
 
     @PutMapping("/update/{bookCode}")

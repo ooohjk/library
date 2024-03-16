@@ -1,6 +1,7 @@
 package com.example.library.domain.book.entity;
 
 import com.example.library.domain.review.entity.ReviewEntity;
+import com.example.library.global.listener.Entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;

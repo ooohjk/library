@@ -1,6 +1,7 @@
 package com.example.library.domain.user.entity;
 
 import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.global.listener.Entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Builder
 @Entity
 @Table(name = "heart")
-public class Heart {
+public class Heart extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,13 +27,9 @@ public class Heart {
     @JoinColumn(name = "userNo")
     private UserEntity user;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "bookCode")
     private BookEntity book;
-
-    private String regDt;
-
-    private String regTm;
 
     public void setUser(UserEntity user){
         this.user = user;
