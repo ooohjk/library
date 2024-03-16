@@ -3,6 +3,7 @@ package com.example.library.domain.book.entity;
 import com.example.library.domain.review.entity.ReviewEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@DynamicInsert
 @Table(name = "book")
 public class BookEntity extends BaseEntity {
     @Id

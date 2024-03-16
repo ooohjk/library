@@ -34,7 +34,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -64,7 +66,6 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
                 .gender(userJoinReqDto.getGender())
                 .useFlg(userJoinReqDto.getUseFlg())
                 .userGrade(UserGrade.OFFICIALMEMBER)
-                .review(new ArrayList<>())
                 .build()
         ;
         userRepository.save(user);
@@ -87,6 +88,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserSearchResDto getUserByUserNo(Long userNo) {
         UserEntity userEntity = userRepository.findByUserNo(userNo)
                 .orElseThrow(()->new UserNotFoundException(ErrorCode.USERNO_NOT_FOUND));
@@ -94,8 +96,8 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         return UserSearchResDto.from(userEntity);
     }
 
-//    @Transactional
     @Override
+    @Transactional(readOnly = true)
     public UserSearchResDto getUserByUserId(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
@@ -110,6 +112,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         return userEntity.getUserGrade();
     }
 
+    @Transactional(readOnly = true)
     public String getUserNameByEmail(String userEmail) {
         UserEntity userEntity = userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new AppException(ErrorCode.MAIL_NOT_FOUND));
@@ -149,6 +152,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserSearchResDto> getAllUsers() {
         List<UserEntity> user = userRepository.findAll();
 
@@ -213,6 +217,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserSelectHeartResDto getMyHeartList(Long userNo) {
         //1. 유저번호로 유저 조회
         UserEntity selectedUser = getUserByUserNoMethod(userNo);
@@ -240,7 +245,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         UserEntity selectedUser = getUserByUserNoMethod(userNo);
         //2. 도서 존재 여부 조회
         BookEntity selectedBook = bookService.getBookDetail(bookCode);
-        //3. 유저의 특정 도서 중복 찜 여부 파악
+        //3. 유저 도서 중복 찜 체크
         checkAlreadyHeartBook(selectedUser,selectedBook);
         //4. 하트 엔티티 생성
         Heart heart = Heart.builder()
@@ -272,7 +277,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     }
 
     /**
-     * 유저의 특정 책 중복찜 여부 파악
+     * 유저 특정 책 중복찜 체크
      * @param user
      * @param book
      * @return throw HeartBookAlreadyException

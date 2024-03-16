@@ -7,7 +7,11 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-    SUC("0","OK"),
+    SUC("S00","SUCCESS"),
+
+    //AutehnticationError
+    AUTHENTICATION_INSUFFICIENT("A01","로그인 후 접근 바랍니다."),
+    AUTHORITY_FAIL("A02","접근할 수 없는 권한입니다. 권한 확인 후 재접근 바랍니다."),
 
     //User
     USERID_DUPLICATED("U01", "중복 아이디입니다. 아이디를 확인해주세요."),

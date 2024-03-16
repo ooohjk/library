@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Slf4j
 public class BookServiceImpl implements BookService {
@@ -34,6 +32,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookDto detailSearchByBookAuthor(String bookAuthor) {
         BookEntity bookEntity = bookRepository.findByBookAuthor(bookAuthor)
                 .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKAUTHOR_NOT_FOUND));
@@ -42,6 +41,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookDto detailSearchByBookName(String bookName) {
         BookEntity bookEntity = bookRepository.findByBookName(bookName)
                 .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKNAME_NOT_FOUND));
@@ -66,6 +66,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookDto add(BookAddDto bookAddDto) {
         BookEntity book = BookEntity.builder()
                 .bookName(bookAddDto.getBookName())

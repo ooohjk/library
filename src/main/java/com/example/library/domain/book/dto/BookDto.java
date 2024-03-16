@@ -5,7 +5,6 @@ import com.example.library.domain.review.dto.ReviewDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,9 +55,10 @@ public class BookDto {
         this.pubDate = book.getPubDate();
         this.bookLocation = book.getBookLocation();
         this.bookImage = book.getBookImage();
-        this.review = book.getReview().stream()
-                .map(ReviewDto::info)
-                .collect(Collectors.toList());
+        this.review = book.getReview() == null
+                ? new ArrayList<>() : book.getReview().stream()
+                                            .map(ReviewDto::info)
+                                            .collect(Collectors.toList());
     }
 
     public static BookDto detail(BookEntity book) {
