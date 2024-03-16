@@ -30,6 +30,7 @@ public enum ErrorCode {
 
     //Mail
     MAIL_NOT_FOUND("M01", "존재하지 않는 메일주소입니다. 메일주소를 확인해주세요."),
+    MAIL_SEND_FAIL("M02", "메일 발송을 실패하였습니다."),
 
     //Review
     REVIEW_NOT_FOUND("R01", "해당도서의 리뷰가 없습니다.")

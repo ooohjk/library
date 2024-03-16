@@ -72,19 +72,6 @@ public class UserEntity extends ModifiedEntity {
     @OneToMany(mappedBy = "user")
     private List<Heart> heartList = new ArrayList<>();
 
-    public UserEntity(String userId, String userPwd, String userEmail, String userName, String providerId, SocialLoginType provider, UserGrade userGrade, Integer useFlg, String tel, String gender) {
-        this.userId = userId;
-        this.userPwd = userPwd;
-        this.userEmail = userEmail;
-        this.userName = userName;
-        this.providerId = providerId;
-        this.provider = provider;
-        this.userGrade = userGrade;
-        this.useFlg = useFlg;
-        this.tel = tel;
-        this.gender = gender;
-    }
-
     @Builder(builderMethodName = "createOAuth2User", builderClassName = "createOAuth2User")
     public UserEntity (String userId, String userPwd, String userEmail, String userName, String providerId, SocialLoginType provider, Integer useFlg) {
         this.userId = userId;

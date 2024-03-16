@@ -23,7 +23,7 @@ public class Heart extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long heartNo;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne()
     @JoinColumn(name = "userNo")
     private UserEntity user;
 

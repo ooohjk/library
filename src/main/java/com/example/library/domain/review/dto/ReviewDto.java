@@ -4,9 +4,6 @@ import com.example.library.domain.review.entity.ReviewEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +18,10 @@ public class ReviewDto {
     private String userId;
 
     @NotNull
-    private String regDate;
+    private String regDt;
+
+    @NotNull
+    private String regTm;
 
     @NotNull
     private String reviewContent;
@@ -29,7 +29,8 @@ public class ReviewDto {
     public ReviewDto(ReviewEntity review) {
         this.bookCode = review.getBook().getBookCode();
         this.userId = review.getUser() == null ? "unknown" : review.getUser().getUserId();
-        this.regDate = review.getCreatedDt();
+        this.regDt = review.getCreatedDt();
+        this.regTm = review.getCreatedTm();
         this.reviewContent = review.getReviewContent();
     }
 

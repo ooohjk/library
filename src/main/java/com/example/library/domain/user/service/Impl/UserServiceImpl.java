@@ -24,6 +24,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailSendException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -32,6 +33,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Transactional(rollbackFor = MailSendException.class)
     public void join(UserJoinReqDto userJoinReqDto) {
         userRepository.findByUserId(userJoinReqDto.getUserId()).ifPresent(user -> {
             throw new UserIdDuplicateException(ErrorCode.USERID_DUPLICATED);
@@ -70,7 +73,11 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         ;
         userRepository.save(user);
 
-        sendMail.send("join", userJoinReqDto.getEmail());
+        try { // 정상 발송 > 통과
+            sendMail.send("join", userJoinReqDto.getEmail(), userJoinReqDto.getUserName());
+        } catch (MailSendException e) { // 미발송 > 롤백
+            throw new UserMailSendFailException(ErrorCode.MAIL_SEND_FAIL);
+        }
     }
 
     public UserLoginResDto login(UserLoginReqDto userLoginReqDto) {
@@ -82,7 +89,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         }
 
         String token = JwtUtil.createJwt(selectedUser.getUserId());
-        sendMail.send("login", selectedUser.getUserEmail());
+        sendMail.send("login", selectedUser.getUserEmail(), selectedUser.getUserName());
 
         return UserLoginResDto.from(selectedUser,token);
     }
@@ -115,7 +122,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     @Transactional(readOnly = true)
     public String getUserNameByEmail(String userEmail) {
         UserEntity userEntity = userRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new AppException(ErrorCode.MAIL_NOT_FOUND));
+                .orElseThrow(() -> new UserMailNotFoundException(ErrorCode.MAIL_NOT_FOUND));
 
         return UserSearchResDto.from(userEntity).getUserName();
     }
@@ -140,7 +147,12 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     @Transactional
     public void delete(String userId) {
         List<ReviewEntity> review = reviewRepository.findAllByUserUserId(userId);
+        Long userNo = userRepository.findByUserId(userId).get().getUserNo();
+        List<Heart> heartList = heartRepository.findAllByUserUserNo(userNo);
         entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
+        heartList.forEach((h) -> {
+            heartRepository.deleteByUserUserNo(userNo);
+        });
         review.forEach((r) -> {
             if (r.getUser().getUserId().equals(userId)) {
                 reviewRepository.update(userId, "unknown");
@@ -224,7 +236,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
 
         //2. 조회된 유저엔티티 내 연관매핑된 Heart엔티티들 dto로 변환 작업
         List<HeartResponseDto> heartResponseDtoList = heartList.stream()
-                .map(heart->HeartResponseDto.from(heart))
+                .map(HeartResponseDto::from)
                 .collect(Collectors.toList())
             ;
 
@@ -261,6 +273,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     }
 
     @Override
+    @Transactional
     public void removeHeartBook(UserRemoveHeartBookReqDto userHeartBookReqDto) {
         Long userNo = userHeartBookReqDto.getUserNo();
         Long heartNo = userHeartBookReqDto.getHeartNo();
@@ -269,10 +282,10 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
 
         //2. 찜번호로 찜 엔티티 조회
         Heart heart = heartRepository.findByHeartNo(heartNo)
-                .orElseThrow(()->new HeartBookNotFoundException(ErrorCode.HEARTNO_NOT_FOUND));
+                .orElseThrow(() -> new HeartBookNotFoundException(ErrorCode.HEARTNO_NOT_FOUND));
 
-        heartRepository.delete(heart);
-        log.info("유저번호["+userNo +"] / 찜번호["+heart+"] 찜 해제 성공");
+        heartRepository.deleteById(heartNo);
+        log.info("유저번호[" + userNo + "] / 찜번호[" + heart.getHeartNo() + "] 찜 해제 성공");
     }
 
     /**
