@@ -54,6 +54,9 @@ dependencies {
 
 	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor' // (3) asciidoctor: adoc파일을 html등과 같은 파일로 파싱해주는 역할을 해주는 coverter
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // (4)
+
+	//2023.03.17 for Validation by son
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 ext {
