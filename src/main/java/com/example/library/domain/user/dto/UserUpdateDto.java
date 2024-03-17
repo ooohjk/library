@@ -3,13 +3,12 @@ package com.example.library.domain.user.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUpdateDto {
+
     @NotNull
     private String userPwd;
 

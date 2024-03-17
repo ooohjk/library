@@ -18,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class) //UserController빈만 정의
 public class UsercontrollerTest extends RestDocsSupport {
 
-//    @Autowired
     @MockBean
     UserService userService;
 
@@ -78,6 +78,8 @@ public class UsercontrollerTest extends RestDocsSupport {
         )
                 ;
     }
+
+
 
     @Test
     @DisplayName("로그인 성공 case")
@@ -138,6 +140,66 @@ public class UsercontrollerTest extends RestDocsSupport {
                         )
                         )
                 )
+        ;
+    }
+
+    @Test
+    @DisplayName("요청JSON 파싱 실패 case")
+    @WithMockUser(username = "테스트_최고관리자", authorities = {"0"}) //권한 부여
+    void 요청필드_키밸류형태_에러처리_테스트() throws Exception{
+        //given
+        String content = "id:'s";
+
+        //when
+        mockMvc.perform(post("/user/join")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(content))
+                )
+                .andExpect(jsonPath("$.code").value("R02"))
+        ;
+    }
+
+    @Test
+    @DisplayName("회원가입 시 아이디 필드가 누락 및 패스워드 size 검증 실패된 경우 case")
+    @WithMockUser(username = "테스트_최고관리자", authorities = {"0"}) //권한 부여
+    void 아이디누락_에러처리_테스트() throws Exception{
+        //given
+        String id= "test";
+        String pwd = "1234";
+        UserJoinReqDto dto = UserJoinReqDto.builder()
+//                .userId(id)
+                .userPwd(pwd)
+                .userName("테스트")
+                .tel("01024168946")
+                .email("sunghyun7895@naver.com")
+                .gender("M")
+                .useFlg(0)
+                .build()
+                ;
+
+        //when
+        mockMvc.perform(post("/user/join")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(dto))
+                )
+                .andExpect(jsonPath("$.code").value("R01"))
+        ;
+    }
+
+    @Test
+    @DisplayName("restapi url 케이스인 경우 데이터 타입이 올바르지 않은 case")
+    @WithMockUser(username = "테스트_최고관리자", authorities = {"0"}) //권한 부여
+    void url_내_데이터타입_불일치_테스트() throws Exception{
+        //given
+        String id= "test";
+
+        //when
+        mockMvc.perform(get("/user/get/userNo/"+id)
+                        .with(csrf()) //403에러 해결
+                )
+                .andExpect(jsonPath("$.code").value("R01"))
         ;
     }
 }

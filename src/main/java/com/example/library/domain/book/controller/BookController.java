@@ -7,6 +7,7 @@ import com.example.library.domain.book.service.BookService;
 import com.example.library.exception.ErrorCode;
 import com.example.library.global.response.ApiResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,13 +43,13 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public ApiResponseDto add(@RequestBody BookAddDto bookAddDto) {
+    public ApiResponseDto add(@Valid @RequestBody BookAddDto bookAddDto) {
         BookAddDto bookAdd = bookService.add(bookAddDto);
         return ApiResponseDto.createRes(ErrorCode.SUC, bookAdd);
     }
 
     @PutMapping("/update/{bookCode}")
-    public ApiResponseDto update(@RequestBody BookDto bookDto, @PathVariable("bookCode") Long bookCode) {
+    public ApiResponseDto update(@Valid @RequestBody BookDto bookDto, @PathVariable("bookCode") Long bookCode) {
         BookDto book = bookService.update(bookDto, bookCode);
         return ApiResponseDto.createRes(ErrorCode.SUC, bookDto);
     }

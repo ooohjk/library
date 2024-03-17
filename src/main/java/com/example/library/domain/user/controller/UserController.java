@@ -5,6 +5,7 @@ import com.example.library.domain.user.service.UserService;
 import com.example.library.exception.ErrorCode;
 import com.example.library.global.response.ApiResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +23,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/join")
-    public ApiResponseDto join(@RequestBody UserJoinReqDto userJoinReqDto) {
+    public ApiResponseDto join(@Valid @RequestBody UserJoinReqDto userJoinReqDto) {
         userService.join(userJoinReqDto);
         return ApiResponseDto.createRes(ErrorCode.SUC);
     }
 
     @PostMapping("/login")
-    public ApiResponseDto login(@RequestBody UserLoginReqDto userLoginReqDto) {
+    public ApiResponseDto login(@Valid @RequestBody UserLoginReqDto userLoginReqDto) {
         UserLoginResDto userLoginResDto = userService.login(userLoginReqDto);
         return ApiResponseDto.createRes(ErrorCode.SUC, userLoginResDto);
     }
@@ -46,7 +47,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{userNo}")
-    public ApiResponseDto update(@PathVariable("userNo") Long userNo, @RequestBody UserUpdateDto userUpdateDto) {
+    public ApiResponseDto update(@PathVariable("userNo") Long userNo,@Valid @RequestBody UserUpdateDto userUpdateDto) {
         UserSearchResDto userSearchResDto = userService.update(userNo, userUpdateDto);
         return ApiResponseDto.createRes(ErrorCode.SUC, userSearchResDto);
     }
@@ -64,19 +65,19 @@ public class UserController {
     }
 
     @GetMapping("/hearts")
-    public ApiResponseDto getMyHeartList(@RequestBody Map<String,Long> userNoMap){
+    public ApiResponseDto getMyHeartList(@Valid @RequestBody Map<String,Long> userNoMap){
         UserSelectHeartResDto userSelectHeartResDto = userService.getMyHeartList(userNoMap.get("userNo"));
         return ApiResponseDto.createRes(ErrorCode.SUC, userSelectHeartResDto);
     }
 
     @PostMapping ("/heart/reg")
-    public ApiResponseDto heartBook(@RequestBody UserHeartBookReqDto userHeartBookReqDto){
+    public ApiResponseDto heartBook(@Valid @RequestBody UserHeartBookReqDto userHeartBookReqDto){
         userService.registerHeartBook(userHeartBookReqDto);
         return ApiResponseDto.createRes(ErrorCode.SUC);
     }
 
     @DeleteMapping("/heart/remove")
-    public ApiResponseDto removeHeartBook(@RequestBody UserRemoveHeartBookReqDto userRemoveHeartBookReqDto) {
+    public ApiResponseDto removeHeartBook(@Valid @RequestBody UserRemoveHeartBookReqDto userRemoveHeartBookReqDto) {
         userService.removeHeartBook(userRemoveHeartBookReqDto);
         return ApiResponseDto.createRes(ErrorCode.SUC);
     }

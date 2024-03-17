@@ -31,13 +31,11 @@ public class UserEntity extends ModifiedEntity {
     private Long userNo;
 
     @Column(nullable = false, unique = true)
-    @Size(min = 4, message = "최소 4자 이상으로 입력해주세요.")
-    @Size(max = 15, message = "최대 15자 이하로 입력해주세요.")
+    @Size(min = 4, max = 15, message = "이름은 4글자 이상, 15글자 이하로 입력해주세요.")
     private String userId;
 
     @Column(nullable = false)
-    @Size(min = 6, message = "최소 6자리 이상으로 입력해주세요.")
-    @Size(max = 15, message = "최대 15자리 이하로 입력해주세요.")
+//    @Size(min = 6, max = 15, message = "이름은 6글자 이상, 15글자 이하로 입력해주세요.")
     private String userPwd;
 
     @Column(nullable = false)
