@@ -33,8 +33,11 @@ public enum ErrorCode {
     MAIL_SEND_FAIL("M02", "메일 발송을 실패하였습니다."),
 
     //Review
-    REVIEW_NOT_FOUND("R01", "해당도서의 리뷰가 없습니다.")
+    REVIEW_NOT_FOUND("R01", "해당도서의 리뷰가 없습니다."),
 
+    //Parameter
+    PARAMETER_FORMAT_INVALID("R01", "인입필드 형식 또는 타입이 올바르지 않습니다. 에러 필드 내 상세 사유를 확인해주세요."),
+    PARAMETER_FIELD_INVALID("R02", "JSON 파싱 실패하였습니다. JSON데이터를 확인해주세요."),
     ;
 
     private String code;
