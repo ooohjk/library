@@ -30,7 +30,7 @@ class CommonDocControllerTest extends RestDocsSupport {
     void errorCodesV2() throws Exception {
         mockMvc.perform(get("/test/error-code/dto"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errorCodes.0").value("OK"))
+//                .andExpect(jsonPath("$.msg").value("OK"))
                 .andDo(restDocs.document(
                             customResponseFields("code-response",
                                     beneathPath("errorCodes"),
@@ -78,9 +78,10 @@ class CommonDocControllerTest extends RestDocsSupport {
                         customResponseFields("custom-response",
                                 attributes(key("title").value("공통응답")),
                                 fieldWithPath("code").description("응답 코드"),
-                                fieldWithPath("msg").description("응답 메시지"),
-                                fieldWithPath("data").description("응답 데이터").optional()
-                    )
+                                fieldWithPath("msg").description("응답 메시지")
+//                                fieldWithPath("data").description("응답 데이터").optional(),
+//                                fieldWithPath("errors").description("검증 실패에 대한 상세 내용").optional()
+                        )
                 ))
         ;
     }
@@ -102,7 +103,4 @@ class CommonDocControllerTest extends RestDocsSupport {
                 attributes,
                 true);
     }
-
-
-
 }

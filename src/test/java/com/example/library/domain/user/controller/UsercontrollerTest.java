@@ -39,7 +39,7 @@ public class UsercontrollerTest extends RestDocsSupport {
     void 회원가입_성공() throws  Exception{
         //given
         String id= "test";
-        String pwd = "1234";
+        String pwd = "12341234";
         UserJoinReqDto dto = UserJoinReqDto.builder()
                 .userId(id)
                 .userPwd(pwd)
@@ -124,19 +124,18 @@ public class UsercontrollerTest extends RestDocsSupport {
                                         fieldWithPath("userPwd").description("비밀번호")
                                 ),
                                 responseFields(
-                                fieldWithPath("code").description("응답코드"),
-                                fieldWithPath("msg").description("응답메시지"),
-                                fieldWithPath("data.userNo").description("유저 번호"),
-                                fieldWithPath("data.userId").description("아이디"),
-                                fieldWithPath("data.userName").description(" 이름"),
-                                fieldWithPath("data.tel").description("전화번호").optional(),
-                                fieldWithPath("data.userEmail").description("이메일"),
-                                fieldWithPath("data.provider").description("소셜로그인 가입 플랫폼(GOOGLE,NAVER,KAKAO)").optional(),
-                                fieldWithPath("data.providerId").description("소셜로그인 pk").optional(),
-                                fieldWithPath("data.gender").description("성별"),
-                                fieldWithPath("data.useFlg").description("사용여부(0:사용 / 1:미사용)"),
-                                fieldWithPath("data.userGrade").description("회원등급(0: 관리자, 2: 정회원)"),
-                                fieldWithPath("data.accessToken").description("액세스 토큰")
+                                beneathPath("data"),
+                                fieldWithPath("userNo").description("유저 번호"),
+                                fieldWithPath("userId").description("아이디"),
+                                fieldWithPath("userName").description(" 이름"),
+                                fieldWithPath("tel").description("전화번호").optional(),
+                                fieldWithPath("userEmail").description("이메일"),
+                                fieldWithPath("provider").description("소셜로그인 가입 플랫폼(GOOGLE,NAVER,KAKAO)").optional(),
+                                fieldWithPath("providerId").description("소셜로그인 pk").optional(),
+                                fieldWithPath("gender").description("성별"),
+                                fieldWithPath("useFlg").description("사용여부(0:사용 / 1:미사용)"),
+                                fieldWithPath("userGrade").description("회원등급(0: 관리자, 2: 정회원)"),
+                                fieldWithPath("accessToken").description("액세스 토큰")
                         )
                         )
                 )
@@ -156,7 +155,7 @@ public class UsercontrollerTest extends RestDocsSupport {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(content))
                 )
-                .andExpect(jsonPath("$.code").value("R02"))
+                .andExpect(jsonPath("$.code").value("P02"))
         ;
     }
 
@@ -184,7 +183,8 @@ public class UsercontrollerTest extends RestDocsSupport {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
                 )
-                .andExpect(jsonPath("$.code").value("R01"))
+                .andExpect(jsonPath("$.code").value("P01"))
+
         ;
     }
 
@@ -199,7 +199,15 @@ public class UsercontrollerTest extends RestDocsSupport {
         mockMvc.perform(get("/user/get/userNo/"+id)
                         .with(csrf()) //403에러 해결
                 )
-                .andExpect(jsonPath("$.code").value("R01"))
+                .andExpect(jsonPath("$.code").value("P01"))
+                .andDo(restDocs.document(
+                        responseFields(
+                                fieldWithPath("code").description("내용"),
+                                fieldWithPath("msg").description("메시지"),
+                                fieldWithPath("errors[].field").description("문제된 필드명"),
+                                fieldWithPath("errors.[]message").description("필드에 대한 에러메시지")
+                        )
+                ))
         ;
     }
 }

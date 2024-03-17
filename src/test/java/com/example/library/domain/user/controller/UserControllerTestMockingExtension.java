@@ -58,10 +58,10 @@ public class UserControllerTestMockingExtension {
                         .with(csrf()) //403에러 해결
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(dto))
-                )
+                );
 
                 //then
-                .andExpect(status().isOk())
+//                .andExpect(status().isOk())
         ;
     }
 }

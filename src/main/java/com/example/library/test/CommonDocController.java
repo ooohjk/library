@@ -44,6 +44,7 @@ public class CommonDocController {
         map.put("code","0");
         map.put("msg","OK");
         map.put("data","데이터");
+        map.put("errors","검증실패에 대한 상세 desc");
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }

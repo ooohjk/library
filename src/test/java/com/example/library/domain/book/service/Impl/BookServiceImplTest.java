@@ -2,6 +2,7 @@ package com.example.library.domain.book.service.Impl;
 
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.repository.BookRepository;
+import com.example.library.global.utils.DateUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,12 @@ class BookServiceImplTest {
     @Test
     @DisplayName("도서 생성 시 도서날짜 자동기입")
     void 도더생성시_기입날짜_자동생성(){
+        String uniqueIsbn = DateUtil.getDate()+DateUtil.getTime();
+
         BookEntity book  =
                 BookEntity.builder()
                         .bookName("테스트책1")
-                        .isbn("1234")
+                        .isbn(uniqueIsbn)
                         .bookAuthor("저자1")
                         .bookImage("http://asd.com")
                         .bookContent("책 내용")
