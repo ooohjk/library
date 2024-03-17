@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.3'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"  // (1)
 }
 
 group = 'com.example'
@@ -12,6 +13,8 @@ java {
 }
 
 configurations {
+	asciidoctorExt // (2)
+
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
@@ -32,18 +35,58 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.2.0'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-	// https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
 	implementation 'javax.persistence:javax.persistence-api:2.2'
-	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
 	implementation 'mysql:mysql-connector-java:8.0.33'
-	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	implementation 'org.json:json:20160810'
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-	//2023.03.04 oauth로그인 위하여 추가 by son
+	//2023.03.04 for OAuth2 추가 by son
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.security:spring-security-oauth2-client'
+
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor' // (3) asciidoctor: adoc파일을 html등과 같은 파일로 파싱해주는 역할을 해주는 coverter
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // (4)
+
+	//2023.03.17 for Validation by son
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+}
+
+ext {
+	snippetsDir = file('build/generated-snippets') // (5) snippetsDir 설정하기
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+	outputs.dir snippetsDir // (6)
+}
+
+asciidoctor {
+	configurations 'asciidoctorExt' // (7)
+	baseDirFollowsSourceFile() // (8)
+	inputs.dir snippetsDir // (9)
+	dependsOn test // (10)
+}
+
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')  // (11)
+}
+
+task copyDocument(type: Copy) { // (12)
+	dependsOn asciidoctor
+	from file("build/docs/asciidoc")
+	into file("src/main/resources/static/docs")
+}
+
+build {
+	dependsOn copyDocument
 }
 
 tasks.named('test') {

@@ -1,0 +1,37 @@
+< AWS서버 배포방법 및 유지관리 >	by. Oh Jae Kyeong - 240312
+
+(나같은 경우는 MobaXterm 프로그램 이용해서 서버 접속함. 이 경우를 기반으로 설명함.)
+
+1. MobaXterm 실행후 좌측 상단에 session 접속 클릭.
+
+2. SSH 클릭후 Remote host 에 aws 퍼블릭 ipv4 dns 주소 입력, Specify username 에는 ubuntu 입력,
+   하단에 Advanced SSH settings 클릭 > Use private key 체크하고 pem키 사용후 OK버튼 클릭.
+
+3. 관리자 권한으로 사용하기 위해 명령어 'sudo su -' 입력.
+
+4. 현재는 Docker 설치와 docker-compose 설치까지 진행된 상태이므로 생략함.
+
+5. 기초 설정 (프로젝트 경로는 /home/library)
+
+	5-1. git 에다가 올린 프로젝트 git pull 후 (또는 git clone) 빌드진행.
+
+	5-2. resoucre 경로에 properties 없어서 폴더 만들고 개인적으로 생성해야함. ( datasource, mail, oauth2 )
+
+	5-3. datasource.properties 에서 mysql-url 은 localhost가 아닌 인스턴스 주소(퍼블릭 ipv4 dns)를 입력해야함. port는 3306
+	     ( spring.datasource.url=jdbc:mysql://ec2-3-25-103-109.ap-southeast-2.compute.amazonaws.com:3306/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true ) < 이건 내 설정
+
+	5-4. /home/library 경로에서 'sh gradlew' 명령어 실행 후 'sh gradlew build' 명령어 실행
+
+	5-5. 경로에 있는 Dockerfile을 이용해 도커이미지 추출. 'docker build -t library .' 명령어 실행 (맨 뒤에 . 붙여야함)
+
+	5-6. docker images 명령어를 통해 추출된 이미지 확인
+
+6. /home/docker/docker_compose 경로에 docker-compose.yml 확인 후 실행. 
+(그 전에 'docker ps' 명령어로 컨테이너 확인) > 컴포즈 실행 명령어는 'docker-compose up -d', 실행 중단 명령어는 'docker-compose down'
+
+7. 컨테이너 구동 확인 후 해당 컨테이너 이미지를 파일로 보관하고 싶을땐 /home/docker/images 경로로 이동.
+
+8. docker save -o {이미지파일을 저장할 경로/이미지이름.tar} {이미지이름:태그} 명령어 수행. (뒤에 태그 안붙이면 기본값으로 latest 로 인식됨.)
+( 예를들어, docker save -o /home/docker/images/library.tar library:latest 실행하면 /home/docker/images 경로에 library.tar 파일 생성)
+
+9. 나중에 이미지파일 압축해제 하고싶으면 'docker load < {이미지파일.tar}' 명령어 실행.
