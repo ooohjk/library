@@ -23,7 +23,6 @@ import java.util.List;
 @Builder(builderMethodName ="createOfficialUser",builderClassName = "createOfficialUser")
 @Table(name = "user")
 @DynamicInsert
-@ToString
 public class UserEntity extends ModifiedEntity {
 
     @Id

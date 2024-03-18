@@ -2,6 +2,8 @@ package com.example.library.domain.user.service.Impl;
 
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.service.BookService;
+import com.example.library.domain.rent.application.RentService;
+import com.example.library.domain.rent.application.RentServiceImpl;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.domain.review.repository.ReviewRepository;
 import com.example.library.domain.user.dto.*;
@@ -45,6 +47,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
+    private final RentService rentService;
     private final BookService bookService;
     private final UserRepository userRepository;
     private final HeartRepository heartRepository;
@@ -53,7 +56,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional(rollbackFor = MailSendException.class)
+    @Transactional
     public void join(UserJoinReqDto userJoinReqDto) {
         userRepository.findByUserId(userJoinReqDto.getUserId()).ifPresent(user -> {
             throw new UserIdDuplicateException(ErrorCode.USERID_DUPLICATED);
@@ -70,10 +73,12 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
                 .userGrade(UserGrade.OFFICIALMEMBER)
                 .build()
         ;
+
         userRepository.save(user);
+        rentService.createRentManager(user.getUserNo());
 
         try { // 정상 발송 > 통과
-            sendMail.send("join", userJoinReqDto.getEmail(), userJoinReqDto.getUserName());
+//            sendMail.send("join", userJoinReqDto.getEmail(), userJoinReqDto.getUserName());
         } catch (MailSendException e) { // 미발송 > 롤백
             throw new UserMailSendFailException(ErrorCode.MAIL_SEND_FAIL);
         }
@@ -248,6 +253,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     }
 
     @Override
+    @Transactional
     public void registerHeartBook(UserHeartBookReqDto userHeartBookReqDto) {
         Long userNo = userHeartBookReqDto.getUserNo();
         Long bookCode = userHeartBookReqDto.getBookCode();
@@ -263,10 +269,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
                     .user(selectedUser)
                     .build()
                 ;
-//        아래 두 라인 없어도 heartRepository에 저장은 되나 아래와 같은 문제가 있다.
-//        selectedUser.heartBook(heart);   // 해당 객체의 heartList에 새로운 heart엔티티가 추가되지 않는 문제.. 즉, 정합성 문제 발생
-//        userRepository.save(selectedUser); // 이건 모르겠다.
-
+        selectedUser.heartBook(heart);   // 해당 객체의 heartList에 새로운 heart엔티티가 추가되지 않는 문제.. 즉, 정합성 문제 발생
         heartRepository.save(heart);
         log.info("유저번호["+userNo +"] / 도서번호["+bookCode+"] 찜 성공");
     }
