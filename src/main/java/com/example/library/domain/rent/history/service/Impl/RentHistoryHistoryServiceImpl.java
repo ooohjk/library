@@ -1,11 +1,11 @@
-package com.example.library.domain.rent_history.service.Impl;
+package com.example.library.domain.rent.history.service.Impl;
 
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.repository.BookRepository;
-import com.example.library.domain.rent_history.dto.RentHistoryDto;
-import com.example.library.domain.rent_history.entity.RentHistoryEntity;
-import com.example.library.domain.rent_history.repository.RentHistoryRepository;
-import com.example.library.domain.rent_history.service.RentHistoryService;
+import com.example.library.domain.rent.history.dto.RentHistoryDto;
+import com.example.library.domain.rent.history.entity.RentHistoryEntity;
+import com.example.library.domain.rent.history.repository.RentHistoryRepository;
+import com.example.library.domain.rent.history.service.RentHistoryService;
 import com.example.library.domain.user.repository.UserRepository;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.BookNotFoundException;

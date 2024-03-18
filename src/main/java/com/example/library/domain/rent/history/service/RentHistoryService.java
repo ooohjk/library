@@ -1,6 +1,6 @@
-package com.example.library.domain.rent_history.service;
+package com.example.library.domain.rent.history.service;
 
-import com.example.library.domain.rent_history.dto.RentHistoryDto;
+import com.example.library.domain.rent.history.dto.RentHistoryDto;
 
 import java.text.ParseException;
 import java.util.List;

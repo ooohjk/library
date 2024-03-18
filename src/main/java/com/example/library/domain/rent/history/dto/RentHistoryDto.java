@@ -1,6 +1,6 @@
-package com.example.library.domain.rent_history.dto;
+package com.example.library.domain.rent.history.dto;
 
-import com.example.library.domain.rent_history.entity.RentHistoryEntity;
+import com.example.library.domain.rent.history.entity.RentHistoryEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 

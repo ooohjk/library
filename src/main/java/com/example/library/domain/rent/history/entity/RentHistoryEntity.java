@@ -1,4 +1,4 @@
-package com.example.library.domain.rent_history.entity;
+package com.example.library.domain.rent.history.entity;
 
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.user.entity.UserEntity;

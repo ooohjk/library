@@ -1,7 +1,7 @@
-package com.example.library.domain.rent_history.controller;
+package com.example.library.domain.rent.history.controller;
 
-import com.example.library.domain.rent_history.dto.RentHistoryDto;
-import com.example.library.domain.rent_history.service.RentHistoryService;
+import com.example.library.domain.rent.history.dto.RentHistoryDto;
+import com.example.library.domain.rent.history.service.RentHistoryService;
 import com.example.library.exception.ErrorCode;
 import com.example.library.global.response.ApiResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,6 +1,6 @@
 package com.example.library.domain.book.entity;
 
-import com.example.library.domain.rent_history.entity.RentHistoryEntity;
+import com.example.library.domain.rent.history.entity.RentHistoryEntity;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.global.listener.Entity.ModifiedEntity;
 import jakarta.persistence.*;
