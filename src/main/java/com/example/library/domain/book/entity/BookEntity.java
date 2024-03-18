@@ -1,5 +1,6 @@
 package com.example.library.domain.book.entity;
 
+import com.example.library.domain.rent_history.entity.RentHistoryEntity;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.global.listener.Entity.ModifiedEntity;
 import jakarta.persistence.*;
@@ -21,6 +22,7 @@ import java.util.List;
 @DynamicInsert
 @Table(name = "book")
 public class BookEntity extends ModifiedEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -55,4 +57,7 @@ public class BookEntity extends ModifiedEntity {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<ReviewEntity> review = new ArrayList<>();
+
+    @OneToMany(mappedBy = "book")
+    private List<RentHistoryEntity> rentHistory = new ArrayList<>();
 }

@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
 public class DateFormatListener {
 
     @PrePersist
-    public void prePersist(Object obj){
+    public void prePersist(Object obj) {
         BaseEntity baseEntity = (BaseEntity) obj;
         baseEntity.setCreatedDt(DateUtil.getDate());
         baseEntity.setCreatedTm(DateUtil.getTime());
     }
 
     @PreUpdate
-    public void preUpdate(Object obj){
+    public void preUpdate(Object obj) {
         ModifiedEntity modifiedEntity = (ModifiedEntity) obj;
         modifiedEntity.setModifiedDt(DateUtil.getDate());
         modifiedEntity.setModifiedTm(DateUtil.getTime());

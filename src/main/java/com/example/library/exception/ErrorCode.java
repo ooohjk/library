@@ -23,10 +23,13 @@ public enum ErrorCode {
     HEARTBOOK_EMPTY("H01","찜한 도서가 없습니다."),
     HEARTNO_NOT_FOUND("H02","존재하지 않는 찜번호입니다. 찜번호를 확인해주세요."),
     HEARTBOOK_ALREADY("H03","이미 찜한 도서입니다."),
+
     //Book
     BOOKNAME_NOT_FOUND("B01","존재하지 않는 책이름입니다. 다시 확인해주세요."),
     BOOKAUTHOR_NOT_FOUND("B02","존재하지 않는 저자입니다. 다시 확인해주세요."),
     BOOKCODE_NOT_FOUND("B03","존재하지 않는 책번호입니다. 다시 확인해주세요."),
+    BOOK_ALREADY_RETURN("B04", "이미 반납한 도서입니다."),
+    BOOK_ALREADY_RENT("B05", "해당 도서는 이미 대여중입니다."),
 
     //Mail
     MAIL_NOT_FOUND("M01", "존재하지 않는 메일주소입니다. 메일주소를 확인해주세요."),
@@ -38,6 +41,9 @@ public enum ErrorCode {
     //Parameter
     PARAMETER_FORMAT_INVALID("P01", "인입필드 형식 또는 타입이 올바르지 않습니다. 에러 필드 내 상세 사유를 확인해주세요."),
     PARAMETER_FIELD_INVALID("P02", "JSON 파싱 실패하였습니다. JSON데이터를 확인해주세요."),
+
+    //RentHistory
+    ALREADY_EXTENSION("RH01", "이미 대여기간을 연장하였습니다.")
     ;
 
     private String code;

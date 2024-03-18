@@ -1,30 +1,29 @@
-package com.example.library.domain.rent.entity;
+package com.example.library.domain.rent_history.entity;
 
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class RentEntity {
+@Table(name = "rentHistory")
+@Builder
+public class RentHistoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rentNo;
 
-    @Column(nullable = false)
-    @OneToMany
+    @ManyToOne()
+    @JoinColumn(nullable = false, name = "userNo")
     private UserEntity user;
 
-    @Column(nullable = false)
-    @OneToOne
+    @ManyToOne()
+    @JoinColumn(nullable = false, name = "bookCode")
     private BookEntity book;
 
     @Column(nullable = false)
@@ -39,6 +38,6 @@ public class RentEntity {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean extension;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "integer default 0")
     private Integer rentState;
 }
