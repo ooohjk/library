@@ -1,5 +1,7 @@
 package com.example.library.domain.book.entity;
 
+import com.example.library.domain.book.entity.converter.BookStateConverter;
+import com.example.library.domain.book.enums.BookState;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.global.listener.Entity.ModifiedEntity;
 import jakarta.persistence.*;
@@ -36,7 +38,8 @@ public class BookEntity extends ModifiedEntity {
     private String bookContent;
 
     @Column(nullable = false)
-    private Integer bookState;
+    @Convert(converter = BookStateConverter.class)
+    private BookState bookState;
 
     @Column(nullable = false)
     private String bookPublisher;
@@ -55,4 +58,19 @@ public class BookEntity extends ModifiedEntity {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<ReviewEntity> review = new ArrayList<>();
+
+    public boolean isRentAvailableBook(){
+        return bookState==BookState.RENT_AVAILABLE;
+    }
+
+    public void rentSuc(){
+        changeRentUnavailable();
+    }
+    private void changeRentUnavailable(){
+        setBookState(BookState.RENT_UNAVAILABLE);
+    }
+
+    private void changeRentAvailable(){
+        setBookState(BookState.RENT_AVAILABLE);
+    }
 }

@@ -29,7 +29,7 @@ public class BookSimpleDto {
     private BookSimpleDto(BookEntity book) {
         this.bookName = book.getBookName();
         this.bookAuthor = book.getBookAuthor();
-        this.bookState = book.getBookState();
+        this.bookState = book.getBookState().getStateNum();
         this.pubDate = book.getPubDate();
         this.bookImage = book.getBookImage();
     }

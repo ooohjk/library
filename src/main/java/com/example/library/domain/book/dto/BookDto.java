@@ -49,7 +49,7 @@ public class BookDto {
         this.bookName = book.getBookName();
         this.bookAuthor = book.getBookAuthor();
         this.bookContent = book.getBookContent();
-        this.bookState = book.getBookState();
+        this.bookState = book.getBookState().getStateNum();
         this.bookPublisher = book.getBookPublisher();
         this.isbn = book.getIsbn();
         this.pubDate = book.getPubDate();

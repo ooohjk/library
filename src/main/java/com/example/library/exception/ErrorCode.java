@@ -27,6 +27,9 @@ public enum ErrorCode {
     BOOKNAME_NOT_FOUND("B01","존재하지 않는 책이름입니다. 다시 확인해주세요."),
     BOOKAUTHOR_NOT_FOUND("B02","존재하지 않는 저자입니다. 다시 확인해주세요."),
     BOOKCODE_NOT_FOUND("B03","존재하지 않는 책번호입니다. 다시 확인해주세요."),
+    BOOKSTATE_NOT_FOUND("B04","존재하지 않는 도서 상태 번호 입니다.")
+    ,
+
 
     //Mail
     MAIL_NOT_FOUND("M01", "존재하지 않는 메일주소입니다. 메일주소를 확인해주세요."),
@@ -38,6 +41,13 @@ public enum ErrorCode {
     //Parameter
     PARAMETER_FORMAT_INVALID("P01", "인입필드 형식 또는 타입이 올바르지 않습니다. 에러 필드 내 상세 사유를 확인해주세요."),
     PARAMETER_FIELD_INVALID("P02", "JSON 파싱 실패하였습니다. JSON데이터를 확인해주세요."),
+
+    //Rent
+    RENTMANAGER_USERNO_NOT_FOUND("R96","해당 유저번호에 해당하는 대여매니저가 존재하지 않습니다. 대여 매니저 확인 바랍니다."),
+    BOOK_ON_RENT("R97","현재 대여 중인 도서입니다."),
+    EXCEED_MAXIMUN_RENT_NUMBER("R98","도서 대여 가능 권수 초과하였습니다."),
+    OVERDUE_USER("R98","연체 대상자이므로 대여 불가합니다."),
+    RENTSTATE_NOT_FOUND("R99","존재하지 않는 렌트상태번호 입니다.")
     ;
 
     private String code;

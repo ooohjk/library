@@ -1,13 +1,12 @@
 package com.example.library.config;
 
-import com.example.library.global.security.login.filter.JwtFilter;
 import com.example.library.domain.user.enums.UserGrade;
 import com.example.library.domain.user.service.UserService;
+import com.example.library.global.security.login.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,7 +18,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -43,7 +41,7 @@ public class SecurityConfig {
                         auth
                             .requestMatchers("/user/login", "/user/join").permitAll()
                             .requestMatchers("/admin/**").hasAuthority(UserGrade.ADMIN.getUserGradeInString())
-                            .requestMatchers("/user/**", "/review/write/**").hasAuthority(UserGrade.OFFICIALMEMBER.getUserGradeInString())
+                            .requestMatchers("/user/**", "/review/write/**,/rent/**").hasAuthority(UserGrade.OFFICIALMEMBER.getUserGradeInString())
                             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/docs/**","/error-code/**", "/book/**", "/review/**").permitAll()
                             .requestMatchers(HttpMethod.GET).permitAll()
                             .requestMatchers(HttpMethod.POST).permitAll()
