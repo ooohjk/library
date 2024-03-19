@@ -140,4 +140,12 @@ public class BookServiceImpl implements BookService {
         log.info("도서 상태 변경 완료");
     }
 
+    @Override
+    public void returnSuc(Long bookNo){
+        BookEntity selectedBook = getBookDetail(bookNo);
+        selectedBook.returnSuc();
+
+        log.info("도서 상태 변경 완료");
+    }
+
 }

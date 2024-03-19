@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface RentManagerRepository extends JpaRepository<RentManagerEntity,Long> {
     Optional<RentManagerEntity> findByUserNo(Long userNo);
+    RentManagerEntity getByUserNo(Long userNo);
+
 }

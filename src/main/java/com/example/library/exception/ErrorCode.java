@@ -47,7 +47,10 @@ public enum ErrorCode {
     BOOK_ON_RENT("R97","현재 대여 중인 도서입니다."),
     EXCEED_MAXIMUN_RENT_NUMBER("R98","도서 대여 가능 권수 초과하였습니다."),
     OVERDUE_USER("R98","연체 대상자이므로 대여 불가합니다."),
-    RENTSTATE_NOT_FOUND("R99","존재하지 않는 렌트상태번호 입니다.")
+    RENTSTATE_NOT_FOUND("R99","존재하지 않는 렌트상태번호 입니다."),
+
+    //Return
+    BOOK_NOT_FOUND_AMONG_BOOKS_ON_RENT("L01","대여 중인 도서 중 해당 도서는 존재하지 않습니다.대여한 책이 맞는지 확인 바랍니다.")
     ;
 
     private String code;

@@ -3,9 +3,13 @@ package com.example.library.domain.rent.infrastructure;
 import com.example.library.domain.rent.RentState;
 import com.example.library.global.utils.DateUtil;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "rent_history")
 public class RentHistoryEntity {
 

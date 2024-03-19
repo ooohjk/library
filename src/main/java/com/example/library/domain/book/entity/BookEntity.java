@@ -70,6 +70,9 @@ public class BookEntity extends ModifiedEntity {
         setBookState(BookState.RENT_UNAVAILABLE);
     }
 
+    public void returnSuc(){
+        changeRentAvailable();
+    }
     private void changeRentAvailable(){
         setBookState(BookState.RENT_AVAILABLE);
     }

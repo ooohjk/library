@@ -1,11 +1,15 @@
 package com.example.library.domain.rent.application;
 
 import com.example.library.domain.book.service.BookService;
+import com.example.library.domain.rent.RentState;
+import com.example.library.domain.rent.domain.RentHistory;
 import com.example.library.domain.rent.domain.RentManager;
+import com.example.library.domain.rent.infrastructure.RentHistoryEntity;
 import com.example.library.domain.rent.infrastructure.RentHistoryRepository;
 import com.example.library.domain.rent.infrastructure.RentManagerEntity;
 import com.example.library.domain.rent.infrastructure.RentManagerRepository;
 import com.example.library.exception.ErrorCode;
+import com.example.library.exception.exceptions.BookOnRentException;
 import com.example.library.exception.exceptions.RentManagerNotFoudException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +45,7 @@ public class RentServiceImpl implements RentService{
 
         rentManager.checkRentAvailable();
         bookService.checkRentAvailable(bookNo);
-        rentManager.rent(bookNo); // 대여권수 필드 변경
+        rentManager.rentBook(bookNo); // 대여권수 필드 변경
         bookService.rentSuc(bookNo); //bookState DB 변경이벤트 발생 -> 쓰기영역에 저장 / 커밋 전
 
         rentManagerRepository.save(rentManager.toOldEntity());
@@ -49,6 +53,7 @@ public class RentServiceImpl implements RentService{
 
         log.info("[rentBook] 도서 대여 성공"); //커밋 진행
     }
+
 
     private RentManagerEntity getRentManagerByUserNo(Long userNo){
         log.info(String.format("rent Manager 조회 요청 - userNo[%s]",userNo.toString()));
@@ -58,4 +63,33 @@ public class RentServiceImpl implements RentService{
                 ;
     }
 
+    private RentHistoryEntity getBookOnRentHistoryOfUser(Long managerNo,Long bookNo){
+        log.info(String.format("rent History 조회 요청 - managerNo[%s]",managerNo.toString()));
+
+        return  rentHistoryRepository.findByManagerNoAndBookNoAndRentState(managerNo,bookNo, RentState.ON_RENT)
+                .orElseThrow(()->new BookOnRentException(ErrorCode.BOOK_NOT_FOUND_AMONG_BOOKS_ON_RENT));
+    }
+
+    
+    //반납에 집중
+    @Override
+    @Transactional
+    public void returnBook(Long userNo, Long bookNo) {
+        log.info(String.format("[return] 도서 반납 요청: 유저번호[%s]/도서번호[%s]",userNo.toString(),bookNo.toString()));
+
+        RentManager rentManager = RentManager.from(getRentManagerByUserNo(userNo));
+        RentHistory rentHistory = RentHistory.from(getBookOnRentHistoryOfUser(rentManager.getManagerNo(),bookNo));
+
+
+        //연체반납인지 , 정상반납인지
+        rentManager.returnBook(rentHistory);
+
+        //도서 상태 변경
+        bookService.returnSuc(bookNo); //bookState DB 변경이벤트 발생 -> 쓰기영역에 저장 / 커밋 전
+
+        rentManagerRepository.save(rentManager.toOldEntity());
+        rentHistoryRepository.save(rentHistory.toOldEntity());
+
+        log.info("[return] 도서 반납 성공");
+    }
 }

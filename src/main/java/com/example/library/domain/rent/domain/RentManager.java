@@ -4,6 +4,7 @@ import com.example.library.domain.rent.infrastructure.RentManagerEntity;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.ExceedMaximumRentNumberException;
 import com.example.library.exception.exceptions.OverdueUserException;
+import com.example.library.global.utils.DateUtil;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +22,21 @@ public class RentManager {
     private Long userNo;
     private int currentRentNumber;
     private boolean overdue;
-    private List<RentHistory> rentHistoryList=new ArrayList<>();
+    private List<RentHistory> rentHistoryList=new ArrayList<>(); //이게 필요한가?
 
-    public void rent(Long bookNo){
+    public void rentBook(Long bookNo){
         plusCurrentRentNumber();
         createRentHistory(bookNo);
     }
 
     private void plusCurrentRentNumber(){
         currentRentNumber=currentRentNumber+1;
+
+        log.info(String.format("대여 후 현재 대여 중인 권수: [%s]",String.valueOf(currentRentNumber)));
+    }
+
+    private void minusCurrentRentNumber(){
+        currentRentNumber=currentRentNumber-1;
 
         log.info(String.format("대여 후 현재 대여 중인 권수: [%s]",String.valueOf(currentRentNumber)));
     }
@@ -72,6 +79,12 @@ public class RentManager {
         }
 
         log.info(String.format("해당 유저는 최대 대여 가능 권수 내입니다. 현재 대여권수[%s] / 최대 가능 권수[%s]",String.valueOf(currentRentNumber),String.valueOf(maximumRentNumber)));
+    }
+
+
+    public void returnBook(RentHistory rentHistory){
+        rentHistory.returnBook();
+        minusCurrentRentNumber();
     }
 
     
