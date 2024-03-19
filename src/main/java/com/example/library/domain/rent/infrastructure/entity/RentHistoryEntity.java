@@ -1,13 +1,15 @@
-package com.example.library.domain.rent.infrastructure;
+package com.example.library.domain.rent.infrastructure.entity;
 
 import com.example.library.domain.rent.RentState;
-import com.example.library.global.utils.DateUtil;
+import com.example.library.domain.rent.infrastructure.entity.converter.RentStateConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "rent_history")
@@ -18,8 +20,8 @@ public class RentHistoryEntity {
     private Long historyNo;
 
     private Long managerNo;
-//    private Long userNo;
 
+    private Long userNo;
 
     private Long bookNo;
 
@@ -33,13 +35,4 @@ public class RentHistoryEntity {
 
     @Convert(converter = RentStateConverter.class)
     private RentState rentState;
-
-    public RentHistoryEntity(Long managerNo, Long bookNo) {
-        this.managerNo=managerNo;
-        this.bookNo=bookNo;
-        this.rentDt = DateUtil.getDate();
-        this.haveToReturnDt = rentDt+6;  // 수정 필요
-        this.extensionFlg = false;
-        this.rentState=RentState.ON_RENT;
-    }
 }

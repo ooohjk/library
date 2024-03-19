@@ -1,4 +1,4 @@
-package com.example.library.domain.rent.infrastructure;
+package com.example.library.domain.rent.infrastructure.entity.converter;
 
 import com.example.library.domain.rent.RentState;
 import jakarta.persistence.AttributeConverter;

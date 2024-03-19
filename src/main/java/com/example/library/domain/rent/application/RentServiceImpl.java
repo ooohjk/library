@@ -3,15 +3,7 @@ package com.example.library.domain.rent.application;
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.service.BookService;
 import com.example.library.domain.rent.RentState;
-import com.example.library.domain.rent.domain.RentHistory;
-import com.example.library.domain.rent.domain.RentManager;
-import com.example.library.domain.rent.infrastructure.RentHistoryEntity;
-import com.example.library.domain.rent.infrastructure.RentHistoryRepository;
-import com.example.library.domain.rent.infrastructure.RentManagerEntity;
-import com.example.library.domain.rent.infrastructure.RentManagerRepository;
-import com.example.library.exception.ErrorCode;
-import com.example.library.exception.exceptions.BookOnRentException;
-import com.example.library.exception.exceptions.RentManagerNotFoudException;
+import com.example.library.domain.rent.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,17 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class RentServiceImpl implements RentService{
 
     private final BookService bookService;   //도서도메인 외부API라고 가정
-    private final RentManagerRepository rentManagerRepository;
-    private final RentHistoryRepository rentHistoryRepository;
+    private final RentRepository rentRepository;
 
     public void createRentManager(Long userNo){
         log.info(String.format("[createRentManager] rent Manager 생성: 유저번호[%s]",userNo.toString()));
 
         RentManager rentManager = RentManager.createRentManager()
-                    .userNo(userNo)
-                    .build()
+                .userNo(userNo)
+                .build()
                 ;
-        rentManagerRepository.save(rentManager.toNewEntity());
+        rentRepository.save(rentManager);
 
         log.info("[createRentManager] rent Manager 생성 완료");
     }
@@ -46,7 +37,7 @@ public class RentServiceImpl implements RentService{
 
         //이벤트로부터 북 도메인 가져옴
         BookEntity book = bookService.getBookDetail(bookNo);
-        RentManager rentManager = RentManager.from(getRentManagerByUserNo(userNo));
+        RentManager rentManager = rentRepository.findRentManagerByUserNo(userNo);
 
         //가능? 아래와 같이 rentManager 애그리거트에서 book 애그리거트 필드값으로 상태 검증이 가능한가?
 //        rentManager.rentBook(bookNo,book);
@@ -60,10 +51,7 @@ public class RentServiceImpl implements RentService{
         // 도메인 상태 변화를 알리기 위해 북API로 요청해야하기 때문에 유지
         bookService.rentSuc(bookNo); //외부API에 bookNo 넘겨주면 알아서 변경
 
-        //아래 두줄 도 하나의 repository처럼 보이게 합쳐야 한다.
-//      rentManagerRepository.save(rentManager);
-        rentManagerRepository.save(rentManager.toEntity());
-        rentHistoryRepository.save(rentManager.getRentHistory().toNewEntity());
+        rentRepository.save(rentManager);
 
         log.info("[rentBook] 도서 대여 성공"); //커밋 진행
     }
@@ -72,19 +60,15 @@ public class RentServiceImpl implements RentService{
     public void returnBook(Long userNo, Long bookNo) {
         log.info(String.format("[return] 도서 반납 요청: 유저번호[%s]/도서번호[%s]",userNo.toString(),bookNo.toString()));
 
-        RentManager rentManager = RentManager.from(getRentManagerByUserNo(userNo));
-        RentHistory rentHistory = RentHistory.from(getBookOnRentHistoryOfUser(rentManager.getManagerNo(),bookNo));
+        RentManager rentManager = rentRepository.findRentManagerWithRentedBookHistory(userNo,bookNo);
 
         //반납
-        rentManager.returnBook(rentHistory);
+        rentManager.returnBook();
 
         //외부API 통해 변경 진행
         bookService.returnSuc(bookNo);
 
-        //아래 두줄 도 하나의 repository처럼 보이게 합쳐야 한다.
-//       rentManagerRepository.save(rentManager);
-        rentManagerRepository.save(rentManager.toEntity());
-        rentHistoryRepository.save(rentHistory.toEntity());
+        rentRepository.save(rentManager);
 
         log.info("[return] 도서 반납 성공");
     }
@@ -94,32 +78,14 @@ public class RentServiceImpl implements RentService{
     public void extendBook(Long userNo,Long bookNo){
          log.info(String.format("[return] 도서 연장 요청: 유저번호[%s]/도서번호[%s]",userNo.toString(),bookNo.toString()));
 
-        RentManager rentManager = RentManager.from(getRentManagerByUserNo(userNo));
-        RentHistory rentHistory = RentHistory.from(getBookOnRentHistoryOfUser(rentManager.getManagerNo(),bookNo));
+        RentManager rentManager = rentRepository.findRentManagerWithRentedBookHistory(userNo,bookNo);
 
         // 만약 도서 예약이 존재했다면, 
         // 도서 연장했지만 도서예약이 잡혀있다면 거절내야 한다라는 요구사항 등판
-        rentManager.extendBook(rentHistory);
+        rentManager.extendBook();
 
-        //rentManagerRepository.save()로 구현 가능 확인해보기
-        rentHistoryRepository.save(rentHistory.toEntity());
+        rentRepository.save(rentManager);
 
         log.info("[return] 도서 연장 성공");
     }
-    private RentManagerEntity getRentManagerByUserNo(Long userNo){
-        log.info(String.format("rent Manager 조회 요청 - userNo[%s]",userNo.toString()));
-
-        return rentManagerRepository.findByUserNo(userNo)
-                .orElseThrow(()->new RentManagerNotFoudException(ErrorCode.RENTMANAGER_USERNO_NOT_FOUND))
-                ;
-    }
-    private RentHistoryEntity getBookOnRentHistoryOfUser(Long managerNo,Long bookNo){
-        log.info(String.format("rent History 조회 요청 - managerNo[%s]",managerNo.toString()));
-
-        return  rentHistoryRepository.findByManagerNoAndBookNoAndRentState(managerNo,bookNo, RentState.ON_RENT)
-                .orElseThrow(()->new BookOnRentException(ErrorCode.BOOK_NOT_FOUND_AMONG_BOOKS_ON_RENT));
-    }
-
-
-
 }

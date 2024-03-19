@@ -1,10 +1,7 @@
 package com.example.library.domain.rent.infrastructure;
 
-import com.example.library.domain.rent.RentState;
-import com.example.library.domain.rent.domain.RentManager;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.example.library.domain.rent.infrastructure.repository.SpringDataJpaRentHistoryRepository;
+import com.example.library.domain.rent.infrastructure.repository.SpringDataJpaRentManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,10 +11,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 class RentHistoryRepositoryTest {
 
     @Autowired
-    private RentHistoryRepository rentHistoryRepository;
+    private SpringDataJpaRentHistoryRepository springDataJpaRentHistoryRepository;
 
     @Autowired
-    private RentManagerRepository rentManagerRepository;
+    private SpringDataJpaRentManagerRepository springDataJpaRentManagerRepository;
 
 
 

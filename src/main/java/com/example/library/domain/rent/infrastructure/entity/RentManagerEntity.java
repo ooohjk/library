@@ -1,11 +1,16 @@
-package com.example.library.domain.rent.infrastructure;
+package com.example.library.domain.rent.infrastructure.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @Entity(name = "rent_manager")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,10 +30,4 @@ public class RentManagerEntity {
     private int currentRentNumber;
 
     private boolean overdueFlg;
-
-    public RentManagerEntity(Long userNo,int initialRentNumber){
-        this.userNo= userNo;
-        this.currentRentNumber = initialRentNumber;
-        this.overdueFlg=false;
-    }
 }
