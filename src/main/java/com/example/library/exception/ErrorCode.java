@@ -27,8 +27,10 @@ public enum ErrorCode {
     BOOKNAME_NOT_FOUND("B01","존재하지 않는 책이름입니다. 다시 확인해주세요."),
     BOOKAUTHOR_NOT_FOUND("B02","존재하지 않는 저자입니다. 다시 확인해주세요."),
     BOOKCODE_NOT_FOUND("B03","존재하지 않는 책번호입니다. 다시 확인해주세요."),
-    BOOKSTATE_NOT_FOUND("B04","존재하지 않는 도서 상태 번호 입니다.")
-    ,
+    BOOKSTATE_NOT_FOUND("B04","존재하지 않는 도서 상태 번호 입니다."),
+
+    //DateUtil
+    DATE_PARSE_ERROR("Y01","날짜 파싱에 실패하였습니다."),
 
 
     //Mail
