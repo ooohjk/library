@@ -16,7 +16,8 @@ public class UserJoinReqDto {
     private String userId;
 
     @NotNull
-    @Size(min = 6, max = 15, message = "이름은 6글자 이상, 15글자 이하로 입력해주세요.")
+//    @Size(min = 6, max = 15, message = "비밀번호는 6글자 이상, 15글자 이하로 입력해주세요.")
+    @Size(min = 4, max = 15, message = "비밀번호는 4글자 이상, 15글자 이하로 입력해주세요.") // 테스트용
     private String userPwd;
 
     @NotNull

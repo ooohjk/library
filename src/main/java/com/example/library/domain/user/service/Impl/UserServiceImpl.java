@@ -2,6 +2,8 @@ package com.example.library.domain.user.service.Impl;
 
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.service.BookService;
+import com.example.library.domain.rent.manager.entity.RentManagerEntity;
+import com.example.library.domain.rent.manager.repository.RentManagerRepository;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.domain.review.repository.ReviewRepository;
 import com.example.library.domain.user.dto.*;
@@ -49,6 +51,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     private final UserRepository userRepository;
     private final HeartRepository heartRepository;
     private final ReviewRepository reviewRepository;
+    private final RentManagerRepository rentManagerRepository;
     private final BCryptPasswordEncoder encoder;
     @PersistenceContext
     private EntityManager entityManager;
@@ -70,7 +73,15 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
                 .userGrade(UserGrade.OFFICIALMEMBER)
                 .build()
         ;
+        RentManagerEntity rentManager = RentManagerEntity.builder()
+                .user(user)
+                .overdue(false)
+                .rentNumber(0)
+                .lastReturnDt(null)
+                .build();
+
         userRepository.save(user);
+        rentManagerRepository.save(rentManager);
 
         try { // 정상 발송 > 통과
             sendMail.send("join", userJoinReqDto.getEmail(), userJoinReqDto.getUserName());

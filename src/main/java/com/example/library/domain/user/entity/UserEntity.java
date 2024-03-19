@@ -1,6 +1,7 @@
 package com.example.library.domain.user.entity;
 
 import com.example.library.domain.rent.history.entity.RentHistoryEntity;
+import com.example.library.domain.rent.manager.entity.RentManagerEntity;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.domain.user.entity.converter.SocialLoginTypeConverter;
 import com.example.library.domain.user.entity.converter.UserGradeConverter;
@@ -32,11 +33,10 @@ public class UserEntity extends ModifiedEntity {
     private Long userNo;
 
     @Column(nullable = false, unique = true)
-    @Size(min = 4, max = 15, message = "이름은 4글자 이상, 15글자 이하로 입력해주세요.")
+    @Size(min = 4, max = 15, message = "아이디는 4글자 이상, 15글자 이하로 입력해주세요.")
     private String userId;
 
     @Column(nullable = false)
-//    @Size(min = 6, max = 15, message = "이름은 6글자 이상, 15글자 이하로 입력해주세요.")
     private String userPwd;
 
     @Column(nullable = false)
@@ -73,6 +73,9 @@ public class UserEntity extends ModifiedEntity {
 
     @OneToMany(mappedBy = "user")
     private List<RentHistoryEntity> rentHistory = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user")
+    private RentManagerEntity rentManager;
 
     @Builder(builderMethodName = "createOAuth2User", builderClassName = "createOAuth2User")
     public UserEntity (String userId, String userPwd, String userEmail, String userName, String providerId, SocialLoginType provider, Integer useFlg) {

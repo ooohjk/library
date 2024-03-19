@@ -24,7 +24,7 @@ public class sendMail {
     public static void send(String event, String email, String name) {
         SimpleMailMessage message = new SimpleMailMessage();
         log.info("[Email] {}", email);
-        message.setFrom(email);
+        message.setFrom("reader_1@naver.com"); // 테스트용 내 메일주소
         message.setTo(email);
         message.setSubject(event.toUpperCase());
         message.setText(name + sendMailService.content(event));
