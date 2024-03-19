@@ -46,6 +46,7 @@ public enum ErrorCode {
     ALREADY_EXTENSION("RH01", "이미 대여기간을 연장하였습니다."),
     ALREADY_MAX_RENT("RH02", "한 사람당 두권까지 대여 가능합니다."),
     ALREADY_MIN_RETURN("RH03", "반납할 도서가 없습니다."),
+    EXTENSION_FAIL("RH04", "반납기간이 지나 연장을 할 수 없습니다."),
 
     //RentManager
     NOT_ALLOW_RENT("RM01", "연체 대상이므로 대여가 불가합니다.")

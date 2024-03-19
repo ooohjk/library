@@ -15,7 +15,6 @@ import com.example.library.domain.user.repository.HeartRepository;
 import com.example.library.domain.user.repository.UserRepository;
 import com.example.library.domain.user.service.UserService;
 import com.example.library.domain.user.service.dto.HeartResponseDto;
-import com.example.library.exception.AppException;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.*;
 import com.example.library.global.mail.sendMail;

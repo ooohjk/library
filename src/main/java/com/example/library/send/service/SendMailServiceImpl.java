@@ -1,7 +1,7 @@
 package com.example.library.send.service;
 
-import com.example.library.exception.AppException;
 import com.example.library.exception.ErrorCode;
+import com.example.library.exception.exceptions.UserMailSendFailException;
 import com.example.library.send.dto.SendMailResDto;
 import com.example.library.send.entity.SendMailEntity;
 import com.example.library.send.repository.SendMailRepository;
@@ -15,7 +15,7 @@ public class SendMailServiceImpl {
 
     public String content(String type) {
         SendMailEntity sendMailEntity = sendMailRepository.findByMailType(type)
-                .orElseThrow(() -> new AppException(ErrorCode.MAIL_NOT_FOUND));
+                .orElseThrow(() -> new UserMailSendFailException(ErrorCode.MAIL_NOT_FOUND));
 
         SendMailResDto sendMailResDto = new SendMailResDto(sendMailEntity.getMailContent());
         return sendMailResDto.getMailContent();

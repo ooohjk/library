@@ -8,19 +8,20 @@ import com.example.library.domain.rent.history.repository.RentHistoryRepository;
 import com.example.library.domain.rent.history.service.RentHistoryService;
 import com.example.library.domain.rent.manager.entity.RentManagerEntity;
 import com.example.library.domain.rent.manager.repository.RentManagerRepository;
+import com.example.library.domain.user.entity.UserEntity;
 import com.example.library.domain.user.repository.UserRepository;
 import com.example.library.exception.ErrorCode;
-import com.example.library.exception.exceptions.BookNotFoundException;
-import com.example.library.exception.exceptions.RentException;
-import com.example.library.exception.exceptions.UserNotFoundException;
-import com.example.library.exception.exceptions.UserOverdueException;
+import com.example.library.exception.exceptions.*;
+import com.example.library.global.mail.sendMail;
 import com.example.library.global.utils.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +56,8 @@ public class RentHistoryServiceImpl implements RentHistoryService {
     public RentHistoryDto add(Long userNo, Long bookCode) throws ParseException {
         BookEntity book = bookRepository.findByBookCode(bookCode)
                 .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKCODE_NOT_FOUND));
+        UserEntity user = userRepository.findByUserNo(userNo)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERNO_NOT_FOUND));
 
         RentManagerEntity rentManager = rentManagerRepository.findByUserUserNo(userNo); // 매니저에서 사용자 연체 여부 판단을 위한 데이터 불러오기
 
@@ -86,6 +89,12 @@ public class RentHistoryServiceImpl implements RentHistoryService {
             rentHistoryRepository.save(rentHistoryEntity);
             rentManagerRepository.save(rentManager);
 
+            try {
+                sendMail.send("rent", user.getUserEmail(), user.getUserName());
+            } catch (MailSendException e) {
+                throw new UserMailSendFailException(ErrorCode.MAIL_SEND_FAIL);
+            } // 도서 대여시 메일 발송
+
             return RentHistoryDto.info(rentHistoryEntity);
         } else if (book.getBookState() == 1) { // 책상태 : 대여 불가능
             throw new BookNotFoundException(ErrorCode.BOOK_ALREADY_RENT);
@@ -103,6 +112,8 @@ public class RentHistoryServiceImpl implements RentHistoryService {
                 .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKCODE_NOT_FOUND));
         RentHistoryEntity rentHistory = rentHistoryEntity.get(rentHistoryEntity.size() - 1);
         RentManagerEntity rentManager = rentManagerRepository.findByUserUserNo(userNo);
+        UserEntity user = userRepository.findByUserNo(userNo)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERNO_NOT_FOUND));
 
         if(book.getBookState() == 1 && rentManager.getRentNumber() > 0) { // 책상태 : 대여중인 상태, 유저 대여권수 > 0
             book.setBookState(0);
@@ -123,6 +134,12 @@ public class RentHistoryServiceImpl implements RentHistoryService {
                 rentManagerRepository.save(rentManager);
                 rentHistoryRepository.save(rentHistory);
 
+                try {
+                    sendMail.send("return", user.getUserEmail(), user.getUserName());
+                } catch (MailSendException e) {
+                    throw new UserMailSendFailException(ErrorCode.MAIL_SEND_FAIL);
+                } // 도서 반납시 메일 발송
+
                 return RentHistoryDto.info(rentHistory);
             } else { // 유저 : 반납o
                 throw new RentException(ErrorCode.BOOK_ALREADY_RETURN);
@@ -138,8 +155,10 @@ public class RentHistoryServiceImpl implements RentHistoryService {
     public RentHistoryDto extension(Long userNo, Long bookCode) throws ParseException {
         List<RentHistoryEntity> rentHistoryEntity = rentHistoryRepository.findAllByUserUserNoAndBookBookCode(userNo, bookCode);
         RentHistoryEntity rentHistory = rentHistoryEntity.get(rentHistoryEntity.size() - 1);
+        UserEntity user = userRepository.findByUserNo(userNo)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERNO_NOT_FOUND));
 
-        if(!rentHistory.getExtension()) {
+        if(!rentHistory.getExtension() && new Date().before(new SimpleDateFormat("yyyyMMdd").parse(rentHistory.getProspectDt()))) { // 연장x, 반납기간이 아직 안지났을 때
             rentHistory.setExtension(true);
             rentHistory.setProspectDt(
                     new SimpleDateFormat("yyyyMMdd").format(
@@ -152,9 +171,17 @@ public class RentHistoryServiceImpl implements RentHistoryService {
             );
             rentHistoryRepository.save(rentHistory);
 
+            try {
+                sendMail.send("extension", user.getUserEmail(), user.getUserName());
+            } catch (MailSendException e) {
+                throw new UserMailSendFailException(ErrorCode.MAIL_SEND_FAIL);
+            } // 기간 연장시 메일 발송
+
             return RentHistoryDto.info(rentHistory);
-        } else {
+        } else if (rentHistory.getExtension()) { // 연장을 이미 한 경우
             throw new RentException(ErrorCode.ALREADY_EXTENSION);
+        } else { // 반납기간이 지났을 때
+            throw new RentException(ErrorCode.EXTENSION_FAIL);
         }
     }
 }
