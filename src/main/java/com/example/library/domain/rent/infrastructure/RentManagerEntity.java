@@ -15,6 +15,8 @@ public class RentManagerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long managerNo;
 
+
+    //주기가 같으므로 연관매핑으로 진행 @OneToOne
     private Long userNo; //유저 삭제 시 RentManager도 제거 개발 필요
 
     //알필요가 없어보임

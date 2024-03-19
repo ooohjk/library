@@ -14,7 +14,6 @@ public interface BookService {
     void delete(Long bookCode);
     BookAddDto add(BookAddDto bookAddDto);
     BookEntity getBookDetail(Long bookCode);
-    void checkRentAvailable(Long bookNo);
     void rentSuc(Long bookNo);
     void returnSuc(Long bookNo);
 }

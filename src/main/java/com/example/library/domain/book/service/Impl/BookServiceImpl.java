@@ -11,7 +11,6 @@ import com.example.library.domain.review.repository.ReviewRepository;
 import com.example.library.domain.user.repository.HeartRepository;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.BookNotFoundException;
-import com.example.library.exception.exceptions.BookOnRentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -111,24 +110,6 @@ public class BookServiceImpl implements BookService {
 
         return bookRepository.findByBookCode(bookNo)
                 .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKCODE_NOT_FOUND));
-    }
-
-    @Override
-    public void checkRentAvailable(Long bookNo) {
-        log.info("[checkRentAvailable] 도서 대여 가능 여부 확인");
-
-        BookEntity selectedBook = getBookDetail(bookNo);
-
-        if(!selectedBook.isRentAvailableBook()){
-            log.error(String.format("해당 도서[%s]는 현재 대여 중인 도서입니다. 대여 상태 [%s]",
-                    bookNo.toString(),
-                    "대여 중")
-            );
-            throw new BookOnRentException(ErrorCode.BOOK_ON_RENT);
-        }
-
-        log.info(String.format("해당 도서[%s]는 대여 가능 도서입니다. 대여 상태 [%s]", bookNo.toString(),"사내 배치"));
-        log.info("[checkRentAvailable] 도서 대여 가능");
     }
 
     @Override

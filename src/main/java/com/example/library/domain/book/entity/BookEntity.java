@@ -3,9 +3,12 @@ package com.example.library.domain.book.entity;
 import com.example.library.domain.book.entity.converter.BookStateConverter;
 import com.example.library.domain.book.enums.BookState;
 import com.example.library.domain.review.entity.ReviewEntity;
+import com.example.library.exception.ErrorCode;
+import com.example.library.exception.exceptions.BookOnRentException;
 import com.example.library.global.listener.Entity.ModifiedEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Entity
 @Getter
 @Setter
@@ -75,5 +79,17 @@ public class BookEntity extends ModifiedEntity {
     }
     private void changeRentAvailable(){
         setBookState(BookState.RENT_AVAILABLE);
+    }
+
+    public void checkRentAvailable(){
+        log.info("[checkRentAvailable] 도서 대여 가능 여부 확인");
+
+        if(!isRentAvailableBook()){
+            log.error(String.format("해당 도서[%s]는 현재 대여 중인 도서입니다. 대여 상태 [%s]",bookCode.toString(),"대여 중"));
+            throw new BookOnRentException(ErrorCode.BOOK_ON_RENT);
+        }
+
+        log.info(String.format("해당 도서[%s]는 대여 가능 도서입니다. 대여 상태 [%s]", bookCode.toString(),"사내 배치"));
+        log.info("[checkRentAvailable] 도서 대여 가능");
     }
 }

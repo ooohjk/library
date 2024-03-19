@@ -50,9 +50,11 @@ public enum ErrorCode {
     RENTSTATE_NOT_FOUND("R99","존재하지 않는 렌트상태번호 입니다."),
 
     //Return
-    BOOK_NOT_FOUND_AMONG_BOOKS_ON_RENT("L01","대여 중인 도서 중 해당 도서는 존재하지 않습니다.대여한 책이 맞는지 확인 바랍니다.")
-    ;
+    BOOK_NOT_FOUND_AMONG_BOOKS_ON_RENT("L01","대여 중인 도서 중 해당 도서는 존재하지 않습니다.대여한 책이 맞는지 확인 바랍니다."),
 
+    //Extension
+    BOOK_EXTEND_NUMBER_EXCEED("E01","도서 연장 횟수 초과하여 연장 불가합니다.")
+    ;
     private String code;
     private String msg;
 }

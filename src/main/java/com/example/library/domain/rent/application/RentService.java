@@ -4,4 +4,5 @@ public interface RentService {
     public void createRentManager(Long userNo);
     public void rentBook(Long userNo,Long bookNo);
     public void returnBook(Long userNo,Long bookNo);
+    public void extendBook(Long userNo,Long bookNo);
     }
