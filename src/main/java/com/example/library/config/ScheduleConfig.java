@@ -32,24 +32,16 @@ public class ScheduleConfig {
             Long userNo = u.getUserNo();
             Boolean overdue = rentManagerRepository.findByUserUserNo(userNo) != null && rentManagerRepository.findByUserUserNo(userNo).getOverdue();
             if(map.size() != 0) {
-                if(!map.get(userNo) && overdue) { // 정상에서 연체로 바뀐 유저들 (연체등록) false & true
-                    try {
+                try {
+                    if(!map.get(userNo) && overdue) { // 정상에서 연체로 바뀐 유저들 (연체등록) false & true
                         sendMail.send("register", u.getUserEmail(), u.getUserName());
-                    } catch (MailSendException e) {
-                        throw new UserMailSendFailException(ErrorCode.MAIL_SEND_FAIL);
-                    }
-                } else if(map.get(userNo) && !overdue){ // 연체에서 정상으로 바뀐 유저들 (연체해제) true & false
-                    try {
+                    } else if(map.get(userNo) && !overdue) { // 연체에서 정상으로 바뀐 유저들 (연체해제) true & false
                         sendMail.send("clear", u.getUserEmail(), u.getUserName());
-                    } catch (MailSendException e) {
-                        throw new UserMailSendFailException(ErrorCode.MAIL_SEND_FAIL);
-                    }
-                } else if(map.get(userNo) && overdue) { // 연체에서 연체 그대로 (연체중) true & true
-                    try {
+                    } else if(map.get(userNo) && overdue) { // 연체에서 연체 그대로 (연체중) true & true
                         sendMail.send("overdue", u.getUserEmail(), u.getUserName());
-                    } catch (MailSendException e) {
-                        throw new UserMailSendFailException(ErrorCode.MAIL_SEND_FAIL);
                     }
+                } catch (MailSendException e) {
+                    throw new UserMailSendFailException(ErrorCode.MAIL_SEND_FAIL);
                 }
             }
         });
@@ -62,8 +54,6 @@ public class ScheduleConfig {
         user.forEach((u) -> {
             Long userNo = u.getUserNo();
             Boolean overdue = rentManagerRepository.findByUserUserNo(userNo) != null && rentManagerRepository.findByUserUserNo(userNo).getOverdue();
-//            log.info("[ScheduleConfig userNo] {}", userNo);
-//            log.info("[ScheduleConfig overdue] {}", overdue);
             map.put(userNo, overdue);
         });
     }
