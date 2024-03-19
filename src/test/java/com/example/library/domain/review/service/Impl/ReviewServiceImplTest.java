@@ -1,6 +1,7 @@
 package com.example.library.domain.review.service.Impl;
 
 import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.domain.book.enums.BookState;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.domain.review.repository.ReviewRepository;
 import com.example.library.domain.user.entity.UserEntity;
@@ -32,7 +33,7 @@ class ReviewServiceImplTest {
                         .bookPublisher("출판사1")
                         .bookLocation("A1")
                         .pubDate(new Date())
-                        .bookState(1)
+                        .bookState(BookState.RENT_AVAILABLE)
                         .build()
                 ;
         UserEntity user = UserEntity.createOfficialUser()

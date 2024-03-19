@@ -1,6 +1,7 @@
 package com.example.library.domain.book.service.Impl;
 
 import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.domain.book.enums.BookState;
 import com.example.library.domain.book.repository.BookRepository;
 import com.example.library.global.utils.DateUtil;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +32,7 @@ class BookServiceImplTest {
                         .bookPublisher("출판사1")
                         .bookLocation("A1")
                         .pubDate(new Date())
-                        .bookState(1)
+                        .bookState(BookState.RENT_AVAILABLE)
                         .build()
                 ;
         bookRepository.save(book);
