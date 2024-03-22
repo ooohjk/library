@@ -3,7 +3,7 @@ package com.example.library.domain.user.service.Impl;
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.service.BookService;
 import com.example.library.domain.rent.application.RentService;
-import com.example.library.domain.rent.application.RentServiceImpl;
+import com.example.library.domain.rent.domain.Events;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.domain.review.repository.ReviewRepository;
 import com.example.library.domain.user.dto.*;
@@ -15,10 +15,11 @@ import com.example.library.domain.user.repository.HeartRepository;
 import com.example.library.domain.user.repository.UserRepository;
 import com.example.library.domain.user.service.UserService;
 import com.example.library.domain.user.service.dto.HeartResponseDto;
-import com.example.library.exception.AppException;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.*;
-import com.example.library.global.mail.sendMail;
+import com.example.library.global.eventListener.SendedMailEvent;
+import com.example.library.global.mail.enums.MailType;
+import com.example.library.global.mail.mailHistory.MailDto;
 import com.example.library.global.security.oauth2.principal.CustomOAuth2User;
 import com.example.library.global.security.oauth2.userInfo.CustomOAuthAttributes;
 import com.example.library.global.utils.JwtUtil;
@@ -26,7 +27,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.MailSendException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -77,13 +77,10 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         userRepository.save(user);
         rentService.createRentManager(user.getUserNo());
 
-        try { // 정상 발송 > 통과
-//            sendMail.send("join", userJoinReqDto.getEmail(), userJoinReqDto.getUserName());
-        } catch (MailSendException e) { // 미발송 > 롤백
-            throw new UserMailSendFailException(ErrorCode.MAIL_SEND_FAIL);
-        }
+        Events.raise(new SendedMailEvent(new MailDto(user.getUserNo(), MailType.MAIL_JOIN)));
     }
 
+    @Transactional(readOnly = true)
     public UserLoginResDto login(UserLoginReqDto userLoginReqDto) {
         UserEntity selectedUser = userRepository.findByUserId(userLoginReqDto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERID_NOT_FOUND));
@@ -93,7 +90,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         }
 
         String token = JwtUtil.createJwt(selectedUser.getUserId());
-        sendMail.send("login", selectedUser.getUserEmail(), selectedUser.getUserName());
+        Events.raise(new SendedMailEvent(new MailDto(selectedUser.getUserNo(),MailType.MAIL_LOGIN)));
 
         return UserLoginResDto.from(selectedUser,token);
     }

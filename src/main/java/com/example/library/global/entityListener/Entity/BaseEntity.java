@@ -1,6 +1,6 @@
-package com.example.library.global.listener.Entity;
+package com.example.library.global.entityListener.Entity;
 
-import com.example.library.global.listener.DateFormatListener;
+import com.example.library.global.entityListener.DateFormatListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

@@ -1,6 +1,7 @@
 package com.example.library.domain.rent.domain;
 
 import com.example.library.domain.rent.infrastructure.entity.RentManagerEntity;
+import com.example.library.exception.AppException;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.ExceedMaximumRentNumberException;
 import com.example.library.exception.exceptions.ExtendNumberExceedException;
@@ -39,6 +40,8 @@ public class RentManager {
     public void rentBook(Long bookNo){
         checkRentAvailable();
         doRent(bookNo);
+//        Events.raise(new RentedSuccessEvent(bookNo));
+        //문제점) 만약 도서상태변경 실패하여도 도서대여는 진행된다.
     }
 
     public void returnBook(){

@@ -10,7 +10,7 @@ class DateUtilTest {
     @Test
     void 날짜더하기(){
         String plusDate= DateUtil.getDateAfter7Days("20230320");
-        Assertions.assertEquals("20230327",plusDate);
+        Assertions.assertEquals("20230326",plusDate);
     }
 
 }

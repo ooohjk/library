@@ -1,14 +1,12 @@
 package com.example.library.domain.user.entity;
 
 import com.example.library.domain.book.entity.BookEntity;
-import com.example.library.global.listener.Entity.BaseEntity;
+import com.example.library.global.entityListener.Entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 
 @Getter

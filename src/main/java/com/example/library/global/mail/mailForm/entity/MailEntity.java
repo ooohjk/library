@@ -1,4 +1,4 @@
-package com.example.library.send.entity;
+package com.example.library.global.mail.mailForm.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "mail")
-public class SendMailEntity {
+public class MailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mailNo;

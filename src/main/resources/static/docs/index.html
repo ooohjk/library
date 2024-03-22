@@ -462,7 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_로그인_http_request">HTTP request</a></li>
 <li><a href="#_로그인_request_fields">Request fields</a></li>
 <li><a href="#_로그인_http_response">HTTP response</a></li>
-<li><a href="#_로그인_response_fields">Response fields</a></li>
+<li><a href="#_로그인_response_fields-beneath-data">Response fields-beneath-data</a></li>
 </ul>
 </li>
 <li><a href="#_응답_공통_포맷">응답 공통 포맷</a>
@@ -473,6 +473,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_응답_코드">응답 코드</a>
 <ul class="sectlevel2">
 <li><a href="#_응답_코드_code_response-fields-beneath-errorCodes">Code response-fields-beneath-errorcodes</a></li>
+</ul>
+</li>
+<li><a href="#_실패_케이스_모음">실패 케이스 모음</a>
+<ul class="sectlevel2">
+<li><a href="#_실패_케이스_모음_response_fields">Response fields</a></li>
 </ul>
 </li>
 </ul>
@@ -486,14 +491,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="_회원가입_http_request"><a class="link" href="#_회원가입_http_request">HTTP request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /user/join?_csrf=enfwCJT5fwhNvh7Wsbvjxtlez6Oka_xYli_-3iwVHOeTXqQlHxTCPKXPTjlgiC-ziZbX87tv4sKUXsh1pUvMuE9xLtTwOpMV HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /user/join?_csrf=Erj3-pQvSLBrj9llyt8eJv2FtZtMw7JoOVGeCRp-_YyAlGSYJYiRzqJOcYBGvLgHqPIqQ8XgmKJ-oIpFDzOsbS9On-i3oFyq HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 178
+Content-Length: 182
 Host: localhost:8080
 
 {
   "userId" : "test",
-  "userPwd" : "1234",
+  "userPwd" : "12341234",
   "userName" : "테스트",
   "tel" : "01024168946",
   "email" : "sunghyun7895@naver.com",
@@ -581,11 +586,11 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 37
+Content-Length: 44
 
 {
-  "code" : "0",
-  "msg" : "OK"
+  "code" : "S00",
+  "msg" : "SUCCESS"
 }</code></pre>
 </div>
 </div>
@@ -632,7 +637,7 @@ Content-Length: 37
 <h3 id="_로그인_http_request"><a class="link" href="#_로그인_http_request">HTTP request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /user/login?_csrf=cUr-KEhZMPES5cwI4MIYA7sdc5n_UIxUUKcyWk9mqFwy3rrLRn3OSys7CZI_gfsxgu8sYt1_XvjLY-95YpIAOy0EnD4Au9n8 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /user/login?_csrf=glX-8PPsgUKmBkAGeT6TaNTI3tsGZ8uyQo8zImrYGCvm7hN2umHKyJXf4ySLMnA2SROnDOH78-MxX_6fcL4LQ1Poek3S1yAQ HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 48
 Host: localhost:8080
@@ -692,11 +697,11 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 501
+Content-Length: 508
 
 {
-  "code" : "0",
-  "msg" : "OK",
+  "code" : "S00",
+  "msg" : "SUCCESS",
   "data" : {
     "userNo" : 1,
     "userId" : "test",
@@ -715,7 +720,7 @@ Content-Length: 501
 </div>
 </div>
 <div class="sect2">
-<h3 id="_로그인_response_fields"><a class="link" href="#_로그인_response_fields">Response fields</a></h3>
+<h3 id="_로그인_response_fields-beneath-data"><a class="link" href="#_로그인_response_fields-beneath-data">Response fields-beneath-data</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -733,79 +738,67 @@ Content-Length: 501
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">응답코드</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>msg</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">응답메시지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.userNo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userNo</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">유저 번호</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.userName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.tel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tel</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">전화번호</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.userEmail</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userEmail</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.provider</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>provider</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">소셜로그인 가입 플랫폼(GOOGLE,NAVER,KAKAO)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.providerId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>providerId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">소셜로그인 pk</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.gender</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gender</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">성별</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.useFlg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>useFlg</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">사용여부(0:사용 / 1:미사용)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.userGrade</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userGrade</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">회원등급(0: 관리자, 2: 정회원)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.accessToken</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>accessToken</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
@@ -840,10 +833,6 @@ Content-Length: 501
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>msg</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">응답 메시지</p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">응답 데이터</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -867,8 +856,16 @@ Content-Length: 501
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>S00</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SUCCESS</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>A01</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">로그인 후 접근 바랍니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>A02</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">접근할 수 없는 권한입니다. 권한 확인 후 재접근 바랍니다.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>U01</code></p></td>
@@ -884,7 +881,19 @@ Content-Length: 501
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>U04</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">졵내하지 않는 유저번호입니다. 유저번호를 확인해주세요.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">존재하지 않는 유저번호입니다. 유저번호를 확인해주세요.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>H01</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">찜한 도서가 없습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>H02</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">존재하지 않는 찜번호입니다. 찜번호를 확인해주세요.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>H03</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미 찜한 도서입니다.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>B01</code></p></td>
@@ -899,8 +908,114 @@ Content-Length: 501
 <td class="tableblock halign-left valign-top"><p class="tableblock">존재하지 않는 책번호입니다. 다시 확인해주세요.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>B04</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">존재하지 않는 도서 상태 번호 입니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Y01</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">날짜 파싱에 실패하였습니다.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>M01</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">존재하지 않는 메일주소입니다. 메일주소를 확인해주세요.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>M02</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메일 발송을 실패하였습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>R01</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당도서의 리뷰가 없습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>P01</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">인입필드 형식 또는 타입이 올바르지 않습니다. 에러 필드 내 상세 사유를 확인해주세요.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>P02</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JSON 파싱 실패하였습니다. JSON데이터를 확인해주세요.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>R95</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">도서 대여 가능 권수 초과하였습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>R96</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당 유저번호에 해당하는 대여매니저가 존재하지 않습니다. 대여 매니저 확인 바랍니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>R97</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 대여 중인 도서입니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>R98</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">연체 대상자이므로 대여 불가합니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>R99</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">존재하지 않는 렌트상태번호 입니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>L01</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">대여 중인 도서 중 해당 도서는 존재하지 않습니다.대여한 책이 맞는지 확인 바랍니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>S01</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">서버 접속량이 많습니다. 잠시 후 재시도 부탁드립니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>E01</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">도서 연장 횟수 초과하여 연장 불가합니다.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_실패_케이스_모음"><a class="link" href="#_실패_케이스_모음">실패 케이스 모음</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_실패_케이스_모음_response_fields"><a class="link" href="#_실패_케이스_모음_response_fields">Response fields</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수 여부</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>msg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>errors[].field</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">문제된 필드명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>errors.[]message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">필드에 대한 에러메시지</p></td>
 </tr>
 </tbody>
 </table>
@@ -911,7 +1026,7 @@ Content-Length: 501
 <div id="footer">
 <div id="footer-text">
 Version 1.0.0<br>
-Last updated 2024-03-12 12:05:59 +0900
+Last updated 2024-03-20 01:41:37 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

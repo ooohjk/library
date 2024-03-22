@@ -11,6 +11,8 @@ import com.example.library.domain.review.repository.ReviewRepository;
 import com.example.library.domain.user.repository.HeartRepository;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.BookNotFoundException;
+import com.example.library.exception.exceptions.BookOnRentException;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -115,11 +117,22 @@ public class BookServiceImpl implements BookService {
     @Override
 //    @Transactional //RentServiceImpl.rentBook 에서 트랜잭션 잡고 있으므로 패스
     public void rentSuc(Long bookNo){
+
+//        try{
+//            Thread.sleep(6000);
+//        }catch (Exception e){
+//            System.out.println("s");
+//        }
+
         BookEntity selectedBook = getBookDetail(bookNo);
         selectedBook.rentSuc();
-
+//        if(true){
+//            log.error("happen error!!");
+//            throw new BookOnRentException(ErrorCode.BOOK_ON_RENT);
+//        }
         log.info("도서 상태 변경 완료");
     }
+    private final EntityManager entityManager;
 
     @Override
     public void returnSuc(Long bookNo){

@@ -36,6 +36,7 @@ public enum ErrorCode {
     //Mail
     MAIL_NOT_FOUND("M01", "존재하지 않는 메일주소입니다. 메일주소를 확인해주세요."),
     MAIL_SEND_FAIL("M02", "메일 발송을 실패하였습니다."),
+    MAIL_TYPE_NOT_FOUND("M03", "존재하지 않는 메일타입니다."),
 
     //Review
     REVIEW_NOT_FOUND("R01", "해당도서의 리뷰가 없습니다."),
@@ -45,14 +46,17 @@ public enum ErrorCode {
     PARAMETER_FIELD_INVALID("P02", "JSON 파싱 실패하였습니다. JSON데이터를 확인해주세요."),
 
     //Rent
+    EXCEED_MAXIMUN_RENT_NUMBER("R95","도서 대여 가능 권수 초과하였습니다."),
     RENTMANAGER_USERNO_NOT_FOUND("R96","해당 유저번호에 해당하는 대여매니저가 존재하지 않습니다. 대여 매니저 확인 바랍니다."),
     BOOK_ON_RENT("R97","현재 대여 중인 도서입니다."),
-    EXCEED_MAXIMUN_RENT_NUMBER("R98","도서 대여 가능 권수 초과하였습니다."),
     OVERDUE_USER("R98","연체 대상자이므로 대여 불가합니다."),
     RENTSTATE_NOT_FOUND("R99","존재하지 않는 렌트상태번호 입니다."),
 
     //Return
     BOOK_NOT_FOUND_AMONG_BOOKS_ON_RENT("L01","대여 중인 도서 중 해당 도서는 존재하지 않습니다.대여한 책이 맞는지 확인 바랍니다."),
+
+    //
+    SEARCH_THROUGHPUT_EXCEEDED_EXCEPTION("S01","서버 접속량이 많습니다. 잠시 후 재시도 부탁드립니다."),
 
     //Extension
     BOOK_EXTEND_NUMBER_EXCEED("E01","도서 연장 횟수 초과하여 연장 불가합니다.")

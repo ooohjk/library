@@ -1,7 +1,7 @@
-package com.example.library.global.listener;
+package com.example.library.global.entityListener;
 
-import com.example.library.global.listener.Entity.BaseEntity;
-import com.example.library.global.listener.Entity.ModifiedEntity;
+import com.example.library.global.entityListener.Entity.BaseEntity;
+import com.example.library.global.entityListener.Entity.ModifiedEntity;
 import com.example.library.global.utils.DateUtil;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;

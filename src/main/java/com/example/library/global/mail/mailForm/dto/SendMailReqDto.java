@@ -1,4 +1,4 @@
-package com.example.library.send.dto;
+package com.example.library.global.mail.mailForm.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

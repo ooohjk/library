@@ -5,7 +5,7 @@ import com.example.library.domain.book.enums.BookState;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.BookOnRentException;
-import com.example.library.global.listener.Entity.ModifiedEntity;
+import com.example.library.global.entityListener.Entity.ModifiedEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
