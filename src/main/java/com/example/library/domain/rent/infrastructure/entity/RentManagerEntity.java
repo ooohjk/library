@@ -1,9 +1,6 @@
 package com.example.library.domain.rent.infrastructure.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,9 +8,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@Entity(name = "rent_manager")
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "rent_manager")
 public class RentManagerEntity {
 
     @Id
@@ -30,4 +28,8 @@ public class RentManagerEntity {
     private int currentRentNumber;
 
     private boolean overdueFlg;
+
+    public void setOverdueFlg(Boolean flg){
+        this.overdueFlg=flg;
+    }
 }

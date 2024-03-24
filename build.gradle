@@ -57,6 +57,11 @@ dependencies {
 
 	//2023.03.17 for Validation by son
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	//2023.03.02 for Batch by son
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+//	implementation 'org.springframework.boot:spring-boot-starter-quartz'
+	testImplementation 'org.springframework.batch:spring-batch-test'
 }
 
 ext {

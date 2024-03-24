@@ -29,8 +29,7 @@ public class MailService {
         UserEntity selectedUser = userRepository.findByUserNo(mailDto.getUserNo()).orElseThrow(()->new UserNotFoundException(ErrorCode.USERNO_NOT_FOUND));
         MailEntity mailEntity = mailRepository.findByMailType(mailDto.getMailType().getType()).orElseThrow(()-> new MailTypeNotFoundException(ErrorCode.MAIL_TYPE_NOT_FOUND));
 
-//        String content = setContentByMailType(selectedUser,mailEntity.getMailContent(), mailDto.getMailType());
-        String content = mailDto.getMailType().getContent(selectedUser.getUserId(),mailDto.getContent());
+        String content = mailDto.getMailType().getContent(selectedUser.getUserId(),mailEntity.getMailContent());
         mailDto = new MailDto(mailDto.getUserNo(),
                 selectedUser.getUserEmail(),
                 mailDto.getMailType(),
@@ -55,7 +54,6 @@ public class MailService {
         simpleMailMessage.setSubject(mailDto.getMailType().getSubject());
         simpleMailMessage.setText(mailDto.getContent());
         javaMailSender.send(simpleMailMessage);
-        throw new MailParseException("sd");
     }
 
 //    private String setContentByMailType(UserEntity user,String mailContentInDB, MailType mailType) {

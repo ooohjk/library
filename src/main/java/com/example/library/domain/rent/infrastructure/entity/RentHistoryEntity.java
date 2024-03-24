@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "rent_history")
+@Entity
+@Table(name = "rent_history")
 public class RentHistoryEntity {
 
     @Id
