@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
+    private final CorsConfig corsConfig;
     private final UserService userService;
     private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final AccessDeniedHandler customAccessDeniedHandler;
@@ -78,6 +78,7 @@ public class SecurityConfig {
                 )
 
                 .addFilterBefore(new JwtFilter(userService), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(corsConfig.corsFilter())
                 .build();
     }
 }
