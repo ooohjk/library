@@ -64,6 +64,6 @@ public class RentServiceImpl implements RentService{
         // 도서 연장했지만 도서예약이 잡혀있다면 거절내야 한다라는 요구사항 등판
         rentManager.extendBook();
         rentRepository.save(rentManager);
-        Events.raise(new SendedMailEvent(new MailDto(userNo,MailType.MAIL_RETURN)));
+        Events.raise(new SendedMailEvent(new MailDto(userNo,MailType.MAIL_EXTEND)));
     }
 }
