@@ -158,17 +158,23 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         List<ReviewEntity> review = reviewRepository.findAllByUserUserId(userId);
         Long userNo = userRepository.findByUserId(userId).get().getUserNo();
         List<Heart> heartList = heartRepository.findAllByUserUserNo(userNo);
-        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
-        heartList.forEach((h) -> {
-            heartRepository.deleteByUserUserNo(userNo);
-        });
-        review.forEach((r) -> {
-            if (r.getUser().getUserId().equals(userId)) {
-                reviewRepository.update(userId, "unknown");
-            }
-        });
-        userRepository.deleteByUserId(userId);
-        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
+        RentManagerEntity rentManager = rentManagerRepository.findByUserUserNo(userNo);
+
+        if(rentManager.getRentNumber() == 0) { // 대여한 도서가 없을 경우에만 탈퇴 가능
+            entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
+            heartList.forEach((h) -> {
+                heartRepository.deleteByUserUserNo(userNo);
+            });
+            review.forEach((r) -> {
+                if (r.getUser().getUserId().equals(userId)) {
+                    reviewRepository.update(userId, "unknown");
+                }
+            });
+            userRepository.deleteByUserId(userId);
+            entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
+        } else { // 대여한 도서가 있는 경우
+            throw new RentException(ErrorCode.RENT_EXIST);
+        }
     }
 
     @Override

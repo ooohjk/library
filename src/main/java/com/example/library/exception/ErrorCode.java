@@ -18,6 +18,7 @@ public enum ErrorCode {
     USERID_NOT_FOUND("U02", "존재하지 않는 아이디입니다. 아이디를 확인해주세요."),
     PASSWORD_DIFFERNET("U03", "올바르지 않은 패스워드입니다. 패스워드를 확인해주세요."),
     USERNO_NOT_FOUND("U04", "존재하지 않는 유저번호입니다. 유저번호를 확인해주세요."),
+//    UNREGISTER_FAIL("U05", "회원탈퇴"),
 
     //Heart
     HEARTBOOK_EMPTY("H01","찜한 도서가 없습니다."),
@@ -47,6 +48,7 @@ public enum ErrorCode {
     ALREADY_MAX_RENT("RH02", "한 사람당 두권까지 대여 가능합니다."),
     ALREADY_MIN_RETURN("RH03", "반납할 도서가 없습니다."),
     EXTENSION_FAIL("RH04", "반납기간이 지나 연장을 할 수 없습니다."),
+    RENT_EXIST("RH05", "대여한 도서가 있습니다."),
 
     //RentManager
     NOT_ALLOW_RENT("RM01", "연체 대상이므로 대여가 불가합니다.")

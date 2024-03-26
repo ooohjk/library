@@ -23,7 +23,7 @@ class ReviewServiceImplTest {
 
         BookEntity book  =
                 BookEntity.builder()
-                        .bookCode(1L)
+                        .bookCode(5L)
                         .bookName("테스트책1")
                         .isbn("1234")
                         .bookAuthor("저자1")
@@ -36,8 +36,8 @@ class ReviewServiceImplTest {
                         .build()
                 ;
         UserEntity user = UserEntity.createOfficialUser()
-                .userNo(11L)
-                .userId("d")
+                .userNo(77L)
+                .userId("test")
                 .userPwd("das")
                 .userName("asd")
                 .build()
