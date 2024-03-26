@@ -2,7 +2,9 @@ package com.example.library.domain.rent.application;
 
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.service.BookService;
+import com.example.library.domain.rent.application.dto.UserRentStatusResDto;
 import com.example.library.domain.rent.domain.*;
+import com.example.library.global.Events;
 import com.example.library.global.eventListener.SendedMailEvent;
 import com.example.library.global.mail.enums.MailType;
 import com.example.library.global.mail.mailHistory.MailDto;
@@ -11,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -66,4 +71,13 @@ public class RentServiceImpl implements RentService{
         rentRepository.save(rentManager);
         Events.raise(new SendedMailEvent(new MailDto(userNo,MailType.MAIL_EXTEND)));
     }
+
+    public List<UserRentStatusResDto> getCurrentRentStatus(Long userNo){
+        List<RentHistory> rentHistoryList = rentRepository.findUserRentStatus(userNo);
+        List<UserRentStatusResDto> userRentStatusResDtos = rentHistoryList.stream()
+                .map(rentHistory -> UserRentStatusResDto.from(rentHistory))
+                .collect(Collectors.toList());
+        return userRentStatusResDtos;
+    }
+
 }
