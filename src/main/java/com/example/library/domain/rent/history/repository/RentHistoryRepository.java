@@ -9,4 +9,5 @@ public interface RentHistoryRepository extends JpaRepository<RentHistoryEntity, 
     List<RentHistoryEntity> findAll();
     List<RentHistoryEntity> findAllByUserUserNo(Long userNo);
     List<RentHistoryEntity> findAllByUserUserNoAndBookBookCode(Long userNo, Long bookCode);
+    List<RentHistoryEntity> findAllByUserUserNoAndRentState(Long userNo, int state);
 }

@@ -64,9 +64,9 @@ public class UserController {
         return ApiResponseDto.createRes(ErrorCode.SUC, userSearchResDtos);
     }
 
-    @GetMapping("/hearts")
-    public ApiResponseDto getMyHeartList(@Valid @RequestBody Map<String,Long> userNoMap){
-        UserSelectHeartResDto userSelectHeartResDto = userService.getMyHeartList(userNoMap.get("userNo"));
+    @GetMapping("/hearts/{userNo}")
+    public ApiResponseDto getMyHeartList(@Valid @PathVariable("userNo") Long userNo){
+        UserSelectHeartResDto userSelectHeartResDto = userService.getMyHeartList(userNo);
         return ApiResponseDto.createRes(ErrorCode.SUC, userSelectHeartResDto);
     }
 

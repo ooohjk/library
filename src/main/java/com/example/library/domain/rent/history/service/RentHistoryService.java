@@ -7,8 +7,9 @@ import java.util.List;
 
 public interface RentHistoryService {
     List<RentHistoryDto> getAllRent();
-    List<RentHistoryDto> getMylist(Long userNo);
+    List<RentHistoryDto> getAllMylist(Long userNo);
     RentHistoryDto add(Long userNo, Long bookCode) throws ParseException;
     RentHistoryDto returnBook(Long userNo, Long bookCode) throws ParseException;
     RentHistoryDto extension(Long userNo, Long bookCode) throws ParseException;
+    List<RentHistoryDto> getCurrentMylist(Long userNo);
 }

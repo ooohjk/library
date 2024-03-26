@@ -24,9 +24,15 @@ public class RentHistoryController {
         return ApiResponseDto.createRes(ErrorCode.SUC, rentHistoryDtoList);
     }
 
-    @GetMapping("/mylist/{userNo}")
-    public ApiResponseDto getMylist(@PathVariable("userNo") Long userNo) {
-        List<RentHistoryDto> rentHistoryDtoList = rentHistoryService.getMylist(userNo);
+    @GetMapping("/mylist/all/{userNo}")
+    public ApiResponseDto getAllMylist(@PathVariable("userNo") Long userNo) {
+        List<RentHistoryDto> rentHistoryDtoList = rentHistoryService.getAllMylist(userNo);
+        return ApiResponseDto.createRes(ErrorCode.SUC, rentHistoryDtoList);
+    }
+
+    @GetMapping("/mylist/current/{userNo}")
+    public ApiResponseDto getCurrentMylist(@PathVariable("userNo") Long userNo) {
+        List<RentHistoryDto> rentHistoryDtoList = rentHistoryService.getCurrentMylist(userNo);
         return ApiResponseDto.createRes(ErrorCode.SUC, rentHistoryDtoList);
     }
 

@@ -44,8 +44,18 @@ public class RentHistoryServiceImpl implements RentHistoryService {
     }
 
     @Override
-    public List<RentHistoryDto> getMylist(Long userNo) {
+    public List<RentHistoryDto> getAllMylist(Long userNo) {
         List<RentHistoryEntity> rentHistoryEntityList = rentHistoryRepository.findAllByUserUserNo(userNo);
+
+        return rentHistoryEntityList.stream()
+                .map(m -> new RentHistoryDto(m.getRentNo(), m.getUser().getUserNo(), m.getBook().getBookCode(), m.getBook().getBookName(), m.getRentDt(), m.getProspectDt(), m.getReturnDt(), m.getExtension(), m.getRentState()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RentHistoryDto> getCurrentMylist(Long userNo) {
+        int state = 0;
+        List<RentHistoryEntity> rentHistoryEntityList = rentHistoryRepository.findAllByUserUserNoAndRentState(userNo, state);
 
         return rentHistoryEntityList.stream()
                 .map(m -> new RentHistoryDto(m.getRentNo(), m.getUser().getUserNo(), m.getBook().getBookCode(), m.getBook().getBookName(), m.getRentDt(), m.getProspectDt(), m.getReturnDt(), m.getExtension(), m.getRentState()))
@@ -75,8 +85,8 @@ public class RentHistoryServiceImpl implements RentHistoryService {
                             new SimpleDateFormat("yyyyMMdd").format(
                                     new SimpleDateFormat("yyyyMMdd").parse(
                                             String.valueOf(
-//                                                    (Integer.parseInt(DateUtil.getDate()) + 6) // 실제
-                                                    (Integer.parseInt("20240310") + 6) // 테스트용
+                                                    (Integer.parseInt(DateUtil.getDate()) + 6) // 실제
+//                                                    (Integer.parseInt("20240310") + 6) // 테스트용
                                             )
                                     )
                             )
@@ -120,8 +130,8 @@ public class RentHistoryServiceImpl implements RentHistoryService {
             bookRepository.save(book);
 
             if(rentHistory.getRentState() == 0) { // 유저 : 반납x
-//                rentHistory.setReturnDt(DateUtil.getDate()); // 실제
-                rentHistory.setReturnDt("20240317"); // 테스트용
+                rentHistory.setReturnDt(DateUtil.getDate()); // 실제
+//                rentHistory.setReturnDt("20240317"); // 테스트용
 
                 if(new SimpleDateFormat("yyyyMMdd").parse(rentHistory.getReturnDt())  // 실제반납날짜 < 반납예정일자 (연체x)
                         .before(new SimpleDateFormat("yyyyMMdd").parse(rentHistory.getProspectDt()))) {
