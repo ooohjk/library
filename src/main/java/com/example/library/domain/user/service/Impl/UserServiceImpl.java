@@ -1,6 +1,6 @@
 package com.example.library.domain.user.service.Impl;
 
-import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.domain.book.domain.BookEntity;
 import com.example.library.domain.book.service.BookService;
 import com.example.library.domain.rent.application.RentService;
 import com.example.library.domain.user.repository.UserOpenFeignClient;
@@ -261,7 +261,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
         //1. 유저번호로 유저 조회
         UserEntity selectedUser = getUserByUserNoMethod(userNo);
         //2. 도서 존재 여부 조회
-        BookEntity selectedBook = bookService.getBookDetail(bookCode);
+        BookEntity selectedBook = bookService.inquiryBook(bookCode);
         //3. 유저 도서 중복 찜 체크
         checkAlreadyHeartBook(selectedUser,selectedBook);
         //4. 하트 엔티티 생성

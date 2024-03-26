@@ -1,6 +1,6 @@
 package com.example.library.domain.review.service.Impl;
 
-import com.example.library.domain.book.repository.BookRepository;
+import com.example.library.domain.book.infrastructure.SpringDataJpaBookRepository;
 import com.example.library.domain.review.dto.ReviewDto;
 import com.example.library.domain.review.dto.ReviewWriteDto;
 import com.example.library.domain.review.entity.ReviewEntity;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
-    private final BookRepository bookRepository;
+    private final SpringDataJpaBookRepository bookRepository;
 
     @Override
     public List<ReviewDto> getAllReview() {

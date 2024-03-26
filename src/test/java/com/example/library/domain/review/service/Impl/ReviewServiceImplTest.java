@@ -1,6 +1,6 @@
 package com.example.library.domain.review.service.Impl;
 
-import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.domain.book.domain.BookEntity;
 import com.example.library.domain.book.enums.BookState;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.domain.review.repository.ReviewRepository;

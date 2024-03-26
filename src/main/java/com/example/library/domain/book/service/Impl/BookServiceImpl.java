@@ -1,18 +1,13 @@
 package com.example.library.domain.book.service.Impl;
 
-import com.example.library.domain.book.dto.BookAddDto;
-import com.example.library.domain.book.dto.BookDto;
-import com.example.library.domain.book.dto.BookSimpleDto;
-import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.domain.book.domain.BookEntity;
+import com.example.library.domain.book.domain.repository.BookRepository;
 import com.example.library.domain.book.enums.BookState;
-import com.example.library.domain.book.repository.BookRepository;
 import com.example.library.domain.book.service.BookService;
+import com.example.library.domain.book.service.dto.BookAddDto;
+import com.example.library.domain.book.service.dto.BookDto;
 import com.example.library.domain.review.repository.ReviewRepository;
 import com.example.library.domain.user.repository.HeartRepository;
-import com.example.library.exception.ErrorCode;
-import com.example.library.exception.exceptions.BookNotFoundException;
-import com.example.library.exception.exceptions.BookOnRentException;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,39 +21,39 @@ public class BookServiceImpl implements BookService {
     private final ReviewRepository reviewRepository;
     private final HeartRepository heartRepository;
 
-    @Override
-    @Transactional(readOnly = true)
-    public BookDto detailSearchByBookAuthor(String bookAuthor) {
-        BookEntity bookEntity = bookRepository.findByBookAuthor(bookAuthor)
-                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKAUTHOR_NOT_FOUND));
-
-        return BookDto.detail(bookEntity);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public BookDto detailSearchByBookName(String bookName) {
-        BookEntity bookEntity = bookRepository.findByBookName(bookName)
-                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKNAME_NOT_FOUND));
-
-        return BookDto.detail(bookEntity);
-    }
-
-    @Override
-    public BookSimpleDto simpleSearchByBookAuthor(String bookAuthor) {
-        BookEntity bookEntity = bookRepository.findByBookAuthor(bookAuthor)
-                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKAUTHOR_NOT_FOUND));
-
-        return BookSimpleDto.simple(bookEntity);
-    }
-
-    @Override
-    public BookSimpleDto simpleSearchByBookName(String bookName) {
-        BookEntity bookEntity = bookRepository.findByBookName(bookName)
-                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKNAME_NOT_FOUND));
-
-        return BookSimpleDto.simple(bookEntity);
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public BookDto detailSearchByBookAuthor(String bookAuthor) {
+//        BookEntity bookEntity = bookRepository.findByBookAuthor(bookAuthor)
+//                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKAUTHOR_NOT_FOUND));
+//
+//        return BookDto.detail(bookEntity);
+//    }
+//
+//    @Override
+//    @Transactional(readOnly = true)
+//    public BookDto detailSearchByBookName(String bookName) {
+//        BookEntity bookEntity = bookRepository.findByBookName(bookName)
+//                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKNAME_NOT_FOUND));
+//
+//        return BookDto.detail(bookEntity);
+//    }
+//
+//    @Override
+//    public BookSimpleDto simpleSearchByBookAuthor(String bookAuthor) {
+//        BookEntity bookEntity = bookRepository.findByBookAuthor(bookAuthor)
+//                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKAUTHOR_NOT_FOUND));
+//
+//        return BookSimpleDto.simple(bookEntity);
+//    }
+//
+//    @Override
+//    public BookSimpleDto simpleSearchByBookName(String bookName) {
+//        BookEntity bookEntity = bookRepository.findByBookName(bookName)
+//                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKNAME_NOT_FOUND));
+//
+//        return BookSimpleDto.simple(bookEntity);
+//    }
 
     @Override
     @Transactional
@@ -82,7 +77,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto update(BookDto bookDto, Long bookCode) {
-        BookEntity bookEntity = getBookDetail(bookCode);
+        BookEntity bookEntity = inquiryBook(bookCode);
 
         bookEntity.setBookName(bookDto.getBookName());
         bookEntity.setBookAuthor(bookDto.getBookAuthor());
@@ -99,46 +94,31 @@ public class BookServiceImpl implements BookService {
         return BookDto.detail(bookEntity);
     }
 
-    @Override
-    @Transactional
-    public void delete(Long bookCode) {
-        reviewRepository.deleteByBookBookCode(bookCode);
-        heartRepository.deleteByBookBookCode(bookCode);
-        bookRepository.deleteByBookCode(bookCode);
-    }
+//    @Override
+//    @Transactional
+//    public void delete(Long bookCode) {
+//        reviewRepository.deleteByBookBookCode(bookCode);
+//        heartRepository.deleteByBookBookCode(bookCode);
+//        bookRepository.deleteByBookCode(bookCode);
+//    }
 
-    public BookEntity getBookDetail(Long bookNo){
-        log.info(String.format("도서 조회 요청 - bookNo[%s]",bookNo.toString()));
-
-        return bookRepository.findByBookCode(bookNo)
-                .orElseThrow(() -> new BookNotFoundException(ErrorCode.BOOKCODE_NOT_FOUND));
+    public BookEntity inquiryBook(Long bookNo){
+        return bookRepository.findByBookNo(bookNo);
     }
 
     @Override
 //    @Transactional //RentServiceImpl.rentBook 에서 트랜잭션 잡고 있으므로 패스
     public void rentSuc(Long bookNo){
-
-//        try{
-//            Thread.sleep(6000);
-//        }catch (Exception e){
-//            System.out.println("s");
-//        }
-
-        BookEntity selectedBook = getBookDetail(bookNo);
+        BookEntity selectedBook = inquiryBook(bookNo);
         selectedBook.rentSuc();
-//        if(true){
-//            log.error("happen error!!");
-//            throw new BookOnRentException(ErrorCode.BOOK_ON_RENT);
-//        }
         log.info("도서 상태 변경 완료");
     }
-    private final EntityManager entityManager;
+
 
     @Override
     public void returnSuc(Long bookNo){
-        BookEntity selectedBook = getBookDetail(bookNo);
+        BookEntity selectedBook = inquiryBook(bookNo);
         selectedBook.returnSuc();
-
         log.info("도서 상태 변경 완료");
     }
 

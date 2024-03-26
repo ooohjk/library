@@ -48,7 +48,7 @@ public enum ErrorCode {
     //Rent
     EXCEED_MAXIMUN_RENT_NUMBER("R95","도서 대여 가능 권수 초과하였습니다."),
     RENTMANAGER_USERNO_NOT_FOUND("R96","해당 유저번호에 해당하는 대여매니저가 존재하지 않습니다. 대여 매니저 확인 바랍니다."),
-    BOOK_ON_RENT("R97","현재 대여 중인 도서입니다."),
+    BOOK_ON_RENT("R97","현재 다른 유저에 의해 대여 중인 도서입니다."),
     OVERDUE_USER("R98","연체 대상자이므로 대여 불가합니다."),
     RENTSTATE_NOT_FOUND("R99","존재하지 않는 렌트상태번호 입니다."),
 

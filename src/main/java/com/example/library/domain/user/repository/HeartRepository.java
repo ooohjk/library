@@ -1,6 +1,6 @@
 package com.example.library.domain.user.repository;
 
-import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.domain.book.domain.BookEntity;
 import com.example.library.domain.user.entity.Heart;
 import com.example.library.domain.user.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,6 @@
-package com.example.library.domain.book.dto;
+package com.example.library.domain.book.service.dto;
 
-import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.domain.book.domain.BookEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 

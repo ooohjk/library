@@ -1,6 +1,6 @@
 package com.example.library.domain.rent.application;
 
-import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.domain.book.domain.BookEntity;
 import com.example.library.domain.book.service.BookService;
 import com.example.library.domain.rent.application.dto.UserRentStatusResDto;
 import com.example.library.domain.rent.domain.*;
@@ -42,7 +42,7 @@ public class RentServiceImpl implements RentService{
     @Override
     @Transactional
     public void rentBook(Long userNo,Long bookNo) {
-        BookEntity book = bookService.getBookDetail(bookNo);
+        BookEntity book = bookService.inquiryBook(bookNo);
         RentManager rentManager = rentRepository.findRentManagerByUserNo(userNo);
         book.checkRentAvailable();
         bookService.rentSuc(book.getBookCode());

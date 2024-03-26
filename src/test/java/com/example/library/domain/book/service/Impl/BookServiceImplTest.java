@@ -1,8 +1,8 @@
 package com.example.library.domain.book.service.Impl;
 
-import com.example.library.domain.book.entity.BookEntity;
+import com.example.library.domain.book.domain.BookEntity;
 import com.example.library.domain.book.enums.BookState;
-import com.example.library.domain.book.repository.BookRepository;
+import com.example.library.domain.book.infrastructure.SpringDataJpaBookRepository;
 import com.example.library.global.utils.DateUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import java.util.Date;
 class BookServiceImplTest {
 
     @Autowired
-    BookRepository bookRepository;
+    SpringDataJpaBookRepository bookRepository;
 
     @Test
     @DisplayName("도서 생성 시 도서날짜 자동기입")

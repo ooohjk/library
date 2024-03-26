@@ -1,6 +1,6 @@
-package com.example.library.domain.book.entity;
+package com.example.library.domain.book.domain;
 
-import com.example.library.domain.book.entity.converter.BookStateConverter;
+import com.example.library.domain.book.domain.converter.BookStateConverter;
 import com.example.library.domain.book.enums.BookState;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.exception.ErrorCode;
@@ -60,12 +60,9 @@ public class BookEntity extends ModifiedEntity {
     @Column()
     private String bookImage;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<ReviewEntity> review = new ArrayList<>();
 
-    public boolean isRentAvailableBook(){
-        return bookState==BookState.RENT_AVAILABLE;
-    }
 
     public void rentSuc(){
         changeRentUnavailable();
@@ -82,14 +79,13 @@ public class BookEntity extends ModifiedEntity {
     }
 
     public void checkRentAvailable(){
-        log.info("[checkRentAvailable] 도서 대여 가능 여부 확인");
+        isRentAvailableBook();
+    }
 
-        if(!isRentAvailableBook()){
+    private void isRentAvailableBook(){
+        if(BookState.RENT_UNAVAILABLE.equals(bookState)){
             log.error(String.format("해당 도서[%s]는 현재 대여 중인 도서입니다. 대여 상태 [%s]",bookCode.toString(),"대여 중"));
             throw new BookOnRentException(ErrorCode.BOOK_ON_RENT);
         }
-
-        log.info(String.format("해당 도서[%s]는 대여 가능 도서입니다. 대여 상태 [%s]", bookCode.toString(),"사내 배치"));
-        log.info("[checkRentAvailable] 도서 대여 가능");
     }
 }
