@@ -12,6 +12,9 @@ import com.example.library.exception.exceptions.RentManagerNotFoudException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 @RequiredArgsConstructor
 public class RentRepositoryAdapter implements RentRepository {
@@ -48,6 +51,15 @@ public class RentRepositoryAdapter implements RentRepository {
         managerDomain.setRentHistory(historyDomain);
 
         return managerDomain;
+    }
+
+    @Override
+    public List<RentHistory> findUserRentStatus(Long userNo) {
+        List<RentHistoryEntity> historyEntityList = rentHistoryRepository.findByUserNoAndRentState(userNo,RentState.ON_RENT);
+        List<RentHistory> historyDomains = historyEntityList.stream()
+                                            .map(historyEntity-> convert(historyEntity))
+                                            .collect(Collectors.toList());
+        return historyDomains;
     }
 
     private RentManager convert(RentManagerEntity entity){
