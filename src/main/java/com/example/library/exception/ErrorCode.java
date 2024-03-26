@@ -58,6 +58,9 @@ public enum ErrorCode {
     //
     SEARCH_THROUGHPUT_EXCEEDED_EXCEPTION("S01","서버 접속량이 많습니다. 잠시 후 재시도 부탁드립니다."),
 
+    //Token
+    ACCESSTOKEN_EXPIRED("T01","액세스 토큰 유효기간 만료되었습니다. 재로그인 바랍니다."),
+
     //Extension
     BOOK_EXTEND_NUMBER_EXCEED("E01","도서 연장 횟수 초과하여 연장 불가합니다.")
     ;

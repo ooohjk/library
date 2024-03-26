@@ -2,6 +2,7 @@ package com.example.library.config;
 
 import com.example.library.domain.user.enums.UserGrade;
 import com.example.library.domain.user.service.UserService;
+import com.example.library.global.security.login.filter.JwtExceptionFilter;
 import com.example.library.global.security.login.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,7 @@ public class SecurityConfig {
     private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final AccessDeniedHandler customAccessDeniedHandler;
     private final AuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -76,8 +78,8 @@ public class SecurityConfig {
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer
                         -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint) //인가 거절 관련 후처리 핸들러 커스터마이징
                 )
-
                 .addFilterBefore(new JwtFilter(userService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter,JwtFilter.class) //JWT토큰 익셉션 핸들러 추가
                 .addFilter(corsConfig.corsFilter())
                 .build();
     }
