@@ -83,9 +83,9 @@ public class UserController {
         return ApiResponseDto.createRes(ErrorCode.SUC);
     }
 
-    @GetMapping("/myLibrary/rentStatus")
-    public ApiResponseDto getRentStatus(@RequestBody Map<String,Long> userNoMap){
-        List<UserRentStatusResDto> userRentStatusResDtos = userService.getCurrentRentStatus(userNoMap.get("userNo"));
+    @GetMapping("/myLibrary/rentStatus/{userNo}")
+    public ApiResponseDto getRentStatus(@PathVariable Long userNo){
+        List<UserRentStatusResDto> userRentStatusResDtos = userService.getCurrentRentStatus(userNo);
         return ApiResponseDto.createRes(ErrorCode.SUC,userRentStatusResDtos);
     }
 }
