@@ -32,7 +32,7 @@ public class BathScheduler {
     private final PlatformTransactionManager manager;
     private final JobRepository jobRepository;
 
-    @Scheduled(cron = "0 * * * * *" , zone = "Asia/Seoul") //1분마다
+    @Scheduled(cron = "0 * * 12 * *" , zone = "Asia/Seoul") //1분마다
     public void doBatch() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         log.info("★★★Batch스케줄러 시작★★★");
 

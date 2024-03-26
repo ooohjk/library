@@ -1,4 +1,4 @@
-package com.example.library.domain.rent.domain;
+package com.example.library.global;
 
 import lombok.Setter;
 import org.springframework.context.ApplicationEventPublisher;
