@@ -3,7 +3,8 @@ package com.example.library.domain.user.service.Impl;
 import com.example.library.domain.book.entity.BookEntity;
 import com.example.library.domain.book.service.BookService;
 import com.example.library.domain.rent.application.RentService;
-import com.example.library.domain.rent.domain.Events;
+import com.example.library.domain.user.repository.UserOpenFeignClient;
+import com.example.library.global.Events;
 import com.example.library.domain.review.entity.ReviewEntity;
 import com.example.library.domain.review.repository.ReviewRepository;
 import com.example.library.domain.user.dto.*;
@@ -15,11 +16,13 @@ import com.example.library.domain.user.repository.HeartRepository;
 import com.example.library.domain.user.repository.UserRepository;
 import com.example.library.domain.user.service.UserService;
 import com.example.library.domain.user.service.dto.HeartResponseDto;
+import com.example.library.domain.user.service.dto.UserRentStatusResDto;
 import com.example.library.exception.ErrorCode;
 import com.example.library.exception.exceptions.*;
 import com.example.library.global.eventListener.SendedMailEvent;
 import com.example.library.global.mail.enums.MailType;
 import com.example.library.global.mail.mailHistory.MailDto;
+import com.example.library.global.response.ApiResponseDto;
 import com.example.library.global.security.oauth2.principal.CustomOAuth2User;
 import com.example.library.global.security.oauth2.userInfo.CustomOAuthAttributes;
 import com.example.library.global.utils.JwtUtil;
@@ -53,6 +56,7 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     private final HeartRepository heartRepository;
     private final ReviewRepository reviewRepository;
     private final BCryptPasswordEncoder encoder;
+    private final UserOpenFeignClient userOpenFeignClient;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -309,5 +313,11 @@ public class UserServiceImpl implements UserService, OAuth2UserService<OAuth2Use
     private UserEntity getUserByUserNoMethod(Long userNo) {
         return userRepository.findByUserNo(userNo)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USERNO_NOT_FOUND));
+    }
+
+    public List<UserRentStatusResDto> getCurrentRentStatus(Long userNo){
+        UserEntity selectedUser = getUserByUserNoMethod(userNo);
+        ApiResponseDto<List<UserRentStatusResDto>> response = userOpenFeignClient.getCurrentRentStatus(userNo);
+        return response.getData();
     }
 }

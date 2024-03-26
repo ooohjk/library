@@ -2,6 +2,7 @@ package com.example.library.domain.user.controller;
 
 import com.example.library.domain.user.dto.*;
 import com.example.library.domain.user.service.UserService;
+import com.example.library.domain.user.service.dto.UserRentStatusResDto;
 import com.example.library.exception.ErrorCode;
 import com.example.library.global.response.ApiResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -80,5 +81,11 @@ public class UserController {
     public ApiResponseDto removeHeartBook(@Valid @RequestBody UserRemoveHeartBookReqDto userRemoveHeartBookReqDto) {
         userService.removeHeartBook(userRemoveHeartBookReqDto);
         return ApiResponseDto.createRes(ErrorCode.SUC);
+    }
+
+    @GetMapping("/myLibrary/rentStatus")
+    public ApiResponseDto getRentStatus(@RequestBody Map<String,Long> userNoMap){
+        List<UserRentStatusResDto> userRentStatusResDtos = userService.getCurrentRentStatus(userNoMap.get("userNo"));
+        return ApiResponseDto.createRes(ErrorCode.SUC,userRentStatusResDtos);
     }
 }

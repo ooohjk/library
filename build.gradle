@@ -62,10 +62,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
 //	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 	testImplementation 'org.springframework.batch:spring-batch-test'
+
+	//2023.03.26 openFeign by son
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }
 
 ext {
 	snippetsDir = file('build/generated-snippets') // (5) snippetsDir 설정하기
+	set('springCloudVersion', "2023.0.0")
 }
 
 tasks.named('test') {
@@ -78,6 +82,12 @@ asciidoctor {
 	baseDirFollowsSourceFile() // (8)
 	inputs.dir snippetsDir // (9)
 	dependsOn test // (10)
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 asciidoctor.doFirst {

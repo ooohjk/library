@@ -2,6 +2,7 @@ package com.example.library.domain.user.service;
 
 import com.example.library.domain.user.dto.*;
 import com.example.library.domain.user.enums.UserGrade;
+import com.example.library.domain.user.service.dto.UserRentStatusResDto;
 
 import java.util.List;
 
@@ -19,4 +20,9 @@ public interface UserService {
     UserSelectHeartResDto getMyHeartList(Long userNo);
     void registerHeartBook(UserHeartBookReqDto userHeartBookReqDto);
     void removeHeartBook(UserRemoveHeartBookReqDto userRemoveHeartBookReqDto);
+
+    //대여 관련
+    //현재 대여목록 보기
+    List<UserRentStatusResDto> getCurrentRentStatus(Long userNo);
+
 }
