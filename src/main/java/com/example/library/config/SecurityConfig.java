@@ -43,7 +43,7 @@ public class SecurityConfig {
                         auth
                             .requestMatchers("/user/login", "/user/join").permitAll()
                             .requestMatchers("/admin/**").hasAuthority(UserGrade.ADMIN.getUserGradeInString())
-                            .requestMatchers("/user/**", "/review/write/**,/rent/**").hasAuthority(UserGrade.OFFICIALMEMBER.getUserGradeInString())
+                            .requestMatchers("/user/**", "/review/write/**","/rent/**").hasAuthority(UserGrade.OFFICIALMEMBER.getUserGradeInString())
                             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/docs/**","/error-code/**", "/book/**", "/review/**").permitAll()
                             .requestMatchers(HttpMethod.GET).permitAll()
                             .requestMatchers(HttpMethod.POST).permitAll()
