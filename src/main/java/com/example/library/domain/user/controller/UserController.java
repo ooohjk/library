@@ -71,9 +71,9 @@ public class UserController {
         return ApiResponseDto.createRes(ErrorCode.SUC, userSelectHeartResDto);
     }
 
-    @PostMapping ("/heart/reg")
-    public ApiResponseDto heartBook(@Valid @RequestBody UserHeartBookReqDto userHeartBookReqDto){
-        userService.registerHeartBook(userHeartBookReqDto);
+    @PostMapping ("{userNo}/heart/{bookNo}")
+    public ApiResponseDto heartBook(@PathVariable Long userNo,@PathVariable Long bookNo){
+        userService.registerHeartBook(new UserHeartBookReqDto(userNo,bookNo));
         return ApiResponseDto.createRes(ErrorCode.SUC);
     }
 
