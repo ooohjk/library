@@ -18,8 +18,8 @@ public interface UserService {
 
     //찜 관련
     UserSelectHeartResDto getMyHeartList(Long userNo);
-    void registerHeartBook(UserHeartBookReqDto userHeartBookReqDto);
-    void removeHeartBook(UserRemoveHeartBookReqDto userRemoveHeartBookReqDto);
+    void registerHeartBook(Long userNo,Long bookNo);
+    void removeHeartBook(Long userNo,Long bookNo);
 
     //대여 관련
     //현재 대여목록 보기

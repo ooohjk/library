@@ -71,7 +71,7 @@ public class RentHistory {
 
     void doExtend() {
         this.extensionFlg=true;
-        this.haveToReturnDt+=6;
+        this.haveToReturnDt=DateUtil.getDateAfter7Days(this.haveToReturnDt);
     }
 
     public static RentHistory by(RentHistoryEntity rentHistoryEntity){

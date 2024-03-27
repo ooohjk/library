@@ -11,9 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HeartRepository extends JpaRepository<Heart, Long> {
-    Optional<Heart> findByHeartNo(Long heartNo);
-
-    Optional<Heart> findByUserAndAndBook(UserEntity user, BookEntity book);
+    Optional<Heart> findByUserAndBook(UserEntity user, BookEntity book);
 
     @Modifying
     @Query(value = "delete from Heart h where h.book.bookCode = :bookCode")

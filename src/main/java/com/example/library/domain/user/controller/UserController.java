@@ -65,21 +65,21 @@ public class UserController {
         return ApiResponseDto.createRes(ErrorCode.SUC, userSearchResDtos);
     }
 
-    @GetMapping("/hearts")
-    public ApiResponseDto getMyHeartList(@Valid @RequestBody Map<String,Long> userNoMap){
-        UserSelectHeartResDto userSelectHeartResDto = userService.getMyHeartList(userNoMap.get("userNo"));
+    @GetMapping("/myLibrary/hearts/{userNo}")
+    public ApiResponseDto getMyHeartList(@PathVariable Long userNo){
+        UserSelectHeartResDto userSelectHeartResDto = userService.getMyHeartList(userNo);
         return ApiResponseDto.createRes(ErrorCode.SUC, userSelectHeartResDto);
     }
 
     @PostMapping ("{userNo}/heart/{bookNo}")
     public ApiResponseDto heartBook(@PathVariable Long userNo,@PathVariable Long bookNo){
-        userService.registerHeartBook(new UserHeartBookReqDto(userNo,bookNo));
+        userService.registerHeartBook(userNo,bookNo);
         return ApiResponseDto.createRes(ErrorCode.SUC);
     }
 
-    @DeleteMapping("/heart/remove")
-    public ApiResponseDto removeHeartBook(@Valid @RequestBody UserRemoveHeartBookReqDto userRemoveHeartBookReqDto) {
-        userService.removeHeartBook(userRemoveHeartBookReqDto);
+    @DeleteMapping("{userNo}/heart/{bookNo}")
+    public ApiResponseDto removeHeartBook(@PathVariable Long userNo,@PathVariable Long bookNo) {
+        userService.removeHeartBook(userNo,bookNo);
         return ApiResponseDto.createRes(ErrorCode.SUC);
     }
 
